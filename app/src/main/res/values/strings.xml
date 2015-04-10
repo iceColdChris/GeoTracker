@@ -8,5 +8,7 @@
     <string name="title_activity_my_account">MyAccount</string>
     <string name="title_activity_my_map">MyMap</string>
     <string name="title_activity_registration">Registration</string>
-
+    <string name="accept">Accept</string>
+    <string name="eula"></string>
+    <string name="updates"></string>
 </resources>
