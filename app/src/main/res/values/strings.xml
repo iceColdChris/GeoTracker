@@ -8,7 +8,24 @@
     <string name="title_activity_my_account">MyAccount</string>
     <string name="title_activity_my_map">MyMap</string>
     <string name="title_activity_registration">Registration</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="forgot">Forgot Password?</string>
+
+    <string name="confirm_password">Confirm Password</string>
+    <string name="security_q">Security Questions</string>
+    <string name="security_a">Security Answer</string>
+    <string name="cancel">Cancel</string>
+    <string-array name="security_questions">
+        <item>What is the name of your first pet?</item>
+        <item>What is your mother\'s maiden name?</item>
+        <item>What is your favorite color?</item>
+        <item>What is your favorite programing language?</item>
+    </string-array>
     <string name="accept">Accept</string>
+
     <string name="eula">
 LICENSE:
 \n\n\"THE SOFTWARE\" shall be taken to mean the software contained in this app and any subsequent versions

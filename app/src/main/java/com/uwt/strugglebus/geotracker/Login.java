@@ -1,9 +1,12 @@
 package com.uwt.strugglebus.geotracker;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class Login extends ActionBarActivity {
@@ -12,6 +15,30 @@ public class Login extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Button login = (Button) findViewById(R.id.login);
+        Button register = (Button) findViewById(R.id.register);
+        Button forgot = (Button) findViewById(R.id.forgot_password);
+
+        login.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+
+            }
+        });
+
+        register.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent register = new Intent(getApplicationContext(), Registration.class);
+                startActivity(register);
+                finish();
+            }
+        });
+
+        forgot.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
 
