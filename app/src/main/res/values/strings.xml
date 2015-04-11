@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="SHARED_PREFERENCES">com.uwt.strugglebus.geotracker.shared_preferences</string>
 
     <string name="app_name">GeoTracker</string>
     <string name="hello_world">Hello world!</string>
@@ -25,7 +26,7 @@
         <item>What is your favorite programing language?</item>
     </string-array>
     <string name="accept">Accept</string>
-
+    <string name="invalid">Invalid Input</string>
     <string name="eula">
 LICENSE:
 \n\n\"THE SOFTWARE\" shall be taken to mean the software contained in this app and any subsequent versions
