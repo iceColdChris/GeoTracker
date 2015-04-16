@@ -14,6 +14,8 @@
     <string name="password">Password</string>
     <string name="register">Register</string>
     <string name="forgot">Forgot Password?</string>
+    <string name="logout">Logout</string>
+
 
     <string name="confirm_password">Confirm Password</string>
     <string name="security_q">Security Questions</string>

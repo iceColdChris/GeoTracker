@@ -5,11 +5,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.content.Intent;
 import android.widget.TextView;
 
 
 public class MyAccount extends ActionBarActivity {
+
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,7 @@ public class MyAccount extends ActionBarActivity {
 
         SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 getApplicationContext().MODE_PRIVATE);
+        int uid = prefs.getInt("uid", -1);
         String mEmail = prefs.getString(getString(R.string.email), "email");
         String mPass = prefs.getString(getString(R.string.password), "password");
         String mQuestion = prefs.getString(getString(R.string.security_q), "question");
@@ -31,6 +34,8 @@ public class MyAccount extends ActionBarActivity {
         password.setText(mPass);
         question.setText(mQuestion);
         answer.setText(mAnswer);
+
+        mUser = new User(uid, mEmail, mPass, mQuestion, mAnswer);
     }
 
 
@@ -38,6 +43,16 @@ public class MyAccount extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_my_account, menu);
+        MenuItem logout = (MenuItem) findViewById(R.id.action_logout);
+        logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent login = new Intent(getApplicationContext(), Login.class);
+                startActivity(login);
+                finish();
+                return true;
+            }
+        });
         return true;
     }
 
