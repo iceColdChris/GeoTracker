@@ -20,11 +20,8 @@ public class RecoverPassword extends ActionBarActivity {
 
         SharedPreferences.Editor editor = prefs.edit();
 
-        String question = getString(R.string.security_q);
-        String question1 = "";
-        prefs.getString(question, question1);
-
-
+        String question;
+        question = prefs.getString(getString(R.string.security_q), "");
     }
 
 

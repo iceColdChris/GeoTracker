@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ public class Registration extends ActionBarActivity {
 
         Button accept = (Button) findViewById(R.id.reg_accept);
         Button cancel = (Button) findViewById(R.id.reg_cancel);
+        final Activity mActivity = this;
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,6 +41,13 @@ public class Registration extends ActionBarActivity {
                 String confirm_password = ((EditText) findViewById(R.id.reg_confirm_password)).getText().toString();
                 String question = ((Spinner) findViewById(R.id.question_spinner)).getSelectedItem().toString();
                 String answer = ((EditText) findViewById(R.id.security_answer)).getText().toString();
+
+                Log.w("Reg", email + ", " + password + ", " + confirm_password + ", " + question + ", " + answer);
+                System.out.println(email + ", " + password + ", " + confirm_password + ", " + question + ", " + answer);
+                Log.w("Reg", !email.equals(null) + ", " + !password.equals(null) + ", " + !confirm_password.equals(null)
+                        + ", " + !answer.equals(null) + ", " + confirm_password.equals(password));
+
+
                 //check to see if there is valid input TODO: test this if statement
                 if(!email.equals(null) && !password.equals(null) && !confirm_password.equals(null)
                         && !answer.equals(null) && confirm_password.equals(password)) {
@@ -55,11 +64,11 @@ public class Registration extends ActionBarActivity {
                     editor.putString(getString(R.string.security_a), answer);
                     editor.commit();
                     //switch to eula
-                    Intent eula = new Intent(getApplicationContext(), Eula.class);
-                    startActivity(eula);
-                    finish();
+                    Eula eula = new Eula(mActivity);
+                    eula.show();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.invalid, Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(getApplicationContext(),R.string.invalid , Toast.LENGTH_LONG).show();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
