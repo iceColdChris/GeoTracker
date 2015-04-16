@@ -1,9 +1,12 @@
 package com.uwt.strugglebus.geotracker;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
 public class MyAccount extends ActionBarActivity {
@@ -12,6 +15,22 @@ public class MyAccount extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
+        TextView email = (TextView) findViewById(R.id.account_email);
+        TextView password = (TextView) findViewById(R.id.account_password);
+        TextView question = (TextView) findViewById(R.id.account_question);
+        TextView answer = (TextView) findViewById(R.id.account_answer);
+
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+                getApplicationContext().MODE_PRIVATE);
+        String mEmail = prefs.getString(getString(R.string.email), "email");
+        String mPass = prefs.getString(getString(R.string.password), "password");
+        String mQuestion = prefs.getString(getString(R.string.security_q), "question");
+        String mAnswer = prefs.getString(getString(R.string.security_a), "answer");
+
+        email.setText(mEmail);
+        password.setText(mPass);
+        question.setText(mQuestion);
+        answer.setText(mAnswer);
     }
 
 

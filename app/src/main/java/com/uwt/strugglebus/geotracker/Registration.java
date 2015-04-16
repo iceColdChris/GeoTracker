@@ -42,12 +42,6 @@ public class Registration extends ActionBarActivity {
                 String question = ((Spinner) findViewById(R.id.question_spinner)).getSelectedItem().toString();
                 String answer = ((EditText) findViewById(R.id.security_answer)).getText().toString();
 
-                Log.w("Reg", email + ", " + password + ", " + confirm_password + ", " + question + ", " + answer);
-                System.out.println(email + ", " + password + ", " + confirm_password + ", " + question + ", " + answer);
-                Log.w("Reg", !email.equals(null) + ", " + !password.equals(null) + ", " + !confirm_password.equals(null)
-                        + ", " + !answer.equals(null) + ", " + confirm_password.equals(password));
-
-
                 //check to see if there is valid input TODO: test this if statement
                 if(!email.equals(null) && !password.equals(null) && !confirm_password.equals(null)
                         && !answer.equals(null) && confirm_password.equals(password)) {
