@@ -43,16 +43,6 @@ public class MyAccount extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_my_account, menu);
-//        MenuItem logout = (MenuItem) findViewById(R.id.action_logout);
-//        logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                Intent login = new Intent(getApplicationContext(), Login.class);
-//                startActivity(login);
-//                finish();
-//                return true;
-//            }
-//        });
         return true;
     }
 
@@ -62,6 +52,15 @@ public class MyAccount extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch (id) {
+            case R.id.action_logout:
+                Intent login = new Intent(getApplicationContext(), Login.class);
+                startActivity(login);
+                finish();
+                break;
+            default:
+                break;
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
