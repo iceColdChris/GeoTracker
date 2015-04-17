@@ -21,7 +21,9 @@ public class Login extends ActionBarActivity {
 
         login.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-
+                Intent login = new Intent(getApplicationContext(), MyAccount.class);
+                startActivity(login);
+                finish();
             }
         });
 
