@@ -43,16 +43,16 @@ public class MyAccount extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_my_account, menu);
-        MenuItem logout = (MenuItem) findViewById(R.id.action_logout);
-        logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent login = new Intent(getApplicationContext(), Login.class);
-                startActivity(login);
-                finish();
-                return true;
-            }
-        });
+//        MenuItem logout = (MenuItem) findViewById(R.id.action_logout);
+//        logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                Intent login = new Intent(getApplicationContext(), Login.class);
+//                startActivity(login);
+//                finish();
+//                return true;
+//            }
+//        });
         return true;
     }
 
