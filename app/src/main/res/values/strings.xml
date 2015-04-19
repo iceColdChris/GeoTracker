@@ -70,4 +70,5 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="updates">UPDATES: \n\n</string>
     <string name="title_activity_recover_password">recover_password</string>
     <string name="title_activity_reset_password">Reset Password</string>
+    <string name="title_activity_map">Map</string>
 </resources>
