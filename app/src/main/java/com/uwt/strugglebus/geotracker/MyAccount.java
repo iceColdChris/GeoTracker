@@ -58,14 +58,16 @@ public class MyAccount extends ActionBarActivity {
                 startActivity(login);
                 finish();
                 break;
+            case R.id.action_map:
+                break;
             default:
                 break;
         }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

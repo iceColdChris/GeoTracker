@@ -37,7 +37,9 @@ public class Login extends ActionBarActivity {
 
         forgot.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                Intent forgot = new Intent(getApplicationContext(), ResetPassword.class);
+                startActivity(forgot);
+                finish();
             }
         });
 
