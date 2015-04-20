@@ -10,6 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.GoogleMap;
 
 public class Map extends FragmentActivity implements OnMapReadyCallback {
 
@@ -50,5 +51,6 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
                 .title("Marker"));
+        googleMap.setMyLocationEnabled(true);
     }
 }
