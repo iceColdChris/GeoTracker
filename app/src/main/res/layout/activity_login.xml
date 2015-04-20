@@ -50,7 +50,15 @@
                 android:id="@+id/forgot_password"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/forgot"/>
-            </LinearLayout>
         </LinearLayout>
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/geo_tracker_logo"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/app_name"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
