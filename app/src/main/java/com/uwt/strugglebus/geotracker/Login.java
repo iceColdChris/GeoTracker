@@ -23,7 +23,7 @@ public class Login extends ActionBarActivity {
             public void onClick(View v){
                 Intent login = new Intent(getApplicationContext(), MyAccount.class);
                 startActivity(login);
-                finish();
+//                finish();
             }
         });
 
@@ -31,7 +31,7 @@ public class Login extends ActionBarActivity {
             public void onClick(View v){
                 Intent register = new Intent(getApplicationContext(), Registration.class);
                 startActivity(register);
-                finish();
+//                finish();
             }
         });
 
@@ -39,7 +39,7 @@ public class Login extends ActionBarActivity {
             public void onClick(View v) {
                 Intent forgot = new Intent(getApplicationContext(), ResetPassword.class);
                 startActivity(forgot);
-                finish();
+//                finish();
             }
         });
 
@@ -61,9 +61,9 @@ public class Login extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

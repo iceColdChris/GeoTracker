@@ -44,8 +44,8 @@
             android:label="@string/title_activity_reset_password" >
         </activity>
         <activity
-            android:name=".Map"
-            android:label="@string/title_activity_map" >
+            android:name=".MyMap"
+            android:label="@string/title_activity_my_map" >
         </activity>
     </application>
 

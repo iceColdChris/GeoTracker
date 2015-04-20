@@ -59,6 +59,8 @@ public class MyAccount extends ActionBarActivity {
                 finish();
                 break;
             case R.id.action_map:
+                Intent map = new Intent(getApplicationContext(), MyMap.class);
+                startActivity(map);
                 break;
             default:
                 break;
