@@ -16,6 +16,7 @@ public class Eula {
     private String EULA_PREFIX = "eula_";
     private Activity mActivity;
 
+
     public Eula(Activity context) {
         mActivity = context;
     }

@@ -1,12 +1,15 @@
 package com.uwt.strugglebus.geotracker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class Login extends ActionBarActivity {
@@ -21,9 +24,20 @@ public class Login extends ActionBarActivity {
 
         login.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent login = new Intent(getApplicationContext(), MyAccount.class);
-                startActivity(login);
-//                finish();
+                String email = ((EditText) findViewById(R.id.email)).getText().toString();
+                String password = ((EditText) findViewById(R.id.password)).getText().toString();
+                SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+                        getApplicationContext().MODE_PRIVATE);
+                String mEmail = prefs.getString(getString(R.string.email), "email");
+                String mPass = prefs.getString(getString(R.string.password), "password");
+                if(email != null && password != null
+                        && email.equals(mEmail) && password.equals(mPass)) {
+                    Intent login = new Intent(getApplicationContext(), MyAccount.class);
+                    startActivity(login);
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.invalid, Toast.LENGTH_LONG).show();
+                }
             }
         });
 
