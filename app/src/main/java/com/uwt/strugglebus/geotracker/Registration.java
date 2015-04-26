@@ -16,7 +16,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-
+/**
+ * This class sets up the information needed for the registration process.
+ * The appropriate logic is in place to check that the user has passed requirements to register.
+ */
 public class Registration extends ActionBarActivity {
 
     @Override
@@ -24,6 +27,7 @@ public class Registration extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        //a spinner holding 4 different sequrity questions
         Spinner spinner = (Spinner) findViewById(R.id.question_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.security_questions,
                 android.R.layout.simple_spinner_item);

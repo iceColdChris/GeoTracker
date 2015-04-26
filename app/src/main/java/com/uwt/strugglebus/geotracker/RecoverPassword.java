@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
+/**
+ * The recover password class sets up a page for the user to recover their password if need be.
+ */
 public class RecoverPassword extends ActionBarActivity {
 
     @Override
@@ -20,8 +22,7 @@ public class RecoverPassword extends ActionBarActivity {
 
         SharedPreferences.Editor editor = prefs.edit();
 
-        String question;
-        question = prefs.getString(getString(R.string.security_q), "");
+        String question = prefs.getString(getString(R.string.security_q), "");
     }
 
 

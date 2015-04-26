@@ -8,7 +8,9 @@ import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.TextView;
 
-
+/**
+ * The MyAccount class holding all of the information for the user's data.
+ */
 public class MyAccount extends ActionBarActivity {
 
     private User mUser;

@@ -11,6 +11,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 
+/**
+ * This class contains the logic for presenting the end user license agreement with the user.
+ * They must read and accept the terms to use our app.
+ */
 public class Eula {
 
     private String EULA_PREFIX = "eula_";

@@ -11,7 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
+/**
+ * This class contains the logic needed for the login page.
+ * The necessary buttons are initialized and the appropriate logic to let the user log-in.
+ */
 public class Login extends ActionBarActivity {
 
     @Override
@@ -22,12 +25,23 @@ public class Login extends ActionBarActivity {
         Button register = (Button) findViewById(R.id.register);
         Button forgot = (Button) findViewById(R.id.forgot_password);
 
+        final  SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+                getApplicationContext().MODE_PRIVATE);
+
+        int uid = prefs.getInt("uid", -1);
+        if(uid != -1) { //user exists in shared prefs
+            final EditText email = ((EditText) findViewById(R.id.email));
+            email.setText(prefs.getString(getString(R.string.email), "email"));
+
+            final EditText pw = ((EditText) findViewById(R.id.password));
+            pw.setText(prefs.getString(getString(R.string.password), "password"));
+        }
+
         login.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 String email = ((EditText) findViewById(R.id.email)).getText().toString();
                 String password = ((EditText) findViewById(R.id.password)).getText().toString();
-                SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
-                        getApplicationContext().MODE_PRIVATE);
+
                 String mEmail = prefs.getString(getString(R.string.email), "email");
                 String mPass = prefs.getString(getString(R.string.password), "password");
                 if(email != null && password != null
@@ -45,7 +59,7 @@ public class Login extends ActionBarActivity {
             public void onClick(View v){
                 Intent register = new Intent(getApplicationContext(), Registration.class);
                 startActivity(register);
-//                finish();
+                finish();
             }
         });
 
@@ -53,7 +67,7 @@ public class Login extends ActionBarActivity {
             public void onClick(View v) {
                 Intent forgot = new Intent(getApplicationContext(), ResetPassword.class);
                 startActivity(forgot);
-//                finish();
+                finish();
             }
         });
 

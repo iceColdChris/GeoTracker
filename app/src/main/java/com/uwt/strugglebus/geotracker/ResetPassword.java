@@ -13,26 +13,36 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.TextView;
 
-
+/**
+ * This class sets up the appropriate logic to allow the user to reset their password.
+ * The user must select the same security question as when they registered and
+ * input the correct security answer.
+ */
 public class ResetPassword extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
+//
+//        final Spinner spinner = (Spinner) findViewById(R.id.reset_question_spinner);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.security_questions,
+//                android.R.layout.simple_spinner_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner.setAdapter(adapter);
 
-        final Spinner spinner = (Spinner) findViewById(R.id.reset_question_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.security_questions,
-                android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES), getApplicationContext().MODE_PRIVATE);
+        String savedQ = prefs.getString(getString(R.string.security_q), "");
+
+        final TextView security_question = (TextView) findViewById(R.id.security_question);
+        security_question.setText(savedQ);
 
         final EditText email = (EditText) findViewById(R.id.reset_email);
         final EditText answer = (EditText) findViewById(R.id.reset_answer);
         final EditText password = (EditText) findViewById(R.id.reset_password);
         final EditText confirmPassword = (EditText) findViewById(R.id.reset_confirm_password);
-
 
         Button accept = (Button) findViewById(R.id.reset_accept);
         Button cancel = (Button) findViewById(R.id.reset_cancel);
@@ -40,13 +50,12 @@ public class ResetPassword extends ActionBarActivity {
         accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES), getApplicationContext().MODE_PRIVATE);
                     String savedEmail = prefs.getString(getString(R.string.email), null);
-                    String savedQ = prefs.getString(getString(R.string.security_q), "");
                     String savedA = prefs.getString(getString(R.string.security_a), null);
 
+
+
                     if( (savedEmail != null) && savedEmail.equals(email.getText().toString())
-                            && savedQ.equals(spinner.getSelectedItem().toString())
                             && savedA != null && savedA.equals(answer.getText().toString())
                             && password.getText().toString().equals(confirmPassword.getText().toString())) {
                         SharedPreferences.Editor edit = prefs.edit();

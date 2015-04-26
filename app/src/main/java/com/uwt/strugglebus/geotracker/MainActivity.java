@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
+/**
+ * This is the main activity class that the app launches with.
+ * The class launches the registration or login activity depending if the user is new or not.
+ */
 public class MainActivity extends ActionBarActivity {
 
     @Override
