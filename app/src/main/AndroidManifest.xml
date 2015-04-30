@@ -16,12 +16,8 @@
             android:value="API_KEY"/>
 
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
             android:name=".Login"
-            android:label="@string/title_activity_login" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -34,10 +30,6 @@
         <activity
             android:name=".Registration"
             android:label="@string/title_activity_registration" >
-        </activity>
-        <activity
-            android:name=".RecoverPassword"
-            android:label="@string/title_activity_recover_password" >
         </activity>
         <activity
             android:name=".ResetPassword"
