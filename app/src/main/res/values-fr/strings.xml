@@ -9,7 +9,7 @@
     <string name="title_activity_registration">Enregistrement</string>
 
     <string name="email">Courrier Électronique</string>
-    <string name="register">S'enregistrer</string>
+    <string name="register">S\'enregistrer</string>
     <string name="forgot">Mot de passe oublié</string>
     <string name="logout">Sortie de session</string>
 
