@@ -1,12 +1,11 @@
-package com.uwt.strugglebus.geotracker;
+package com.uwt.strugglebus.geotracker.Model;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.uwt.strugglebus.geotracker.Controller.Eula;
+import com.uwt.strugglebus.geotracker.R;
+import com.uwt.strugglebus.geotracker.View.Login;
 
 /**
  * This class sets up the information needed for the registration process.

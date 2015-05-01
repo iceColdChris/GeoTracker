@@ -1,12 +1,15 @@
-package com.uwt.strugglebus.geotracker;
+package com.uwt.strugglebus.geotracker.View;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.content.Intent;
 import android.widget.TextView;
+
+import com.uwt.strugglebus.geotracker.Controller.User;
+import com.uwt.strugglebus.geotracker.R;
 
 /**
  * The MyAccount class holding all of the information for the user's data.
@@ -61,7 +64,7 @@ public class MyAccount extends ActionBarActivity {
                 finish();
                 break;
             case R.id.action_map:
-                Intent map = new Intent(getApplicationContext(), MyMap.class);
+                Intent map = new Intent(getApplicationContext(), Map.class);
                 startActivity(map);
                 break;
             default:

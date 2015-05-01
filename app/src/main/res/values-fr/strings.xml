@@ -71,4 +71,5 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="password">Mot de passe</string>
     <string name="security_q">Question de sécurité</string>
     <string name="title_activity_reset_password">Réinitialiser le mot de passe</string>
+    <string name="map_text">Click to see the points on a map</string>
 </resources>

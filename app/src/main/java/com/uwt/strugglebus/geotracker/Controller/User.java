@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker;
+package com.uwt.strugglebus.geotracker.Controller;
 
 /**
  * Created by Chris on 4/10/2015.
@@ -34,11 +34,11 @@ public class User {
 
     /**
      *
-     * @param secAnswer
+     * @param secAnswer the answer to the secret question.
      */
     public void forgotPassword(final String secAnswer) {
         if(secAnswer.equals(answer)) {
-
+            //TODO Still needs to be done
         }
     }
 

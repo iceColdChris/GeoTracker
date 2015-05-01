@@ -10,6 +10,8 @@
     <string name="title_activity_my_map">MyMap</string>
     <string name="title_activity_registration">Registration</string>
 
+    <string name="map_text">Click to see the points on a map</string>
+
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="register">Register</string>
@@ -71,4 +73,5 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="title_activity_recover_password" translatable="false">recover_password</string>
     <string name="title_activity_reset_password">Reset Password</string>
     <string name="title_activity_map">Map</string>
+    <string name="title_activity_location">LocationActivity</string>
 </resources>

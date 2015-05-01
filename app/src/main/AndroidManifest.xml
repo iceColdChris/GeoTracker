@@ -2,23 +2,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.uwt.strugglebus.geotracker" >
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="API_KEY"/>
+            android:value="AIzaSyAZHmzlfT3tL3H8SDypNxM2HZTM-Cswt5M" />
 
         <activity
-            android:name=".Login"
+            android:name=".View.Map"
+            android:label="@string/title_activity_map" >
+
+        </activity>
+        <activity
+            android:name=".View.Login"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,31 +35,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MyAccount"
+            android:name=".View.MyAccount"
             android:label="@string/title_activity_my_account" >
         </activity>
         <activity
-            android:name=".Registration"
+            android:name=".Model.Registration"
             android:label="@string/title_activity_registration" >
         </activity>
         <activity
-            android:name=".ResetPassword"
+            android:name=".Model.ResetPassword"
             android:label="@string/title_activity_reset_password" >
-        </activity>
-        <activity
-            android:name=".MyMap"
-            android:label="@string/title_activity_my_map" >
-        </activity>
 
-
-        <uses-permission
-            android:name="android.permission.ACCESS_FINE_LOCATION" />
-        <uses-permission android:name="android.permission.INTERNET" />
-        <uses-permission
-            android:name="android.permission.ACCESS_NETWORK_STATE" />
-        <uses-permission
-            android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-        <uses-permission
-            android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+        </activity>
     </application>
+
 </manifest>

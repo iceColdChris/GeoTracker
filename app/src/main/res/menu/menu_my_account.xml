@@ -1,7 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.uwt.strugglebus.geotracker.MyAccount">
+    tools:context="com.uwt.strugglebus.geotracker.View.MyAccount">
     <item android:id="@+id/action_logout" android:title="@string/logout" />
     <item android:id="@+id/action_map" android:title="@string/title_activity_my_map" />
 

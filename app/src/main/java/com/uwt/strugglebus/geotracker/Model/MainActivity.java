@@ -1,12 +1,15 @@
-package com.uwt.strugglebus.geotracker;
+package com.uwt.strugglebus.geotracker.Model;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.uwt.strugglebus.geotracker.R;
+import com.uwt.strugglebus.geotracker.View.Login;
 
 /**
  * This is the main activity class that the app launches with.

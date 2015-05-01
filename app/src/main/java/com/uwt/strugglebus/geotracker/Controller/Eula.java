@@ -1,15 +1,17 @@
-package com.uwt.strugglebus.geotracker;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+
+import com.uwt.strugglebus.geotracker.R;
+import com.uwt.strugglebus.geotracker.View.MyAccount;
 
 /**
  * This class contains the logic for presenting the end user license agreement with the user.
