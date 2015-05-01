@@ -6,8 +6,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
-    <string name="title_activity_my_account">MyAccount</string>
-    <string name="title_activity_my_map">MyMap</string>
+    <string name="title_activity_my_account">Account</string>
+    <string name="title_activity_my_map">Map</string>
     <string name="title_activity_registration">Registration</string>
 
     <string name="map_text">Click to see the points on a map</string>
