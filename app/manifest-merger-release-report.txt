@@ -47,7 +47,7 @@ ADDED from AndroidManifest.xml:18:9
 		ADDED from AndroidManifest.xml:20:13
 	android:name
 		ADDED from AndroidManifest.xml:19:13
-activity#com.uwt.strugglebus.geotracker.View.Login
+activity#com.uwt.strugglebus.geotracker.View.LoginActivity
 ADDED from AndroidManifest.xml:22:9
 	android:label
 		ADDED from AndroidManifest.xml:24:13

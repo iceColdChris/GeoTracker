@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.uwt.strugglebus.geotracker.R;
-import com.uwt.strugglebus.geotracker.View.Login;
+import com.uwt.strugglebus.geotracker.View.LoginActivity;
 
 /**
  * This is the main activity class that the app launches with.
@@ -28,7 +28,7 @@ public class MainActivity extends ActionBarActivity {
             //TODO: create and pass through a new User
             startActivity(registration);
         } else {
-            Intent login = new Intent(this, Login.class);
+            Intent login = new Intent(this, LoginActivity.class);
             startActivity(login);
         }
 

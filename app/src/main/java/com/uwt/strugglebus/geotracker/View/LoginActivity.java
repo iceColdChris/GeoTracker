@@ -19,7 +19,7 @@ import com.uwt.strugglebus.geotracker.R;
  * This class contains the logic needed for the login page.
  * The necessary buttons are initialized and the appropriate logic to let the user log-in.
  */
-public class Login extends ActionBarActivity {
+public class LoginActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

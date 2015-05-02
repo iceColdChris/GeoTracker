@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.Controller.Eula;
 import com.uwt.strugglebus.geotracker.R;
-import com.uwt.strugglebus.geotracker.View.Login;
+import com.uwt.strugglebus.geotracker.View.LoginActivity;
 
 /**
  * This class sets up the information needed for the registration process.
@@ -75,7 +75,7 @@ public class Registration extends ActionBarActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent login = new Intent(getApplicationContext(), Login.class);
+                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 finish();
             }

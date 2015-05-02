@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.R;
-import com.uwt.strugglebus.geotracker.View.Login;
+import com.uwt.strugglebus.geotracker.View.LoginActivity;
 
 /**
  * This class sets up the appropriate logic to allow the user to reset their password.
@@ -61,7 +61,7 @@ public class ResetPassword extends ActionBarActivity {
                         SharedPreferences.Editor edit = prefs.edit();
                         edit.putString(getString(R.string.password), password.getText().toString());
                         edit.commit();
-                        Intent login = new Intent(getApplicationContext(), Login.class);
+                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(login);
                         finish();
                     } else {
@@ -74,7 +74,7 @@ public class ResetPassword extends ActionBarActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent login = new Intent(getApplicationContext(), Login.class);
+                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(login);
                     finish();
                 }

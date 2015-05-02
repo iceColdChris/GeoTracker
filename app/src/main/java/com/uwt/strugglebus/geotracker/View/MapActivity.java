@@ -20,7 +20,7 @@ import com.uwt.strugglebus.geotracker.R;
 import java.util.List;
 
 
-public class Map extends  ActionBarActivity implements OnMapReadyCallback {
+public class MapActivity extends  ActionBarActivity implements OnMapReadyCallback {
 
     private LocationLog mLocationLog;
     private GoogleMap mGoogleMap;
@@ -28,13 +28,13 @@ public class Map extends  ActionBarActivity implements OnMapReadyCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_map);
+        setContentView(R.layout.activity_map);
 
-        mLocationLog = (LocationLog) getIntent().getParcelableExtra("locations");
-
+        mLocationLog = getIntent().getParcelableExtra("locations");
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mGoogleMap = mapFragment.getMap();
         mapFragment.getMapAsync(this);
+
     }
 
 
@@ -44,15 +44,17 @@ public class Map extends  ActionBarActivity implements OnMapReadyCallback {
         if (mLocationLog != null) {
 
             List<Location> locations = mLocationLog.getLocationList();
-            Location location = locations.get(0);
-            LatLng firstLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-            for (int i=0; i<locations.size(); i++) {
-                Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(locations.get(i).getLatitude()
-                                , locations.get(i).getLongitude()))
-                        .title("My Locations"));
+            if(locations.size() > 0) {
+                Location location = locations.get(0);
+                LatLng firstLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                for (int i = 0; i < locations.size(); i++) {
+                    Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(locations.get(i).getLatitude()
+                                    , locations.get(i).getLongitude()))
+                            .title("My Locations"));
+                }
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
             }
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
         }
 
     }
@@ -72,7 +74,7 @@ public class Map extends  ActionBarActivity implements OnMapReadyCallback {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_logout:
-                Intent login = new Intent(getApplicationContext(), Login.class);
+                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 finish();
                 break;

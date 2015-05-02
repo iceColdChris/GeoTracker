@@ -22,12 +22,12 @@
             android:value="AIzaSyAZHmzlfT3tL3H8SDypNxM2HZTM-Cswt5M" />
 
         <activity
-            android:name=".View.Map"
+            android:name=".View.MapActivity"
             android:label="@string/title_activity_map" >
 
         </activity>
         <activity
-            android:name=".View.Login"
+            android:name=".View.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

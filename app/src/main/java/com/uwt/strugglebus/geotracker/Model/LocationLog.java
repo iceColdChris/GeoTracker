@@ -41,8 +41,7 @@ public class LocationLog implements Parcelable {
         dest.writeList(mLocationList);
     }
 
-    public static final Parcelable.Creator<LocationLog> CREATOR
-            = new Parcelable.Creator<LocationLog>() {
+    public static final Parcelable.Creator<LocationLog> CREATOR = new Parcelable.Creator<LocationLog>() {
 
         public LocationLog createFromParcel(Parcel in) {
             return new LocationLog(in);

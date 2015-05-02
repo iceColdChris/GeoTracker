@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.uwt.strugglebus.geotracker.Controller.User;
+import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.R;
 
 /**
@@ -17,10 +18,12 @@ import com.uwt.strugglebus.geotracker.R;
 public class MyAccount extends ActionBarActivity {
 
     private User mUser;
+    private LocationLog mLocationLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mLocationLog = new LocationLog();
         setContentView(R.layout.activity_my_account);
         TextView email = (TextView) findViewById(R.id.account_email);
         TextView password = (TextView) findViewById(R.id.account_password);
@@ -59,12 +62,13 @@ public class MyAccount extends ActionBarActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_logout:
-                Intent login = new Intent(getApplicationContext(), Login.class);
+                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 finish();
                 break;
             case R.id.action_map:
-                Intent map = new Intent(getApplicationContext(), Map.class);
+                Intent map = new Intent(getApplicationContext(), MapActivity.class);
+                map.putExtra("locations", mLocationLog);
                 startActivity(map);
                 break;
             default:
