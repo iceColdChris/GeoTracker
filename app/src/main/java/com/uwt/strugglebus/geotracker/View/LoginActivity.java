@@ -15,6 +15,9 @@ import com.uwt.strugglebus.geotracker.Model.Registration;
 import com.uwt.strugglebus.geotracker.Model.ResetPassword;
 import com.uwt.strugglebus.geotracker.R;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * This class contains the logic needed for the login page.
  * The necessary buttons are initialized and the appropriate logic to let the user log-in.
@@ -48,13 +51,22 @@ public class LoginActivity extends ActionBarActivity {
 
                 String mEmail = prefs.getString(getString(R.string.email), "email");
                 String mPass = prefs.getString(getString(R.string.password), "password");
-                if(email != null && password != null
-                        && email.equals(mEmail) && password.equals(mPass)) {
+
+                String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+                Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+                Matcher matcher = pattern.matcher(email);
+                if(!matcher.matches()) {
+                    Toast.makeText(getApplicationContext(), R.string.invalid_email_format, Toast.LENGTH_LONG).show();
+                } else if (!email.equals(mEmail) ) {
+                    Toast.makeText(getApplicationContext(), R.string.invalid_email, Toast.LENGTH_LONG).show();
+                } else if (password.length() < 6) {
+                    Toast.makeText(getApplicationContext(), R.string.invalid_password_format, Toast.LENGTH_LONG).show();
+                } else if (!password.equals(mPass)) {
+                    Toast.makeText(getApplicationContext(), R.string.invalid_password, Toast.LENGTH_LONG).show();
+                } else {
                     Intent login = new Intent(getApplicationContext(), MyAccount.class);
                     startActivity(login);
                     finish();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.invalid, Toast.LENGTH_LONG).show();
                 }
             }
         });
