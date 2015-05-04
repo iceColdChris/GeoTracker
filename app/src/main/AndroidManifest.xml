@@ -49,6 +49,10 @@
             android:name=".View.TrajectoryChooser"
             android:label="@string/title_activity_trajectory_chooser" >
         </activity>
+        <activity
+            android:name=".ChangePassword"
+            android:label="@string/title_activity_change_password" >
+        </activity>
     </application>
 
 </manifest>

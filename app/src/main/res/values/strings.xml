@@ -17,6 +17,7 @@
     <string name="register">Register</string>
     <string name="forgot">Forgot Password?</string>
     <string name="logout">Logout</string>
+    <string name="old_password">Old Password</string>
 
 
     <string name="confirm_password">Confirm Password</string>
@@ -35,6 +36,8 @@
     <string name="invalid_email">Invalid Email</string>
     <string name="invalid_password_format">Invalid Password, must be longer than 6 character</string>
     <string name="invalid_password">Invalid Password</string>
+    <string name="invalid_old_password">Invalid Old Password</string>
+
     <string name="invalid_confirm">Invalid Confirm Password, does not match password</string>
     <string name="invalid_security_a">Invalid or empty security answer</string>
 
@@ -92,4 +95,5 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="change_pass">Change Password</string>
     <string name="change_sec_a">Change Security Question or Answer</string>
     <string name="title_activity_trajectory_chooser">TrajectoryChooser</string>
+    <string name="title_activity_change_password">ChangePassword</string>
 </resources>

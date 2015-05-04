@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Button;
 
+import com.uwt.strugglebus.geotracker.ChangePassword;
 import com.uwt.strugglebus.geotracker.Controller.User;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.R;
@@ -84,7 +85,8 @@ public class MyAccount extends ActionBarActivity {
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent change = new Intent(getApplicationContext(), ChangePassword.class);
+                startActivity(change);
             }
         });
         changeSec.setOnClickListener(new View.OnClickListener() {
