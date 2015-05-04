@@ -1,7 +1,9 @@
 package com.uwt.strugglebus.geotracker.View;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -15,14 +17,26 @@ import com.uwt.strugglebus.geotracker.Model.Registration;
 import com.uwt.strugglebus.geotracker.Model.ResetPassword;
 import com.uwt.strugglebus.geotracker.R;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * This class contains the logic needed for the login page.
  * The necessary buttons are initialized and the appropriate logic to let the user log-in.
  */
 public class LoginActivity extends ActionBarActivity {
+
+    private String mWebResult;
+    private String mWebError;
+    private int mWebId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +63,23 @@ public class LoginActivity extends ActionBarActivity {
                 String email = ((EditText) findViewById(R.id.email)).getText().toString();
                 String password = ((EditText) findViewById(R.id.password)).getText().toString();
 
+                DownloadWebPageTask loginTask = new DownloadWebPageTask();
+                String url = getString(R.string.login_url) + "?email=" + email + "&password=" + password;
+                loginTask.execute(url);
+                if(mWebError != null) {
+                    Toast.makeText(getApplicationContext(), mWebError, Toast.LENGTH_LONG).show();
+                } else {
+                    SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
+                            , Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("userID",mWebId);
+                    editor.apply();
+                    Intent login = new Intent(getApplicationContext(), MyAccount.class);
+                    startActivity(login);
+                    finish();
+                }
+
+                /*
                 String mEmail = prefs.getString(getString(R.string.email), "email");
                 String mPass = prefs.getString(getString(R.string.password), "password");
 
@@ -67,7 +98,7 @@ public class LoginActivity extends ActionBarActivity {
                     Intent login = new Intent(getApplicationContext(), MyAccount.class);
                     startActivity(login);
                     finish();
-                }
+                }*/
             }
         });
 
@@ -110,5 +141,64 @@ public class LoginActivity extends ActionBarActivity {
 //        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    /**
+     * stuff for web services
+     */
+    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            mProgressDialog = ProgressDialog.show(CourseListActivity.this, "Wait", "Downloading...");
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            for (String url : urls) {
+                DefaultHttpClient client = new DefaultHttpClient();
+                HttpGet httpGet = new HttpGet(url);
+                try {
+                    HttpResponse execute = client.execute(httpGet);
+                    InputStream content = execute.getEntity().getContent();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+//            mProgressDialog.dismiss();
+            if (result != null) {
+                try {
+                    JSONArray arr = new JSONArray(result);
+
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject obj = arr.getJSONObject(i);
+                        mWebResult = obj.getString("result");
+                        if(mWebResult != null && mWebResult.equals("success")) {
+                            mWebId = obj.getInt("userid");
+                        } else {
+                            mWebError = obj.getString("error");
+                        }
+                    }
+                } catch (JSONException e) {
+                    System.out.println("JSON Exception");
+                }
+            }
+        }
     }
 }

@@ -13,53 +13,50 @@
 
         <EditText
             android:inputType="textEmailAddress"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ems="10"
             android:hint="@string/email"
             android:id="@+id/reg_email"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="10dp"/>
+            android:layout_gravity="center_horizontal"/>
         <EditText
             android:inputType="textPassword"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ems="10"
             android:hint="@string/password"
             android:id="@+id/reg_password"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="10dp"/>
-        <EditText
+            android:layout_gravity="center_horizontal"/>
+            <EditText
             android:inputType="textPassword"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ems="10"
             android:hint="@string/confirm_password"
             android:id="@+id/reg_confirm_password"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="10dp"/>
+            android:layout_gravity="center_horizontal"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/security_q"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="10dp"/>
+            android:layout_gravity="center_horizontal"/>
         <Spinner
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/question_spinner"
             android:layout_gravity="center_horizontal"></Spinner>
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:ems="10"
             android:hint="@string/security_a"
             android:inputType="textMultiLine"
-            android:id="@+id/security_answer"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"/>
+            android:id="@+id/security_answer"/>
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
+            android:orientation="horizontal">
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -96,4 +96,12 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="change_sec_a">Change Security Question or Answer</string>
     <string name="title_activity_trajectory_chooser">TrajectoryChooser</string>
     <string name="title_activity_change_password">ChangePassword</string>
+
+    <string name="login_url">450.atwebpages.com/login.php</string>
+    <string name="register_url">450.atwebpages.com/adduser.php</string>
+    <string name="forgot_password_url">450.atwebpages.com/reset.php</string>
+    <string name="eula_url">450.atwebpages.com/agreement.php</string>
+    <string name="log_point_url">450.atwebpages.com/addLog.php</string>
+    <string name="view_points_url">450.atwebpages.com/view.php</string>
+
 </resources>
