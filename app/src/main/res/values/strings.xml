@@ -86,5 +86,10 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="end_date">End Date</string>
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
-    <string name="view_trajectory">View Previous Trajectory</string>
+    <string name="view_trajectory">View Trajectories</string>
+    <string name="view_map">View Map</string>
+    <string name="set_zones">Set Recording Zones</string>
+    <string name="change_pass">Change Password</string>
+    <string name="change_sec_a">Change Security Question or Answer</string>
+    <string name="title_activity_trajectory_chooser">TrajectoryChooser</string>
 </resources>

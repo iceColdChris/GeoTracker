@@ -51,46 +51,56 @@ public class MyAccount extends ActionBarActivity {
 //        password.setText(mPass);
 //        question.setText(mQuestion);
 //        answer.setText(mAnswer);
-
         mUser = new User(uid, mEmail, mPass, mQuestion, mAnswer);
 
-        Button startDate = (Button) findViewById(R.id.start_date_button);
-        Button endDate = (Button) findViewById(R.id.end_date_button);
-        Button startTime = (Button) findViewById(R.id.start_time_button);
-        Button endTime = (Button) findViewById(R.id.end_time_button);
-        final Activity that = this;
-        startDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment frag = new DatePickerFragment();
-                Bundle b = new Bundle();
-                frag.setArguments(b);
-                frag.show(that.getFragmentManager(), "datePicker");
-            }
-        });
-        endDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment frag = new DatePickerFragment();
-                frag.show(that.getFragmentManager(), "datePicker");
-            }
-        });
+        Button map = (Button) findViewById(R.id.view_map);
+        Button traject = (Button) findViewById(R.id.view_traject);
+        Button setZones = (Button) findViewById(R.id.set_zones);
+        Button changePass = (Button) findViewById(R.id.change_pass);
+        Button changeSec = (Button) findViewById(R.id.change_sec_a);
+        Button logout = (Button) findViewById(R.id.logout);
 
-        startTime.setOnClickListener(new View.OnClickListener() {
+        map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment frag = new TimePickerFragment();
-                frag.show(that.getFragmentManager(), "timePicker");
+                Intent map = new Intent(getApplicationContext(), MapActivity.class);
+                map.putExtra("locations", mLocationLog);
+                startActivity(map);
             }
         });
-        endTime.setOnClickListener(new View.OnClickListener() {
+        traject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment frag = new TimePickerFragment();
-                frag.show(that.getFragmentManager(), "timePicker");
+                Intent traject = new Intent(getApplicationContext(), TrajectoryChooser.class);
+                startActivity(traject);
             }
         });
+        setZones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+        changePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        changeSec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(login);
+                finish();
+            }
+        });
     }
 
 
