@@ -1,9 +1,5 @@
 package com.uwt.strugglebus.geotracker.View;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,16 +7,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Button;
 
-import com.uwt.strugglebus.geotracker.ChangePassword;
 import com.uwt.strugglebus.geotracker.Controller.User;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.R;
-
-import java.util.Calendar;
 
 /**
  * The MyAccount class holding all of the information for the user's data.
