@@ -2,7 +2,7 @@
 <resources>
     <string name="SHARED_PREFERENCES">com.uwt.strugglebus.geotracker.shared_preferences</string>
 
-    <string name="app_name">GeoTracker</string>
+    <string name="app_name" translatable="false">GeoTracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
@@ -13,7 +13,6 @@
     <string name="map_text">Click to see the points on a map</string>
 
     <string name="email">Email</string>
-    <string name="password">Password</string>
     <string name="register">Register</string>
     <string name="forgot">Forgot Password?</string>
     <string name="logout">Logout</string>
@@ -38,10 +37,9 @@
     <string name="invalid_password">Invalid Password</string>
     <string name="invalid_old_password">Invalid Old Password</string>
 
-    <string name="invalid_confirm">Invalid Confirm Password, does not match password</string>
     <string name="invalid_security_a">Invalid or empty security answer</string>
 
-    <string name="eula_accept">Eula Accept</string>
+    <string name="eula_accept" translatable="false">Eula Accept</string>
     <string name="eula">
 LICENSE:
 \n\n\"THE SOFTWARE\" shall be taken to mean the software contained in this app and any subsequent versions
@@ -84,7 +82,7 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="title_activity_recover_password">recover_password</string>
     <string name="title_activity_reset_password">Reset Password</string>
     <string name="title_activity_map">Map</string>
-    <string name="title_activity_location">LocationActivity</string>
+    <string name="title_activity_location" translatable="false">LocationActivity</string>
 
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
@@ -95,13 +93,15 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="set_zones">Set Recording Zones</string>
     <string name="change_pass">Change Password</string>
     <string name="change_sec_a">Change Security Question or Answer</string>
-    <string name="title_activity_trajectory_chooser">TrajectoryChooser</string>
-    <string name="title_activity_change_password">ChangePassword</string>
+    <string name="title_activity_trajectory_chooser" translatable="false">TrajectoryChooser</string>
+    <string name="title_activity_change_password" translatable="false">ChangePassword</string>
 
-    <string name="register_url">450.atwebpages.com/adduser.php</string>
-    <string name="forgot_password_url">450.atwebpages.com/reset.php</string>
-    <string name="eula_url">450.atwebpages.com/agreement.php</string>
-    <string name="log_point_url">450.atwebpages.com/addLog.php</string>
-    <string name="view_points_url">450.atwebpages.com/view.php</string>
+    <string name="register_url" translatable="false">450.atwebpages.com/adduser.php</string>
+    <string name="forgot_password_url" translatable="false">450.atwebpages.com/reset.php</string>
+    <string name="eula_url" translatable="false">450.atwebpages.com/agreement.php</string>
+    <string name="log_point_url" translatable="false">450.atwebpages.com/addLog.php</string>
+    <string name="view_points_url" translatable="false">450.atwebpages.com/view.php</string>
+    <string name="invalid_confirm">Invalid Confirm Password, does not match password</string>
+    <string name="password">Password</string>
 
 </resources>
