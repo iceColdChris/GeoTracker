@@ -5,7 +5,10 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.uwt.strugglebus.geotracker.R;
 
 import java.util.Calendar;
 
@@ -28,6 +31,25 @@ public class TimePickerFragment extends DialogFragment
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        TextView time;
         // Do something with the time chosen by the user
+        if(getTag().equals("startTimePicker")) {
+            time = (TextView)getActivity().findViewById(R.id.start_time_text);
+        } else {
+            time = (TextView)getActivity().findViewById(R.id.end_time_text);
+        }
+        int hour = hourOfDay;
+        String ampm = "am";
+        if(hour == 0) {
+            hour = 12;
+        } else if(hour / 12 > 0) {
+            ampm = "pm";
+            hour = hour % 12;
+        }
+        if(minute > 10) {
+            time.setText(hour + ":" + minute + " " + ampm);
+        } else {
+            time.setText(hour + ":0" + minute + " " + ampm);
+        }
     }
 }

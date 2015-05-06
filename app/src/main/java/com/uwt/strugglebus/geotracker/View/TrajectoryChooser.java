@@ -29,16 +29,14 @@ public class TrajectoryChooser extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 DialogFragment frag = new DatePickerFragment();
-                Bundle b = new Bundle();
-                frag.setArguments(b);
-                frag.show(that.getFragmentManager(), "datePicker");
+                frag.show(that.getFragmentManager(), "startDatePicker");
             }
         });
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment frag = new DatePickerFragment();
-                frag.show(that.getFragmentManager(), "datePicker");
+                frag.show(that.getFragmentManager(), "endDatePicker");
             }
         });
 
@@ -46,14 +44,14 @@ public class TrajectoryChooser extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 DialogFragment frag = new TimePickerFragment();
-                frag.show(that.getFragmentManager(), "timePicker");
+                frag.show(that.getFragmentManager(), "startTimePicker");
             }
         });
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment frag = new TimePickerFragment();
-                frag.show(that.getFragmentManager(), "timePicker");
+                frag.show(that.getFragmentManager(), "endTimePicker");
             }
         });
     }

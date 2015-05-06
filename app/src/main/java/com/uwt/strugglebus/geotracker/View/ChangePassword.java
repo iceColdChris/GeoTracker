@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker;
+package com.uwt.strugglebus.geotracker.View;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.uwt.strugglebus.geotracker.R;
 import com.uwt.strugglebus.geotracker.View.MyAccount;
 
 

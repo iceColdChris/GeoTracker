@@ -4,7 +4,12 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.uwt.strugglebus.geotracker.R;
 
 import java.util.Calendar;
 
@@ -25,9 +30,16 @@ public class DatePickerFragment extends DialogFragment
 
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
-    }
+}
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        // Do something with the date chosen by the user
+        TextView date;
+        if(getTag().equals("startDatePicker")) {
+            date = (TextView)getActivity().findViewById(R.id.start_date_text);
+
+        } else {
+            date = (TextView)getActivity().findViewById(R.id.end_date_text);
+        }
+        date.setText(""+ month + "/" + day + "/" + year);
     }
 }
