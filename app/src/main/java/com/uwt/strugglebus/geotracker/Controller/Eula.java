@@ -8,10 +8,22 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
 import com.uwt.strugglebus.geotracker.R;
 import com.uwt.strugglebus.geotracker.View.MyAccount;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * This class contains the logic for presenting the end user license agreement with the user.
@@ -21,6 +33,7 @@ public class Eula {
 
     private String EULA_PREFIX = "eula_";
     private Activity mActivity;
+    private PackageInfo mVersionInfo;
 
 
     public Eula(Activity context) {
@@ -38,34 +51,29 @@ public class Eula {
     }
 
     public void show() {
-        PackageInfo versionInfo = getPackageInfo();
+        mVersionInfo = getPackageInfo();
 
-        // the eulaKey changes every time you increment the version number in the AndroidManifest.xml
-        final String eulaKey = EULA_PREFIX + versionInfo.versionCode;
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
-        boolean hasBeenShown = prefs.getBoolean(eulaKey, false);
-//        if(hasBeenShown == false){
-
-            // Show the Eula
-            String title = mActivity.getString(R.string.app_name) + " v" + versionInfo.versionName;
-
-            //Includes the updates as well so users know what changed. 
-            String message = mActivity.getString(R.string.updates) + "\n\n" + mActivity.getString(R.string.eula);
+        //Includes the updates as well so users know what changed.
+        DownloadWebPageTask task = new DownloadWebPageTask();
+        String url = "http://450.atwebpages.com/agreement.php";
+        task.execute(url);
+//            String message = mActivity.getString(R.string.updates) + "\n\n" + mActivity.getString(R.string.eula);
+/*        if(task.getStatus() == AsyncTask.Status.FINISHED) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
                     .setTitle(title)
-                    .setMessage(message)
+                    .setMessage(mWebMessage)
                     .setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             // Mark this version as read.
                             SharedPreferences.Editor editor = prefs.edit();
-                            editor.putBoolean(eulaKey, true);
-                            editor.commit();
+                            editor.putBoolean("eula", true);
+                            editor.apply();
                             dialogInterface.dismiss();
-                            Intent account = new Intent(mActivity, MyAccount.class);
-                            mActivity.startActivity(account);
-                            mActivity.finish();
+//                                Intent account = new Intent(mActivity, MyAccount.class);
+//                                mActivity.startActivity(account);
+//                                mActivity.finish();
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {
@@ -73,12 +81,91 @@ public class Eula {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             // Close the activity as they have declined the EULA
+                            dialog.dismiss();
                             mActivity.finish();
                         }
 
                     });
             builder.create().show();
-        //}
+        }*/
     }
+    /**
+     * stuff for web services
+     */
+    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            mProgressDialog = ProgressDialog.show(CourseListActivity.this, "Wait", "Downloading...");
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            for (String url : urls) {
+                DefaultHttpClient client = new DefaultHttpClient();
+                HttpGet httpGet = new HttpGet(url);
+                try {
+                    HttpResponse execute = client.execute(httpGet);
+                    InputStream content = execute.getEntity().getContent();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            mProgressDialog.dismiss();
+            if (result != null) {
+                try {
+                    JSONObject obj = new JSONObject(result);
+                    String agreement = obj.getString("agreement");
+                    String title = mActivity.getString(R.string.app_name) + " v" + mVersionInfo.versionName;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
+                            .setTitle(title)
+                            .setMessage(agreement)
+                            .setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // Mark this version as read.
+                                    final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putBoolean("eula_accept", true);
+                                    editor.apply();
+                                    dialogInterface.dismiss();
+//                                Intent account = new Intent(mActivity, MyAccount.class);
+//                                mActivity.startActivity(account);
+//                                mActivity.finish();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Close the activity as they have declined the EULA
+                                    dialog.dismiss();
+                                    mActivity.finish();
+                                }
+
+                            });
+                    builder.create().show();
+                } catch (JSONException e) {
+                    System.out.println("JSON Exception" + e.getMessage());
+                }
+            }
+        }
+    }
 }

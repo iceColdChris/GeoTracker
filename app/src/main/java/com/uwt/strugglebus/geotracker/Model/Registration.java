@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -18,7 +19,18 @@ import android.widget.Toast;
 import com.uwt.strugglebus.geotracker.Controller.Eula;
 import com.uwt.strugglebus.geotracker.R;
 import com.uwt.strugglebus.geotracker.View.LoginActivity;
+import com.uwt.strugglebus.geotracker.View.MyAccount;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +39,10 @@ import java.util.regex.Pattern;
  * The appropriate logic is in place to check that the user has passed requirements to register.
  */
 public class Registration extends ActionBarActivity {
+
+
+    private String mEmail;
+    private String mPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +68,18 @@ public class Registration extends ActionBarActivity {
                 String question = ((Spinner) findViewById(R.id.question_spinner)).getSelectedItem().toString();
                 String answer = ((EditText) findViewById(R.id.security_answer)).getText().toString();
 
+                Eula eula = new Eula(mActivity);
+                eula.show();
+                mEmail = email;
+                mPassword = password;
+                DownloadWebPageTask task = new DownloadWebPageTask();
+                question = question.replaceAll(" ", "%20");
+                question = question.replace("?", "%3F");
+                String url = "http://450.atwebpages.com/adduser.php?email=" + email + "&password=" + password +
+                            "&question=" + question + "&answer=" + answer;
+                task.execute(url);
+
+                /*
                 //check to see if there is valid input TODO: test this if statement
                 //!email.equals(null) && !password.equals(null) && !confirm_password.equals(null)
                 //&& !answer.equals(null) && confirm_password.equals(password)
@@ -82,7 +110,7 @@ public class Registration extends ActionBarActivity {
                     //switch to eula
                     Eula eula = new Eula(mActivity);
                     eula.show();
-                }
+                }*/
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -117,4 +145,67 @@ public class Registration extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    /**
+     * stuff for web services
+     */
+    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            mProgressDialog = ProgressDialog.show(CourseListActivity.this, "Wait", "Downloading...");
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            for (String url : urls) {
+                DefaultHttpClient client = new DefaultHttpClient();
+                HttpGet httpGet = new HttpGet(url);
+                try {
+                    HttpResponse execute = client.execute(httpGet);
+                    InputStream content = execute.getEntity().getContent();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            mProgressDialog.dismiss();
+            if (result != null) {
+                try {
+                    JSONObject obj = new JSONObject(result);
+                    String success = obj.getString("result");
+                    SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
+                            , Context.MODE_PRIVATE);
+                    if(success != null && success.equals("fail")) {
+                        Toast.makeText(getApplicationContext(), obj.getString("error"), Toast.LENGTH_LONG).show();
+                    } else if (prefs.getBoolean(getString(R.string.eula_accept), false)){
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString(getString(R.string.email), mEmail);
+                        editor.putString(getString(R.string.password), mPassword);
+                        editor.apply();
+                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(login);
+                        finish();
+                    }
+                } catch (JSONException e) {
+                    System.out.println("JSON Exception " + e.getMessage());
+                }
+            }
+        }
+    }
+
 }

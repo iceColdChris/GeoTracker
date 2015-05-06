@@ -20,7 +20,6 @@ import com.uwt.strugglebus.geotracker.R;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,9 +33,9 @@ import java.io.InputStreamReader;
  */
 public class LoginActivity extends ActionBarActivity {
 
-    private String mWebResult;
-    private String mWebError;
-    private int mWebId;
+    private String mEmail;
+    private String mPassword;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +44,7 @@ public class LoginActivity extends ActionBarActivity {
         Button login = (Button) findViewById(R.id.login);
         Button register = (Button) findViewById(R.id.register);
         Button forgot = (Button) findViewById(R.id.forgot_password);
+        mContext = getApplicationContext();
 
         final  SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 getApplicationContext().MODE_PRIVATE);
@@ -60,24 +60,13 @@ public class LoginActivity extends ActionBarActivity {
 
         login.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                String email = ((EditText) findViewById(R.id.email)).getText().toString();
-                String password = ((EditText) findViewById(R.id.password)).getText().toString();
+                mEmail = ((EditText) findViewById(R.id.email)).getText().toString();
+                mPassword = ((EditText) findViewById(R.id.password)).getText().toString();
 
-                DownloadWebPageTask loginTask = new DownloadWebPageTask();
-                String url = getString(R.string.login_url) + "?email=" + email + "&password=" + password;
-                loginTask.execute(url);
-                if(mWebError != null) {
-                    Toast.makeText(getApplicationContext(), mWebError, Toast.LENGTH_LONG).show();
-                } else {
-                    SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
-                            , Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("userID",mWebId);
-                    editor.apply();
-                    Intent login = new Intent(getApplicationContext(), MyAccount.class);
-                    startActivity(login);
-                    finish();
-                }
+                DownloadWebPageTask task = new DownloadWebPageTask();
+                String url = "http://450.atwebpages.com/login.php?email=" + mEmail + "&password=" + mPassword;
+                task.execute(url);
+            }
 
                 /*
                 String mEmail = prefs.getString(getString(R.string.email), "email");
@@ -98,8 +87,8 @@ public class LoginActivity extends ActionBarActivity {
                     Intent login = new Intent(getApplicationContext(), MyAccount.class);
                     startActivity(login);
                     finish();
-                }*/
-            }
+                }
+            }*/
         });
 
         register.setOnClickListener(new View.OnClickListener(){
@@ -181,22 +170,29 @@ public class LoginActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            super.onPostExecute(result);
 //            mProgressDialog.dismiss();
             if (result != null) {
                 try {
-                    JSONArray arr = new JSONArray(result);
-
-                    for (int i = 0; i < arr.length(); i++) {
-                        JSONObject obj = arr.getJSONObject(i);
-                        mWebResult = obj.getString("result");
-                        if(mWebResult != null && mWebResult.equals("success")) {
-                            mWebId = obj.getInt("userid");
-                        } else {
-                            mWebError = obj.getString("error");
-                        }
+                    JSONObject obj = new JSONObject(result);
+                    String success = obj.getString("result");
+                    System.out.println(success);
+                    if(success != null && success.equals("success")) {
+                        SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
+                                , Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt("userID", obj.getInt("userid"));
+                        editor.putString(getString(R.string.email), mEmail);
+                        editor.putString(getString(R.string.password), mPassword);
+                        editor.apply();
+                        Intent account = new Intent(mContext, MyAccount.class);
+                        startActivity(account);
+                        finish();
+                    } else {
+                        Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    System.out.println("JSON Exception");
+                    System.out.println("JSON Exception"+ e.getMessage());
                 }
             }
         }

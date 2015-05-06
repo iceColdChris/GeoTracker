@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="SHARED_PREFERENCES" translatable="false">com.uwt.strugglebus.geotracker.shared_preferences</string>
+    <string name="SHARED_PREFERENCES">com.uwt.strugglebus.geotracker.shared_preferences</string>
 
-    <string name="app_name" translatable="false">GeoTracker</string>
+    <string name="app_name">GeoTracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
@@ -41,6 +41,7 @@
     <string name="invalid_confirm">Invalid Confirm Password, does not match password</string>
     <string name="invalid_security_a">Invalid or empty security answer</string>
 
+    <string name="eula_accept">Eula Accept</string>
     <string name="eula">
 LICENSE:
 \n\n\"THE SOFTWARE\" shall be taken to mean the software contained in this app and any subsequent versions
@@ -80,7 +81,7 @@ StruggleBus may also use this information to provide notices to you which may be
 which does not provide an original package as composed of GeoTracker, including but not limited to all original
 distribution media, documentation, registration cards, and insertions.</string>
     <string name="updates">UPDATES: \n\n</string>
-    <string name="title_activity_recover_password" translatable="false">recover_password</string>
+    <string name="title_activity_recover_password">recover_password</string>
     <string name="title_activity_reset_password">Reset Password</string>
     <string name="title_activity_map">Map</string>
     <string name="title_activity_location">LocationActivity</string>
@@ -97,7 +98,6 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="title_activity_trajectory_chooser">TrajectoryChooser</string>
     <string name="title_activity_change_password">ChangePassword</string>
 
-    <string name="login_url">450.atwebpages.com/login.php</string>
     <string name="register_url">450.atwebpages.com/adduser.php</string>
     <string name="forgot_password_url">450.atwebpages.com/reset.php</string>
     <string name="eula_url">450.atwebpages.com/agreement.php</string>
