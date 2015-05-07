@@ -53,6 +53,11 @@
             android:name=".View.ChangePassword"
             android:label="@string/title_activity_change_password" >
         </activity>
+
+        <service
+            android:name=".Model.Tracker"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

@@ -8,10 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.uwt.strugglebus.geotracker.R;
 import com.uwt.strugglebus.geotracker.View.DatePickerFragment;
 import com.uwt.strugglebus.geotracker.View.TimePickerFragment;
+
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class TrajectoryChooser extends ActionBarActivity {
@@ -24,6 +28,13 @@ public class TrajectoryChooser extends ActionBarActivity {
         Button endDate = (Button) findViewById(R.id.end_date_button);
         Button startTime = (Button) findViewById(R.id.start_time_button);
         Button endTime = (Button) findViewById(R.id.end_time_button);
+        Date d = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        ((TextView) findViewById(R.id.end_date_text)).setText(c.get(Calendar.MONTH) + "/"
+                + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
+        ((TextView) findViewById(R.id.end_time_text)).setText(c.get(Calendar.HOUR_OF_DAY) + ":"
+                + c.get(Calendar.MINUTE));
         final Activity that = this;
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
