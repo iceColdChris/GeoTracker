@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -20,25 +21,32 @@ import java.util.TimerTask;
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  * <p/>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
+ *
+ * Service that gets current GPS location every interval and stores it in a sqli db
  */
 public class Tracker extends Service {
 
-    /**
-     * Every interval milliseconds do something
-     */
-    private int interval;
-    private Timer timer;
+    private static final String DB_NAME = "Trajectories";
+    private static final String TABLE = "Locations";
+
+
+    //current location
     private Location loc;
 
     public Tracker() {}
 
+    /**
+     * TODO: comment
+     */
     @Override
     public void onCreate() {
         Log.w("trackers", "start");
-        this.interval = 1000;
-        timer = new Timer();
+        int interval = 1000;
+        Timer timer = new Timer();
+        //connect / create local db
+        final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE +"(lat REAL,lon REAL, speed REAL, heading REAL, time INT);");
+
         // Acquire a reference to the system Location Manager
         final LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         // Define a listener that responds to location updates
@@ -61,7 +69,15 @@ public class Tracker extends Service {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (loc != null) Log.w("nsa.gov", loc.toString());
+                if (loc != null) {
+                    Log.w("nsa.gov", loc.toString());
+                    // (lat, lon, speed, heading, time)
+                    String insert = "INSERT INTO " + TABLE + " VALUES(" + loc.getLatitude() + ", " +
+                            loc.getLongitude() + ", " + loc.getSpeed() + ", " + loc.getBearing()
+                            + ", " + loc.getTime() + ");";
+                    db.execSQL(insert);
+                    Log.w("sqlTest", insert);
+                }
             }
         }, 0,(long)interval);
     }
