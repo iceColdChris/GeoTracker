@@ -83,7 +83,7 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="invalid_password_format">Mot de passe non valide, doit être plus long que 6 caractères</string>
     <string name="invalid_security_a">Réponse de sécurité non valide ou vide</string>
     <string name="old_password">Ancien mot de passe</string>
-    <string name="set_zones">Zones d'enregistrement réglée</string>
+    <string name="set_zones">Zones d\'enregistrement réglée</string>
     <string name="start_date">Date de départ</string>
     <string name="start_time">Heure de début</string>
     <string name="view_map">Vue sur la carte</string>
