@@ -39,17 +39,17 @@ public class TimePickerFragment extends DialogFragment
             time = (TextView)getActivity().findViewById(R.id.end_time_text);
         }
         int hour = hourOfDay;
-        String ampm = "am";
-        if(hour == 0) {
-            hour = 12;
-        } else if(hour / 12 > 0) {
-            ampm = "pm";
-            hour = hour % 12;
-        }
+//        String ampm = "am";
+//        if(hour == 0) {
+//            hour = 12;
+//        } else if(hour / 12 > 0) {
+//            ampm = "pm";
+//            hour = hour % 12;
+//        }
         if(minute > 10) {
-            time.setText(hour + ":" + minute + " " + ampm);
+            time.setText(hour + ":" + minute);
         } else {
-            time.setText(hour + ":0" + minute + " " + ampm);
+            time.setText(hour + ":0" + minute);
         }
     }
 }

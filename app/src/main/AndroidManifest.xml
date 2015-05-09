@@ -32,6 +32,11 @@
         <activity
             android:name=".View.MyAccount"
             android:label="@string/title_activity_my_account" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Model.Registration"
@@ -58,11 +63,7 @@
         <activity
             android:name=".View.Trajectories"
             android:label="@string/title_activity_trajectories" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

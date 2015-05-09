@@ -1,5 +1,6 @@
 package com.uwt.strugglebus.geotracker.View;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -30,7 +31,11 @@ public class Trajectories extends ActionBarActivity {
         TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
 
         final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
-        String query = "SELECT * FROM " + TABLE + ";";
+        Intent it = getIntent();
+        long startTime = it.getLongExtra("startTime", 0);
+        long endTime = it.getLongExtra("endTime", 0);
+
+        String query = "SELECT * FROM " + TABLE + " WHERE time >= " + startTime + " AND time <= " + endTime + ";";
         Cursor c = db.rawQuery(query, null);
         while(c.moveToNext()) {
             TableRow row = new TableRow(getApplicationContext());
