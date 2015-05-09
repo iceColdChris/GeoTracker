@@ -77,7 +77,21 @@ public class Registration extends ActionBarActivity {
                 question = question.replace("?", "%3F");
                 String url = "http://450.atwebpages.com/adduser.php?email=" + email + "&password=" + password +
                             "&question=" + question + "&answer=" + answer;
-                task.execute(url);
+
+                String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+                Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+                Matcher matcher = pattern.matcher(email);
+                if(!matcher.matches()) {
+                    Toast.makeText(getApplicationContext(), R.string.invalid_email_format, Toast.LENGTH_LONG).show();
+                } else if(password.length() < 5) {
+                    Toast.makeText(getApplicationContext(), R.string.invalid_password_format, Toast.LENGTH_LONG).show();
+                } else if(!password.equals(confirm_password)) {
+                    Toast.makeText(getApplicationContext(), R.string.invalid_confirm, Toast.LENGTH_LONG).show();
+                } else if(answer.length() < 1) {
+                    Toast.makeText(getApplicationContext(), R.string.invalid_security_a, Toast.LENGTH_LONG).show();
+                }else {
+                    task.execute(url);
+                }
 
                 /*
                 //check to see if there is valid input TODO: test this if statement

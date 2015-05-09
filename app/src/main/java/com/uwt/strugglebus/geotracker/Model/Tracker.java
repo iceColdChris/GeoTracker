@@ -41,7 +41,7 @@ public class Tracker extends Service {
     @Override
     public void onCreate() {
         Log.w("trackers", "start");
-        int interval = 1000;
+        int interval = 10000;
         Timer timer = new Timer();
         //connect / create local db
         final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);

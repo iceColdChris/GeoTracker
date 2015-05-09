@@ -3,6 +3,7 @@ package com.uwt.strugglebus.geotracker.Controller;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.uwt.strugglebus.geotracker.R;
 import com.uwt.strugglebus.geotracker.View.MyAccount;
@@ -141,14 +144,18 @@ public class Eula {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     // Mark this version as read.
-                                    final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
+                                    final SharedPreferences prefs = mActivity.getSharedPreferences(mActivity.getString(R.string.SHARED_PREFERENCES), Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = prefs.edit();
                                     editor.putBoolean("eula_accept", true);
+                                    editor.putString(mActivity.getString(R.string.email), ((EditText) mActivity.findViewById(R.id.reg_email)).getText().toString());
+                                    editor.putString(mActivity.getString(R.string.password), ((EditText) mActivity.findViewById(R.id.reg_password)).getText().toString());
+                                    editor.putString(mActivity.getString(R.string.security_q), ((Spinner) mActivity.findViewById(R.id.question_spinner)).getSelectedItem().toString());
+                                    editor.putString(mActivity.getString(R.string.security_a), ((EditText) mActivity.findViewById(R.id.security_answer)).getText().toString());
                                     editor.apply();
                                     dialogInterface.dismiss();
-//                                Intent account = new Intent(mActivity, MyAccount.class);
-//                                mActivity.startActivity(account);
-//                                mActivity.finish();
+                                    Intent account = new Intent(mActivity, MyAccount.class);
+                                    mActivity.startActivity(account);
+                                    mActivity.finish();
                                 }
                             })
                             .setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {

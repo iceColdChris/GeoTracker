@@ -58,6 +58,11 @@
             android:name=".Model.Tracker"
             android:exported="false" >
         </service>
+
+        <activity
+            android:name=".View.Trajectories"
+            android:label="@string/title_activity_trajectories" >
+        </activity>
     </application>
 
 </manifest>

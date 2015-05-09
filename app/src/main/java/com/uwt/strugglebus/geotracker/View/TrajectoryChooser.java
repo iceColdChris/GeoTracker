@@ -2,6 +2,7 @@ package com.uwt.strugglebus.geotracker.View;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,6 +29,9 @@ public class TrajectoryChooser extends ActionBarActivity {
         Button endDate = (Button) findViewById(R.id.end_date_button);
         Button startTime = (Button) findViewById(R.id.start_time_button);
         Button endTime = (Button) findViewById(R.id.end_time_button);
+        Button accept = (Button) findViewById(R.id.accept_view_traject);
+        Button cancel = (Button) findViewById(R.id.cancel_view_traject);
+
         Date d = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(d);
@@ -65,6 +69,22 @@ public class TrajectoryChooser extends ActionBarActivity {
                 frag.show(that.getFragmentManager(), "endTimePicker");
             }
         });
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent traject = new Intent(getApplicationContext(), Trajectories.class);
+                startActivity(traject);
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent account = new Intent(getApplicationContext(), MyAccount.class);
+                startActivity(account);
+                finish();
+            }
+        });
+
     }
 
 
