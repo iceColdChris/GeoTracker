@@ -6,25 +6,38 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.uwt.strugglebus.geotracker.View.Trajectories">
 
-    <GridLayout
+    <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:columnCount="5">
-        <TextView
-            android:layout_column="0"
-            android:text="@string/lat"/>
-        <TextView
-            android:layout_column="1"
-            android:text="@string/lon"/>
-        <TextView
-            android:layout_column="2"
-            android:text="@string/speed"/>
-        <TextView
-            android:layout_column="3"
-            android:text="@string/heading"/>
-        <TextView
-            android:layout_column="4"
-            android:text="@string/time"/>
-    </GridLayout>
+        android:id="@+id/traject_table"
+        android:padding="5dip">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dip">
+            <TextView
+                android:text="@string/lat"
+                android:padding="5dip"
+                android:background="#FFF"/>
+            <TextView
+                android:text="@string/lon"
+                android:padding="5dip"
+                android:background="#FFF"/>
+            <TextView
+                android:text="@string/speed"
+                android:padding="5dip"
+                android:background="#FFF"/>
+            <TextView
+                android:text="@string/heading"
+                android:padding="5dip"
+                android:background="#FFF"/>
+            <TextView
+                android:text="@string/time"
+                android:padding="5dip"
+                android:background="#FFF"/>
+        </TableRow>
+
+    </TableLayout>
 
 </ScrollView>

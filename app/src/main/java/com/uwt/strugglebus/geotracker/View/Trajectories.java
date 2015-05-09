@@ -1,19 +1,58 @@
 package com.uwt.strugglebus.geotracker.View;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.uwt.strugglebus.geotracker.R;
 
 
 public class Trajectories extends ActionBarActivity {
 
+    private static final String DB_NAME = "Trajectories";
+    private static final String TABLE = "Locations";
+    private static final int ROWS = 5;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trajectories);
+        TableLayout table = (TableLayout) findViewById(R.id.traject_table);
+        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+
+        final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
+        String query = "SELECT * FROM " + TABLE + ";";
+        Cursor c = db.rawQuery(query, null);
+        while(c.moveToNext()) {
+            TableRow row = new TableRow(getApplicationContext());
+            row.setLayoutParams(rowParams);
+            row.setPadding(5, 5, 5, 5);
+            String[] values = new String[ROWS];
+            values[0] = c.getFloat(0) + "";
+            values[1] = c.getFloat(1) + "";
+            values[2] = c.getFloat(2) + "";
+            values[3] = c.getFloat(3) + "";
+            values[4] = c.getInt(4) + "";
+
+            for(int i = 0; i < ROWS; i++) {
+                TextView temp = new TextView(getApplicationContext());
+                temp.setBackgroundColor(Color.parseColor("#BBBBBB"));
+                temp.setPadding(5,5,5,5);
+                temp.setText(values[i], TextView.BufferType.NORMAL);
+                temp.setTextColor(Color.BLACK);
+                row.addView(temp);
+            }
+            table.addView(row);
+        }
     }
 
     @Override
