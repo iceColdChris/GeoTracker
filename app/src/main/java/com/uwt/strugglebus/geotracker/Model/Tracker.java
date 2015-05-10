@@ -2,8 +2,8 @@ package com.uwt.strugglebus.geotracker.Model;
 
 import android.app.IntentService;
 import android.app.Service;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,8 +11,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-
-import com.uwt.strugglebus.geotracker.Model.LocationLog;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,7 +20,7 @@ import java.util.TimerTask;
  * a service on a separate handler thread.
  * <p/>
  *
- * Service that gets current GPS location every interval and stores it in a sqli db
+ * Service that gets current GPS location every interval and stores it in a sqlite db
  */
 public class Tracker extends Service {
 
@@ -36,7 +34,12 @@ public class Tracker extends Service {
     public Tracker() {}
 
     /**
-     * TODO: comment
+     * {@inheritDoc}
+     *
+     * On top of the above
+     * functionality this method
+     * also creates the SQLlite
+     * database and the trajectory objects.
      */
     @Override
     public void onCreate() {
@@ -82,7 +85,9 @@ public class Tracker extends Service {
         }, 0,(long)interval);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
@@ -90,6 +95,9 @@ public class Tracker extends Service {
         return START_STICKY;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IBinder onBind(Intent intent) {
         return null;

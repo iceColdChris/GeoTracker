@@ -19,20 +19,16 @@ import android.widget.Toast;
 import com.uwt.strugglebus.geotracker.Controller.Eula;
 import com.uwt.strugglebus.geotracker.R;
 import com.uwt.strugglebus.geotracker.View.LoginActivity;
-import com.uwt.strugglebus.geotracker.View.MyAccount;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class sets up the information needed for the registration process.
@@ -45,6 +41,15 @@ public class Registration extends ActionBarActivity {
     private String mPassword;
     private Activity mActivity;
 
+    /**
+     * {@inheritDoc}
+     * <p/>
+     * On top of the above
+     * functionality this
+     * method sets up the
+     * registration web
+     * services.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +126,11 @@ public class Registration extends ActionBarActivity {
             }
         });
     }
+
+    /**
+     * This method sends data
+     * to the webservice.
+     */
     public void sendData() {
         System.out.println("yay");
         String email = ((EditText) findViewById(R.id.reg_email)).getText().toString();
@@ -143,6 +153,9 @@ public class Registration extends ActionBarActivity {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -150,32 +163,35 @@ public class Registration extends ActionBarActivity {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
 
         return super.onOptionsItemSelected(item);
     }
-    /**
-     * stuff for web services
+
+    /*
+     * This is a private helper class that is
+     * in charge of connecting to the web
+     * services as an Asyncronous Task.
      */
     private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
-
+        /*
+         * Inherited from
+         * AsyncTask class
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            mProgressDialog = ProgressDialog.show(CourseListActivity.this, "Wait", "Downloading...");
         }
 
+        /*
+         * Gets the response string
+         * from the webservice.
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -187,7 +203,7 @@ public class Registration extends ActionBarActivity {
                     InputStream content = execute.getEntity().getContent();
 
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
+                    String s;
                     while ((s = buffer.readLine()) != null) {
                         response += s;
                     }
@@ -199,6 +215,10 @@ public class Registration extends ActionBarActivity {
             return response;
         }
 
+        /*
+         * Checks if the user has
+         * entered the correct credentials
+         */
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);

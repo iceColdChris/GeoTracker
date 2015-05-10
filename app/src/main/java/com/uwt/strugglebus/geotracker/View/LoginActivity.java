@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.Model.Registration;
 import com.uwt.strugglebus.geotracker.Model.ResetPassword;
-import com.uwt.strugglebus.geotracker.Model.Tracker;
 import com.uwt.strugglebus.geotracker.R;
 
 import org.apache.http.HttpResponse;
@@ -40,6 +39,16 @@ public class LoginActivity extends ActionBarActivity {
     private Context mContext;
     private Activity mActivity;
 
+    /**
+     * {@inheritDoc}
+     *
+     * On top of the above
+     * functionality this
+     * method connects to
+     * the web service to
+     * monitor the users
+     * login.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +69,11 @@ public class LoginActivity extends ActionBarActivity {
 
             final EditText pw = ((EditText) findViewById(R.id.password));
             pw.setText(prefs.getString(getString(R.string.password), "password"));
+
+            Intent account = new Intent(getApplicationContext(), MyAccount.class);
+            startActivity(account);
+            finish();
+
         }
 
         login.setOnClickListener(new View.OnClickListener(){
@@ -110,7 +124,7 @@ public class LoginActivity extends ActionBarActivity {
                 finish();
             }
         });
-
+//        TODO - Finish implementing or remove if not needed
 //        if(prefs.getBoolean("eula_accept", false)) {
 //            Intent tracker = new Intent(this, Tracker.class);
 //            tracker.setAction("com.uwt.strugglebus.geotracker.Model.Tracker");
@@ -119,6 +133,9 @@ public class LoginActivity extends ActionBarActivity {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -126,34 +143,37 @@ public class LoginActivity extends ActionBarActivity {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
 
         return super.onOptionsItemSelected(item);
     }
 
 
-    /**
-     * stuff for web services
+    /*
+     * This is a private helper class that is
+     * in charge of connecting to the web
+     * services as an Asyncronous Task.
      */
     private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
 
+        /*
+         * Inherited from
+         * AsyncTask class
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            mProgressDialog = ProgressDialog.show(CourseListActivity.this, "Wait", "Downloading...");
         }
 
+        /*
+         * Gets the response string
+         * from the webservice.
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -165,7 +185,7 @@ public class LoginActivity extends ActionBarActivity {
                     InputStream content = execute.getEntity().getContent();
 
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
+                    String s;
                     while ((s = buffer.readLine()) != null) {
                         response += s;
                     }
@@ -177,6 +197,10 @@ public class LoginActivity extends ActionBarActivity {
             return response;
         }
 
+        /*
+         * Checks if the user has
+         * entered the correct credentials
+         */
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);

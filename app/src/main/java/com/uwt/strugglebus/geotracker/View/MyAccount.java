@@ -7,30 +7,37 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
+import com.uwt.strugglebus.geotracker.Model.ResetPassword;
 import com.uwt.strugglebus.geotracker.R;
 
 /**
- * The MyAccount class holding all of the information for the user's data.
+ * This class is in charge of keeping track of all
+ * the user's data. It is also the main screen after
+ * login.
  */
 public class MyAccount extends ActionBarActivity {
 
     private LocationLog mLocationLog;
 
+    /**
+     * {@inheritDoc}
+     *
+     * On top of the above functionality
+     * this method sets up the account
+     * page that the user sees upon logging in.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mLocationLog = new LocationLog();
         setContentView(R.layout.activity_my_account);
         TextView email = (TextView) findViewById(R.id.account_email);
-//        TextView password = (TextView) findViewById(R.id.account_password);
-//        TextView question = (TextView) findViewById(R.id.account_question);
-//        TextView answer = (TextView) findViewById(R.id.account_answer);
 
-        SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 getApplicationContext().MODE_PRIVATE);
         int uid = prefs.getInt("uid", -1);
         String mEmail = prefs.getString(getString(R.string.email), "email");
@@ -39,9 +46,6 @@ public class MyAccount extends ActionBarActivity {
         String mAnswer = prefs.getString(getString(R.string.security_a), "answer");
 
         email.setText(mEmail);
-//        password.setText(mPass);
-//        question.setText(mQuestion);
-//        answer.setText(mAnswer);
 
         Button map = (Button) findViewById(R.id.view_map);
         Button traject = (Button) findViewById(R.id.view_traject);
@@ -74,7 +78,7 @@ public class MyAccount extends ActionBarActivity {
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent change = new Intent(getApplicationContext(), ChangePassword.class);
+                Intent change = new Intent(getApplicationContext(), ResetPassword.class);
                 startActivity(change);
             }
         });
@@ -87,6 +91,10 @@ public class MyAccount extends ActionBarActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("userID", null);
+                editor.apply();
+
                 Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 finish();
@@ -94,7 +102,9 @@ public class MyAccount extends ActionBarActivity {
         });
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -102,6 +112,9 @@ public class MyAccount extends ActionBarActivity {
         return true;
     }
 
+    /**
+     *{@inheritDoc}
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -122,11 +135,6 @@ public class MyAccount extends ActionBarActivity {
             default:
                 break;
         }
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
 
         return super.onOptionsItemSelected(item);
     }
