@@ -48,7 +48,7 @@ public class Tracker extends Service {
         Timer timer = new Timer();
         //connect / create local db
         final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE +"(lat REAL,lon REAL, speed REAL, heading REAL, time INT);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE +"(lat REAL,lon REAL, speed REAL, heading REAL, time BIGINT);");
 
         // Acquire a reference to the system Location Manager
         final LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);

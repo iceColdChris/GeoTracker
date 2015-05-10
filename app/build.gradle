@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'GeoTrackerTCSS450'
             keyPassword 'onthestruggle'
-            storeFile file('/Users/Chris/AndroidStudioProjects/GeoTracker/android.jks')
+            storeFile file('C:/Users/Josh/AndroidStudioProjects/GeoTracker/android.jks')
             storePassword 'onthestruggle'
         }
     }
@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.google.android.gms:play-services-maps:7.3.0'
 }
