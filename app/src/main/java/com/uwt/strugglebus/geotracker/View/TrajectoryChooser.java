@@ -50,7 +50,7 @@ public class TrajectoryChooser extends ActionBarActivity {
         final TextView startDateText = (TextView) findViewById(R.id.start_date_text);
         startDateText.setText(c.get(Calendar.MONTH) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
         final TextView startTimeText = (TextView)findViewById(R.id.start_time_text);
-        startTimeText.setText(00 + ":" + 00);
+        startTimeText.setText(0 + "" + 0 + ":" + 0 + "" + 0);
 
         final TextView endDateText = (TextView) findViewById(R.id.end_date_text);
         endDateText.setText(c.get(Calendar.MONTH) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
@@ -92,12 +92,13 @@ public class TrajectoryChooser extends ActionBarActivity {
             public void onClick(View v) {
                 String[] startDateS = startDateText.getText().toString().split("/");
                 String[] startTimeS = startTimeText.getText().toString().split(":");
+
                 Calendar startCal = new GregorianCalendar(Integer.parseInt(startDateS[0]), Integer.parseInt(startDateS[0]),
                         Integer.parseInt(startDateS[0]), Integer.parseInt(startTimeS[0]),Integer.parseInt(startTimeS[1]));
 
                 String[] endDateS = endDateText.getText().toString().split("/");
                 String[] endTimeS = endTimeText.getText().toString().split(":");
-                Calendar endCal = new GregorianCalendar(Integer.parseInt(startDateS[0]), Integer.parseInt(startDateS[0]),
+                Calendar endCal = new GregorianCalendar(Integer.parseInt(startDateS[0]), Integer.parseInt(startDateS[0]) - 1,
                         Integer.parseInt(startDateS[0]), Integer.parseInt(startTimeS[0]),Integer.parseInt(startTimeS[1]));
                 if(startCal.getTime().getTime() > endCal.getTime().getTime()) {
                     //TODO: put int strings

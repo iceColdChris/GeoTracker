@@ -127,9 +127,7 @@ public class LoginActivity extends ActionBarActivity {
         });
 //        TODO - Finish implementing or remove if not needed
         if(prefs.getBoolean("eula_accept", false)) {
-            Intent tracker = new Intent(this, Tracker.class);
-            tracker.setAction("com.uwt.strugglebus.geotracker.Model.Tracker");
-            startService(tracker);
+            Tracker.setServiceAlarm(getApplicationContext(), true);
         }
     }
 
