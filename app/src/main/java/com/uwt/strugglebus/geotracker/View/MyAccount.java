@@ -32,7 +32,7 @@ public class MyAccount extends ActionBarActivity {
 //        TextView question = (TextView) findViewById(R.id.account_question);
 //        TextView answer = (TextView) findViewById(R.id.account_answer);
 
-        SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 getApplicationContext().MODE_PRIVATE);
         int uid = prefs.getInt("uid", -1);
         String mEmail = prefs.getString(getString(R.string.email), "email");
@@ -90,6 +90,10 @@ public class MyAccount extends ActionBarActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("userID", null);
+                editor.apply();
+
                 Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 finish();

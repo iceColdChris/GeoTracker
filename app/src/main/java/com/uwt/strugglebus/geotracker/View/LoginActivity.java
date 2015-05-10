@@ -60,6 +60,11 @@ public class LoginActivity extends ActionBarActivity {
 
             final EditText pw = ((EditText) findViewById(R.id.password));
             pw.setText(prefs.getString(getString(R.string.password), "password"));
+
+            Intent account = new Intent(getApplicationContext(), MyAccount.class);
+            startActivity(account);
+            finish();
+
         }
 
         login.setOnClickListener(new View.OnClickListener(){
