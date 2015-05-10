@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.Model.Registration;
 import com.uwt.strugglebus.geotracker.Model.ResetPassword;
+import com.uwt.strugglebus.geotracker.Model.Tracker;
 import com.uwt.strugglebus.geotracker.R;
 
 import org.apache.http.HttpResponse;
@@ -125,11 +126,9 @@ public class LoginActivity extends ActionBarActivity {
             }
         });
 //        TODO - Finish implementing or remove if not needed
-//        if(prefs.getBoolean("eula_accept", false)) {
-//            Intent tracker = new Intent(this, Tracker.class);
-//            tracker.setAction("com.uwt.strugglebus.geotracker.Model.Tracker");
-//            startService(tracker);
-//        }
+        if(prefs.getBoolean("eula_accept", false)) {
+            Tracker.setServiceAlarm(getApplicationContext(), true);
+        }
     }
 
 

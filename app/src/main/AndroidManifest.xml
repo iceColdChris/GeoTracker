@@ -53,7 +53,7 @@
 
         <service
             android:name=".Model.Tracker"
-            android:exported="false" >
+            android:enabled="true">
         </service>
 
         <activity
