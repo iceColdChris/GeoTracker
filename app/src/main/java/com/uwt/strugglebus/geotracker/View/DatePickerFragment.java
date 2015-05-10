@@ -4,9 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.uwt.strugglebus.geotracker.R;
@@ -14,12 +12,22 @@ import com.uwt.strugglebus.geotracker.R;
 import java.util.Calendar;
 
 /**
- * Fragment popup for choosing a date
- * Created by Josh on 5/2/2015.
+ * This class is in charge of
+ * the date picker the user
+ * sees when choosing what
+ * date they want to show.
  */
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
+    /**
+     * {@inheritDoc}
+     *
+     * On top of the above functionality
+     * this method sets up a calendar
+     * object as well as a date picker
+     * catalog.
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
@@ -32,6 +40,18 @@ public class DatePickerFragment extends DialogFragment
         return new DatePickerDialog(getActivity(), this, year, month, day);
 }
 
+    /**
+     * {@inheritDoc}
+     *
+     * This method sets the user
+     * defined date into the
+     * system.
+     *
+     * @param view A DatePicker object.
+     * @param year A numerical value representing the year
+     * @param month A numerical value representing the Month
+     * @param day A numerical value representing the Day
+     */
     public void onDateSet(DatePicker view, int year, int month, int day) {
         TextView date;
         if(getTag().equals("startDatePicker")) {

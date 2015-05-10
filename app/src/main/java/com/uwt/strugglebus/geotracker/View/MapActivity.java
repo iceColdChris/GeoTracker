@@ -19,12 +19,28 @@ import com.uwt.strugglebus.geotracker.R;
 
 import java.util.List;
 
-
+/**
+ * This class is in charge of
+ * setting up the google maps
+ * api as well as the view.
+ *
+ * This map will show the location
+ * of each poll as an arrow on the
+ * map.
+ */
 public class MapActivity extends  ActionBarActivity implements OnMapReadyCallback {
 
     private LocationLog mLocationLog;
     private GoogleMap mGoogleMap;
 
+    /**
+     * {@inheritDoc}
+     *
+     * On top of the above
+     * functionality this method
+     * sets up an instance of
+     * google maps.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +54,18 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
     }
 
 
+    /**
+     * TODO - Get this working
+     *
+     * {@inheritDoc}
+     *
+     * This method will be
+     * in charge of adding the
+     * location markers to the
+     * map.
+     *
+     * @param map A google map object
+     */
     @Override
     public void onMapReady(GoogleMap map) {
 
@@ -59,6 +87,9 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -66,6 +97,9 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -85,11 +119,6 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
             default:
                 break;
         }
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
 
         return super.onOptionsItemSelected(item);
     }

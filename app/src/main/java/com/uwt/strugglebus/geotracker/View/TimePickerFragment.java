@@ -13,11 +13,22 @@ import com.uwt.strugglebus.geotracker.R;
 import java.util.Calendar;
 
 /**
- * Created by Josh on 5/3/2015.
+ * This class is in charge of
+ * the time picker the user
+ * sees when choosing what
+ * time they want to show.
  */
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
+    /**
+     * {@inheritDoc}
+     *
+     * On top of the above functionality
+     * this method sets up a calendar
+     * object as well as a time picker
+     * catalog.
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current time as the default values for the picker
@@ -30,6 +41,17 @@ public class TimePickerFragment extends DialogFragment
                 DateFormat.is24HourFormat(getActivity()));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * This method sets the user
+     * defined time into the
+     * system.
+     *
+     * @param view the TimePicker Object
+     * @param hourOfDay A numerical value representing the hour
+     * @param minute A numerical value representing the minute
+     */
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         TextView time;
         // Do something with the time chosen by the user
@@ -39,6 +61,7 @@ public class TimePickerFragment extends DialogFragment
             time = (TextView)getActivity().findViewById(R.id.end_time_text);
         }
         int hour = hourOfDay;
+//      TODO - Check if this is needed or else remove it.
 //        String ampm = "am";
 //        if(hour == 0) {
 //            hour = 12;

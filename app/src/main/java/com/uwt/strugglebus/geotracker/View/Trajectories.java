@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -16,13 +15,25 @@ import android.widget.TextView;
 import com.uwt.strugglebus.geotracker.R;
 
 
+/**
+ * This class is in charge of keeping
+ * track of keeping track of the users
+ * location.
+ */
 public class Trajectories extends ActionBarActivity {
 
     private static final String DB_NAME = "Trajectories";
     private static final String TABLE = "Locations";
     private static final int ROWS = 5;
 
-
+    /**
+     * {@inheritDoc}
+     *
+     * Ontop of the above functionality
+     * this method sets up the trajectory
+     * database.
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +71,9 @@ public class Trajectories extends ActionBarActivity {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -67,6 +81,9 @@ public class Trajectories extends ActionBarActivity {
         return true;
     }
 
+    /**
+     *{@inheritDoc}
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
