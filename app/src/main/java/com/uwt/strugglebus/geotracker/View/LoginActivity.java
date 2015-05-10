@@ -1,5 +1,6 @@
 package com.uwt.strugglebus.geotracker.View;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,6 +38,7 @@ public class LoginActivity extends ActionBarActivity {
     private String mEmail;
     private String mPassword;
     private Context mContext;
+    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +48,13 @@ public class LoginActivity extends ActionBarActivity {
         Button register = (Button) findViewById(R.id.register);
         Button forgot = (Button) findViewById(R.id.forgot_password);
         mContext = getApplicationContext();
+        mActivity = this;
 
         final  SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 getApplicationContext().MODE_PRIVATE);
 
-        int uid = prefs.getInt("userID", -1);
-        if(uid != -1) { //user exists in shared prefs
+        String uid = prefs.getString("userID", null);
+        if(uid != null) { //user exists in shared prefs
             final EditText email = ((EditText) findViewById(R.id.email));
             email.setText(prefs.getString(getString(R.string.email), "email"));
 
@@ -187,13 +190,13 @@ public class LoginActivity extends ActionBarActivity {
                         SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
                                 , Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt("userID", obj.getInt("userid"));
+                        editor.putString("userID", obj.getString("userid"));
                         editor.putString(getString(R.string.email), mEmail);
                         editor.putString(getString(R.string.password), mPassword);
                         editor.apply();
                         Intent account = new Intent(mContext, MyAccount.class);
                         startActivity(account);
-                        finish();
+                        mActivity.finish();
                     } else {
                         Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }

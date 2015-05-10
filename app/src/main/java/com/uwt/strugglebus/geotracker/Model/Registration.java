@@ -216,8 +216,8 @@ public class Registration extends ActionBarActivity {
                         editor.putString(getString(R.string.email), mEmail);
                         editor.putString(getString(R.string.password), mPassword);
                         editor.apply();
-                        Intent myAccount = new Intent(getApplicationContext(), MyAccount.class);
-                        startActivity(myAccount);
+                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(login);
                         mActivity.finish();
                     }
                 } catch (JSONException e) {
