@@ -5,24 +5,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.uwt.strugglebus.geotracker.Model.Registration;
 import com.uwt.strugglebus.geotracker.R;
-import com.uwt.strugglebus.geotracker.View.MyAccount;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,11 +34,18 @@ public class Eula {
     private PackageInfo mVersionInfo;
     private AlertDialog.Builder mAlertBuilder;
 
-
+    /**
+     * Constructor for the EULA.
+     *
+     * @param context The activity that calls this
+     */
     public Eula(Activity context) {
         mActivity = context;
     }
 
+    /**
+     * TODO - Dunno What this does lol
+     */
     private PackageInfo getPackageInfo() {
         PackageInfo pi = null;
         try {
@@ -56,6 +56,10 @@ public class Eula {
         return pi;
     }
 
+    /**
+     * Downloads the EULA
+     * from the webservice.
+     */
     public void download() {
         mVersionInfo = getPackageInfo();
 
@@ -65,53 +69,27 @@ public class Eula {
         task.execute(url);
     }
 
-    public void show() {
-        mAlertBuilder.create().show();
-        //Includes the updates as well so users know what changed.
-//            String message = mActivity.getString(R.string.updates) + "\n\n" + mActivity.getString(R.string.eula);
-/*        if(task.getStatus() == AsyncTask.Status.FINISHED) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
-                    .setTitle(title)
-                    .setMessage(mWebMessage)
-                    .setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            // Mark this version as read.
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.putBoolean("eula", true);
-                            editor.apply();
-                            dialogInterface.dismiss();
-//                                Intent account = new Intent(mActivity, MyAccount.class);
-//                                mActivity.startActivity(account);
-//                                mActivity.finish();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Close the activity as they have declined the EULA
-                            dialog.dismiss();
-                            mActivity.finish();
-                        }
-
-                    });
-            builder.create().show();
-        }*/
-    }
-    /**
-     * stuff for web services
+    /*
+     * This is a private helper class that is
+     * in charge of connecting to the web
+     * services as an Asyncronous Task.
      */
     private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
-
+        /*
+         * Inherited from
+         * AsyncTask class
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 //            mProgressDialog = ProgressDialog.show(CourseListActivity.this, "Wait", "Downloading...");
         }
 
+        /*
+         * Gets the response string
+         * from the webservice.
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -123,7 +101,7 @@ public class Eula {
                     InputStream content = execute.getEntity().getContent();
 
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
+                    String s;
                     while ((s = buffer.readLine()) != null) {
                         response += s;
                     }
@@ -135,6 +113,10 @@ public class Eula {
             return response;
         }
 
+        /*
+         * Checks if the user has
+         * entered the correct credentials
+         */
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);

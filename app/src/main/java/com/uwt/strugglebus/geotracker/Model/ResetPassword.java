@@ -40,6 +40,15 @@ public class ResetPassword extends ActionBarActivity {
 
     private Activity mActivity;
 
+    /**
+     * {@inheritDoc}
+     * <p/>
+     * On top of the above
+     * functionality this method
+     * is in charge of setting up
+     * the web service in charge of
+     * changing the password.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +101,9 @@ public class ResetPassword extends ActionBarActivity {
 
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -100,23 +111,36 @@ public class ResetPassword extends ActionBarActivity {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         return super.onOptionsItemSelected(item);
     }
-    /**
-     * stuff for web services
+
+    /*
+     * This is a private helper class that is
+     * in charge of connecting to the web
+     * services as an Asyncronous Task.
      */
     private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
-
+        /*
+         * Inherited from
+         * AsyncTask class
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 //            mProgressDialog = ProgressDialog.show(CourseListActivity.this, "Wait", "Downloading...");
         }
 
+        /*
+         * Gets the response string
+         * from the webservice.
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -140,6 +164,10 @@ public class ResetPassword extends ActionBarActivity {
             return response;
         }
 
+        /*
+         * Checks if the user has
+         * entered the correct credentials
+         */
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
