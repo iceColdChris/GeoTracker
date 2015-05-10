@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
 
-import com.uwt.strugglebus.geotracker.Controller.User;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.R;
 
@@ -19,7 +18,6 @@ import com.uwt.strugglebus.geotracker.R;
  */
 public class MyAccount extends ActionBarActivity {
 
-    private User mUser;
     private LocationLog mLocationLog;
 
     @Override
@@ -44,7 +42,6 @@ public class MyAccount extends ActionBarActivity {
 //        password.setText(mPass);
 //        question.setText(mQuestion);
 //        answer.setText(mAnswer);
-        mUser = new User(uid, mEmail, mPass, mQuestion, mAnswer);
 
         Button map = (Button) findViewById(R.id.view_map);
         Button traject = (Button) findViewById(R.id.view_traject);

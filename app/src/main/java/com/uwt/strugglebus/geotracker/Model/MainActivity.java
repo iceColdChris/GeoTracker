@@ -25,7 +25,6 @@ public class MainActivity extends ActionBarActivity {
         int uid = prefs.getInt("uid", -1);
         if(uid != -1) { //user exists in shared prefs
             Intent registration = new Intent(this, Registration.class);
-            //TODO: create and pass through a new User
             startActivity(registration);
         } else {
             Intent login = new Intent(this, LoginActivity.class);
