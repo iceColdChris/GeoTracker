@@ -15,11 +15,11 @@ public class LocationLog implements Parcelable {
     private List<Location> mLocationList;
 
     public LocationLog() {
-        mLocationList = new ArrayList<>();
+        mLocationList = new ArrayList<Location>();
     }
 
     public LocationLog(Parcel in) {
-        mLocationList = new ArrayList<>();
+        mLocationList = new ArrayList<Location>();
         mLocationList = in.readArrayList(Location.class.getClassLoader());
     }
 

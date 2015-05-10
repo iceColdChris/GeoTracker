@@ -107,6 +107,7 @@ public class TrajectoryChooser extends ActionBarActivity {
                     traject.putExtra("startTime", startCal.getTime().getTime());
                     traject.putExtra("endTime", endCal.getTime().getTime());
                     startActivity(traject);
+                    finish();
                 }
 
             }

@@ -55,13 +55,6 @@ public class ResetPassword extends ActionBarActivity {
         mActivity = this;
         setContentView(R.layout.activity_reset_password);
 
-        final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES), getApplicationContext().MODE_PRIVATE);
-        String savedQ = prefs.getString(getString(R.string.security_q), "");
-
-        final TextView security_question = (TextView) findViewById(R.id.security_question);
-        security_question.setText(savedQ);
-
-
         Button accept = (Button) findViewById(R.id.reset_accept);
         Button cancel = (Button) findViewById(R.id.reset_cancel);
 
@@ -72,22 +65,8 @@ public class ResetPassword extends ActionBarActivity {
                     DownloadWebPageTask task = new DownloadWebPageTask();
                     String url = "http://450.atwebpages.com/reset.php?email=" + email;
                     task.execute(url);
-/*                  TODO - Implement or Remove if not needed
-                    if( (savedEmail != null) && savedEmail.equals(email.getText().toString())
-                            && savedA != null && savedA.equals(answer.getText().toString())
-                            && password.getText().toString().equals(confirmPassword.getText().toString())) {
-                        SharedPreferences.Editor edit = prefs.edit();
-                        edit.putString(getString(R.string.password), password.getText().toString());
-                        edit.apply();
-                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(login);
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.invalid), Toast.LENGTH_SHORT).show();
-                    }*/
                 }
-            }
-        );
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
