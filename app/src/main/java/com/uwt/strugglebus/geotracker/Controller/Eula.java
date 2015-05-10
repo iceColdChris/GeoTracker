@@ -13,7 +13,9 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.uwt.strugglebus.geotracker.Model.Registration;
 import com.uwt.strugglebus.geotracker.R;
 import com.uwt.strugglebus.geotracker.View.MyAccount;
 
@@ -37,6 +39,7 @@ public class Eula {
     private String EULA_PREFIX = "eula_";
     private Activity mActivity;
     private PackageInfo mVersionInfo;
+    private AlertDialog.Builder mAlertBuilder;
 
 
     public Eula(Activity context) {
@@ -53,13 +56,18 @@ public class Eula {
         return pi;
     }
 
-    public void show() {
+    public void download() {
         mVersionInfo = getPackageInfo();
 
         //Includes the updates as well so users know what changed.
         DownloadWebPageTask task = new DownloadWebPageTask();
         String url = "http://450.atwebpages.com/agreement.php";
         task.execute(url);
+    }
+
+    public void show() {
+        mAlertBuilder.create().show();
+        //Includes the updates as well so users know what changed.
 //            String message = mActivity.getString(R.string.updates) + "\n\n" + mActivity.getString(R.string.eula);
 /*        if(task.getStatus() == AsyncTask.Status.FINISHED) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
@@ -134,9 +142,10 @@ public class Eula {
             if (result != null) {
                 try {
                     JSONObject obj = new JSONObject(result);
+
                     String agreement = obj.getString("agreement");
                     String title = mActivity.getString(R.string.app_name) + " v" + mVersionInfo.versionName;
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
+                    mAlertBuilder = new AlertDialog.Builder(mActivity)
                             .setTitle(title)
                             .setMessage(agreement)
                             .setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
@@ -146,16 +155,13 @@ public class Eula {
                                     // Mark this version as read.
                                     final SharedPreferences prefs = mActivity.getSharedPreferences(mActivity.getString(R.string.SHARED_PREFERENCES), Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = prefs.edit();
-                                    editor.putBoolean("eula_accept", true);
-                                    editor.putString(mActivity.getString(R.string.email), ((EditText) mActivity.findViewById(R.id.reg_email)).getText().toString());
-                                    editor.putString(mActivity.getString(R.string.password), ((EditText) mActivity.findViewById(R.id.reg_password)).getText().toString());
-                                    editor.putString(mActivity.getString(R.string.security_q), ((Spinner) mActivity.findViewById(R.id.question_spinner)).getSelectedItem().toString());
-                                    editor.putString(mActivity.getString(R.string.security_a), ((EditText) mActivity.findViewById(R.id.security_answer)).getText().toString());
+                                    editor.putBoolean(mActivity.getString(R.string.eula_accept), true);
                                     editor.apply();
+                                    ((Registration) mActivity).sendData();
                                     dialogInterface.dismiss();
-                                    Intent account = new Intent(mActivity, MyAccount.class);
-                                    mActivity.startActivity(account);
-                                    mActivity.finish();
+//                                    Intent account = new Intent(mActivity, MyAccount.class);
+//                                    mActivity.startActivity(account);
+//                                    mActivity.finish();
                                 }
                             })
                             .setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {
@@ -164,11 +170,11 @@ public class Eula {
                                 public void onClick(DialogInterface dialog, int which) {
                                     // Close the activity as they have declined the EULA
                                     dialog.dismiss();
-                                    mActivity.finish();
+//                                    mActivity.finish();
                                 }
 
                             });
-                    builder.create().show();
+                    mAlertBuilder.create().show();
                 } catch (JSONException e) {
                     System.out.println("JSON Exception" + e.getMessage());
                 }

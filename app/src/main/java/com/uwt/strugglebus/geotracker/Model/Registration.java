@@ -43,11 +43,13 @@ public class Registration extends ActionBarActivity {
 
     private String mEmail;
     private String mPassword;
+    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        mActivity = this;
 
         //a spinner holding 4 different sequrity questions
         Spinner spinner = (Spinner) findViewById(R.id.question_spinner);
@@ -68,29 +70,12 @@ public class Registration extends ActionBarActivity {
                 String question = ((Spinner) findViewById(R.id.question_spinner)).getSelectedItem().toString();
                 String answer = ((EditText) findViewById(R.id.security_answer)).getText().toString();
 
-                Eula eula = new Eula(mActivity);
-                eula.show();
-                mEmail = email;
-                mPassword = password;
-                DownloadWebPageTask task = new DownloadWebPageTask();
-                question = question.replaceAll(" ", "%20");
-                question = question.replace("?", "%3F");
-                String url = "http://450.atwebpages.com/adduser.php?email=" + email + "&password=" + password +
-                            "&question=" + question + "&answer=" + answer;
-
-                String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-                Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-                Matcher matcher = pattern.matcher(email);
-                if(!matcher.matches()) {
-                    Toast.makeText(getApplicationContext(), R.string.invalid_email_format, Toast.LENGTH_LONG).show();
-                } else if(password.length() < 5) {
-                    Toast.makeText(getApplicationContext(), R.string.invalid_password_format, Toast.LENGTH_LONG).show();
-                } else if(!password.equals(confirm_password)) {
-                    Toast.makeText(getApplicationContext(), R.string.invalid_confirm, Toast.LENGTH_LONG).show();
-                } else if(answer.length() < 1) {
-                    Toast.makeText(getApplicationContext(), R.string.invalid_security_a, Toast.LENGTH_LONG).show();
-                }else {
-                    task.execute(url);
+                if(password.equals(confirm_password)) {
+                    Eula eula = new Eula(mActivity);
+                    eula.download();
+//                    eula.show();
+                    mEmail = email;
+                    mPassword = password;
                 }
 
                 /*
@@ -136,7 +121,27 @@ public class Registration extends ActionBarActivity {
             }
         });
     }
+    public void sendData() {
+        System.out.println("yay");
+        String email = ((EditText) findViewById(R.id.reg_email)).getText().toString();
+        String password = ((EditText) findViewById(R.id.reg_password)).getText().toString();
+        String confirm_password = ((EditText) findViewById(R.id.reg_confirm_password)).getText().toString();
+        String question = ((Spinner) findViewById(R.id.question_spinner)).getSelectedItem().toString();
+        String answer = ((EditText) findViewById(R.id.security_answer)).getText().toString();
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
+                , Context.MODE_PRIVATE);
 
+        if(prefs.getBoolean(getString(R.string.eula_accept), false)) {
+            DownloadWebPageTask task = new DownloadWebPageTask();
+            question = question.replaceAll(" ", "%20");
+            question = question.replace("?", "%3F");
+            String url = "http://450.atwebpages.com/adduser.php?email=" + email + "&password=" + password +
+                    "&question=" + question + "&answer=" + answer;
+            task.execute(url);
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.invalid_confirm), Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -206,14 +211,14 @@ public class Registration extends ActionBarActivity {
                             , Context.MODE_PRIVATE);
                     if(success != null && success.equals("fail")) {
                         Toast.makeText(getApplicationContext(), obj.getString("error"), Toast.LENGTH_LONG).show();
-                    } else if (prefs.getBoolean(getString(R.string.eula_accept), false)){
+                    } else {
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString(getString(R.string.email), mEmail);
                         editor.putString(getString(R.string.password), mPassword);
                         editor.apply();
-                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(login);
-                        finish();
+                        Intent myAccount = new Intent(getApplicationContext(), MyAccount.class);
+                        startActivity(myAccount);
+                        mActivity.finish();
                     }
                 } catch (JSONException e) {
                     System.out.println("JSON Exception " + e.getMessage());

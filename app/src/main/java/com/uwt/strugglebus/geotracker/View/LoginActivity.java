@@ -50,7 +50,7 @@ public class LoginActivity extends ActionBarActivity {
         final  SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 getApplicationContext().MODE_PRIVATE);
 
-        int uid = prefs.getInt("uid", -1);
+        int uid = prefs.getInt("userID", -1);
         if(uid != -1) { //user exists in shared prefs
             final EditText email = ((EditText) findViewById(R.id.email));
             email.setText(prefs.getString(getString(R.string.email), "email"));
