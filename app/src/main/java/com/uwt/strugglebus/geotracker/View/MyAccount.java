@@ -1,7 +1,9 @@
 package com.uwt.strugglebus.geotracker.View;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.Model.ResetPassword;
+import com.uwt.strugglebus.geotracker.Model.Tracker;
+import com.uwt.strugglebus.geotracker.Model.LocationBroadcastReceiver;
 import com.uwt.strugglebus.geotracker.R;
 
 /**
@@ -36,6 +40,15 @@ public class MyAccount extends ActionBarActivity {
         mLocationLog = new LocationLog();
         setContentView(R.layout.activity_my_account);
         TextView email = (TextView) findViewById(R.id.account_email);
+
+        ComponentName receiver = new ComponentName(getApplicationContext(), LocationBroadcastReceiver.class);
+        PackageManager pm = getApplicationContext().getPackageManager();
+
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+        Tracker.setServiceAlarm(getApplicationContext(), true);
 
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 getApplicationContext().MODE_PRIVATE);

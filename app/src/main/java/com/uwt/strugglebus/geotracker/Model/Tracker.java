@@ -53,45 +53,6 @@ public class Tracker extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.w("trackers", "start");
-        int interval = 10000;
-        Timer timer = new Timer();
-        //connect / create local db
-        final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE +"(lat REAL,lon REAL, speed REAL, heading REAL, time BIGINT);");
-
-        // Acquire a reference to the system Location Manager
-        final LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        // Define a listener that responds to location updates
-        LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
-                loc = location;
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-            public void onProviderEnabled(String provider) {}
-
-            public void onProviderDisabled(String provider) {}
-        };
-
-        // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (loc != null) {
-                    Log.w("nsa.gov", loc.toString());
-                    // (lat, lon, speed, heading, time)
-                    String insert = "INSERT INTO " + TABLE + " VALUES(" + loc.getLatitude() + ", " +
-                            loc.getLongitude() + ", " + loc.getSpeed() + ", " + loc.getBearing()
-                            + ", " + loc.getTime() + ");";
-                    db.execSQL(insert);
-                    Log.w("sqlTest", insert);
-                }
-            }
-        }, 0, (long) interval);
     }
 
     public static void setServiceAlarm(Context context, boolean isOn) {
@@ -113,8 +74,43 @@ public class Tracker extends IntentService {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
+//        super.onStartCommand(intent, flags, startId);
         //Log.i("Tracker", "service starting");
+        System.out.println("yay start command");
+
+        //connect / create local db
+        final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE +"(lat REAL,lon REAL, speed REAL, heading REAL, time BIGINT);");
+
+        // Acquire a reference to the system Location Manager
+        final LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        // Define a listener that responds to location updates
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                loc = location;
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+        if (loc != null) {
+            System.out.println(loc.toString());
+            Log.w("nsa.gov", loc.toString());
+            // (lat, lon, speed, heading, time)
+            String insert = "INSERT INTO " + TABLE + " VALUES(" + loc.getLatitude() + ", " +
+                    loc.getLongitude() + ", " + loc.getSpeed() + ", " + loc.getBearing()
+                    + ", " + loc.getTime() + ");";
+            db.execSQL(insert);
+            Log.w("sqlTest", insert);
+        }
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
         return START_STICKY;
     }
 
