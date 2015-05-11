@@ -90,19 +90,20 @@ public class TrajectoryChooser extends ActionBarActivity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("clicked");
                 String[] startDateS = startDateText.getText().toString().split("/");
                 String[] startTimeS = startTimeText.getText().toString().split(":");
 
-                Calendar startCal = new GregorianCalendar(Integer.parseInt(startDateS[0]), Integer.parseInt(startDateS[0]),
-                        Integer.parseInt(startDateS[0]), Integer.parseInt(startTimeS[0]),Integer.parseInt(startTimeS[1]));
+                Calendar startCal = new GregorianCalendar(Integer.parseInt(startDateS[0]) + 2, Integer.parseInt(startDateS[1]),
+                        Integer.parseInt(startDateS[2]), Integer.parseInt(startTimeS[0]),Integer.parseInt(startTimeS[1]));
 
                 String[] endDateS = endDateText.getText().toString().split("/");
                 String[] endTimeS = endTimeText.getText().toString().split(":");
-                Calendar endCal = new GregorianCalendar(Integer.parseInt(startDateS[0]), Integer.parseInt(startDateS[0]) - 1,
-                        Integer.parseInt(startDateS[0]), Integer.parseInt(startTimeS[0]),Integer.parseInt(startTimeS[1]));
-                if(startCal.getTime().getTime() > endCal.getTime().getTime()) {
+                Calendar endCal = new GregorianCalendar(Integer.parseInt(endDateS[0]) + 2, Integer.parseInt(endDateS[1]) - 1,
+                        Integer.parseInt(endDateS[2]), Integer.parseInt(endTimeS[0]),Integer.parseInt(endTimeS[1]));
+                if(startCal.getTimeInMillis() > endCal.getTimeInMillis()) {
                     //TODO: put int strings
-                    Toast.makeText(getApplicationContext(),"start time after end time" , Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(),"start time after end time" , Toast.LENGTH_SHORT).show();
                 } else {
                     Intent traject = new Intent(getApplicationContext(), Trajectories.class);
                     traject.putExtra("startTime", startCal.getTime().getTime());
