@@ -65,38 +65,38 @@ public class Trajectories extends ActionBarActivity {
         long startTime = it.getLongExtra("startTime", 0);
         long endTime = it.getLongExtra("endTime", 0);
 
-        DownloadWebPageTask task = new DownloadWebPageTask();
-        String url = "http://450.atwebpages.com/view.php?uid=" + uid + "&start=" + startTime + "&end=" + endTime;
-        task.execute(url);
+//        DownloadWebPageTask task = new DownloadWebPageTask();
+//        String url = "http://450.atwebpages.com/view.php?uid=" + uid + "&start=" + startTime + "&end=" + endTime;
+//        task.execute(url);
 
-//        TableLayout table = (TableLayout) findViewById(R.id.traject_table);
-//        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-//
-//        final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
-//
-//        String query = "SELECT * FROM " + TABLE + ";";
-//        Cursor c = db.rawQuery(query, null);
-//        while(c.moveToNext()) {
-//            TableRow row = new TableRow(getApplicationContext());
-//            row.setLayoutParams(rowParams);
-//            row.setPadding(5, 5, 5, 5);
-//            String[] values = new String[ROWS];
-//            values[0] = c.getFloat(0) + "";
-//            values[1] = c.getFloat(1) + "";
-//            values[2] = c.getFloat(2) + "";
-//            values[3] = c.getFloat(3) + "";
-//            values[4] = c.getInt(4) + "";
-//
-//            for(int i = 0; i < ROWS; i++) {
-//                TextView temp = new TextView(getApplicationContext());
-//                temp.setBackgroundColor(Color.parseColor("#BBBBBB"));
-//                temp.setPadding(5,5,5,5);
-//                temp.setText(values[i], TextView.BufferType.NORMAL);
-//                temp.setTextColor(Color.BLACK);
-//                row.addView(temp);
-//            }
-//            table.addView(row);
-//        }
+        TableLayout table = (TableLayout) findViewById(R.id.traject_table);
+        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+
+        final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
+
+        String query = "SELECT * FROM " + TABLE + ";";
+        Cursor c = db.rawQuery(query, null);
+        while(c.moveToNext()) {
+            TableRow row = new TableRow(getApplicationContext());
+            row.setLayoutParams(rowParams);
+            row.setPadding(5, 5, 5, 5);
+            String[] values = new String[ROWS];
+            values[0] = c.getFloat(0) + "";
+            values[1] = c.getFloat(1) + "";
+            values[2] = c.getFloat(2) + "";
+            values[3] = c.getFloat(3) + "";
+            values[4] = c.getInt(4) + "";
+
+            for(int i = 0; i < ROWS; i++) {
+                TextView temp = new TextView(getApplicationContext());
+                temp.setBackgroundColor(Color.parseColor("#BBBBBB"));
+                temp.setPadding(5,5,5,5);
+                temp.setText(values[i], TextView.BufferType.NORMAL);
+                temp.setTextColor(Color.BLACK);
+                row.addView(temp);
+            }
+            table.addView(row);
+        }
     }
 
     /**

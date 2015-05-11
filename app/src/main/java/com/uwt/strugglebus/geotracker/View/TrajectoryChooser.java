@@ -48,12 +48,12 @@ public class TrajectoryChooser extends ActionBarActivity {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         final TextView startDateText = (TextView) findViewById(R.id.start_date_text);
-        startDateText.setText(c.get(Calendar.MONTH) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
+        startDateText.setText(c.get(Calendar.MONTH) + 1 + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
         final TextView startTimeText = (TextView)findViewById(R.id.start_time_text);
         startTimeText.setText(0 + "" + 0 + ":" + 0 + "" + 0);
 
         final TextView endDateText = (TextView) findViewById(R.id.end_date_text);
-        endDateText.setText(c.get(Calendar.MONTH) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
+        endDateText.setText(c.get(Calendar.MONTH) + 1 + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
         final TextView endTimeText = (TextView)findViewById(R.id.end_time_text);
         endTimeText.setText(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
 
@@ -94,12 +94,12 @@ public class TrajectoryChooser extends ActionBarActivity {
                 String[] startDateS = startDateText.getText().toString().split("/");
                 String[] startTimeS = startTimeText.getText().toString().split(":");
 
-                Calendar startCal = new GregorianCalendar(Integer.parseInt(startDateS[0]) + 2, Integer.parseInt(startDateS[1]),
+                Calendar startCal = new GregorianCalendar(Integer.parseInt(startDateS[0]) + 1, Integer.parseInt(startDateS[1]),
                         Integer.parseInt(startDateS[2]), Integer.parseInt(startTimeS[0]),Integer.parseInt(startTimeS[1]));
 
                 String[] endDateS = endDateText.getText().toString().split("/");
                 String[] endTimeS = endTimeText.getText().toString().split(":");
-                Calendar endCal = new GregorianCalendar(Integer.parseInt(endDateS[0]) + 2, Integer.parseInt(endDateS[1]) - 1,
+                Calendar endCal = new GregorianCalendar(Integer.parseInt(endDateS[0]) + 1, Integer.parseInt(endDateS[1]) - 1,
                         Integer.parseInt(endDateS[2]), Integer.parseInt(endTimeS[0]),Integer.parseInt(endTimeS[1]));
                 if(startCal.getTimeInMillis() > endCal.getTimeInMillis()) {
                     //TODO: put int strings

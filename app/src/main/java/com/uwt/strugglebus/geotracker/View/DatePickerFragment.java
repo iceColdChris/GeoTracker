@@ -60,6 +60,6 @@ public class DatePickerFragment extends DialogFragment
         } else {
             date = (TextView)getActivity().findViewById(R.id.end_date_text);
         }
-        date.setText(""+ month + "/" + day + "/" + year);
+        date.setText(""+ (month + 1) + "/" + day + "/" + year);
     }
 }
