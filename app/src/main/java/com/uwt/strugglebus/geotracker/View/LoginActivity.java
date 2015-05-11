@@ -213,6 +213,7 @@ public class LoginActivity extends ActionBarActivity {
                                 , Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString("userID", obj.getString("userid"));
+                        System.out.println(obj.getString("userid"));
                         editor.putString(getString(R.string.email), mEmail);
                         editor.putString(getString(R.string.password), mPassword);
                         editor.apply();

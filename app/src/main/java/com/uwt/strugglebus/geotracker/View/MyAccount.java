@@ -107,6 +107,7 @@ public class MyAccount extends ActionBarActivity {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("userID", null);
                 editor.apply();
+                Tracker.setServiceAlarm(getApplicationContext(), false);
 
                 Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
