@@ -126,9 +126,9 @@ public class LoginActivity extends ActionBarActivity {
             }
         });
 //        TODO - Finish implementing or remove if not needed
-        if(prefs.getBoolean("eula_accept", false)) {
-            Tracker.setServiceAlarm(getApplicationContext(), true);
-        }
+//        if(prefs.getBoolean("eula_accept", false)) {
+//            Tracker.setServiceAlarm(getApplicationContext(), true);
+//        }
     }
 
 

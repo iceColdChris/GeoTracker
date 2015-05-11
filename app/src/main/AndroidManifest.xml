@@ -7,12 +7,30 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <service
+            android:name=".Model.Tracker"
+            android:exported="false"
+            android:enabled="true"
+            android:process=":gps_process">
+        </service>
+
+        <receiver android:name=".Model.LocationBroadcastReceiver"
+            android:enabled="false"
+            android:process=":gps_process">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -50,11 +68,6 @@
             android:name=".View.TrajectoryChooser"
             android:label="@string/title_activity_trajectory_chooser" >
         </activity>
-
-        <service
-            android:name=".Model.Tracker"
-            android:enabled="true">
-        </service>
 
         <activity
             android:name=".View.Trajectories"
