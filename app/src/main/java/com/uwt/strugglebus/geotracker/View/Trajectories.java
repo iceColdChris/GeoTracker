@@ -32,6 +32,8 @@ import java.io.InputStreamReader;
 
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class is in charge of keeping
  * track of keeping track of the users
  * location.

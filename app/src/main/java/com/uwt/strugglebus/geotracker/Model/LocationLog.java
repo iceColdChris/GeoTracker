@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * Created by mmuppa on 4/29/15.
  */
 public class LocationLog implements Parcelable {

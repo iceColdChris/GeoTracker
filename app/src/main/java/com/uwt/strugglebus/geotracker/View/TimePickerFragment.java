@@ -13,6 +13,8 @@ import com.uwt.strugglebus.geotracker.R;
 import java.util.Calendar;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class is in charge of
  * the time picker the user
  * sees when choosing what

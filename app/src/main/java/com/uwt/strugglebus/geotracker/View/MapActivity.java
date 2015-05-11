@@ -39,6 +39,8 @@ import java.sql.Time;
 import java.util.List;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class is in charge of
  * setting up the google maps
  * api as well as the view.

@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class is in charge of letting
  * the user determine what trajectory
  * they want to see.

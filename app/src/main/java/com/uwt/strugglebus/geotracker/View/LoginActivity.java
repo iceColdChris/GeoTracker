@@ -30,6 +30,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
+ * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class contains the logic needed for the login page.
  * The necessary buttons are initialized and the appropriate logic to let the user log-in.
  */
@@ -62,6 +64,10 @@ public class LoginActivity extends ActionBarActivity {
 
         final  SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 getApplicationContext().MODE_PRIVATE);
+
+//        if(prefs.getBoolean("eula_accept", false)) {
+//            Tracker.setServiceAlarm(mContext, true);
+//        }
 
         String uid = prefs.getString("userID", null);
         if(uid != null) { //user exists in shared prefs
