@@ -1,11 +1,19 @@
 package com.uwt.strugglebus.geotracker.View;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,6 +25,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.R;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.Time;
 import java.util.List;
 
 /**
@@ -32,6 +51,7 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
 
     private LocationLog mLocationLog;
     private GoogleMap mGoogleMap;
+    private Context mContext;
 
     /**
      * {@inheritDoc}
@@ -46,11 +66,19 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        mContext = getApplicationContext();
         mLocationLog = getIntent().getParcelableExtra("locations");
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mGoogleMap = mapFragment.getMap();
         mapFragment.getMapAsync(this);
 
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+                getApplicationContext().MODE_PRIVATE);
+        String uid = prefs.getString("userID", "");
+
+        DownloadWebPageTask task = new DownloadWebPageTask();
+        String url = "http://450.atwebpages.com/view.php?uid=" + uid + "&start=" + 0 + "&end=" + System.currentTimeMillis();
+        task.execute(url);
     }
 
 
@@ -121,5 +149,83 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /*
+ * This is a private helper class that is
+ * in charge of connecting to the web
+ * services as an Asyncronous Task.
+ */
+    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+
+
+        /*
+         * Inherited from
+         * AsyncTask class
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /*
+         * Gets the response string
+         * from the webservice.
+         */
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            for (String url : urls) {
+                DefaultHttpClient client = new DefaultHttpClient();
+                HttpGet httpGet = new HttpGet(url);
+                try {
+                    HttpResponse execute = client.execute(httpGet);
+                    InputStream content = execute.getEntity().getContent();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s;
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return response;
+        }
+
+        /*
+         * Checks if the user has
+         * entered the correct credentials
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            mProgressDialog.dismiss();
+            if (result != null) {
+                try {
+                    JSONObject obj = new JSONObject(result);
+                    String success = obj.getString("result");
+                    if(success != null && success.equals("success")) {
+                        JSONArray points = new JSONArray(obj.getString("points"));
+                        LatLng firstLatLng = new LatLng(points.getJSONObject(0).getDouble("lat"),
+                                                        points.getJSONObject(0).getDouble("lat"));
+                        for(int i = 0; i < points.length(); i++) {
+                            JSONObject point = points.getJSONObject(i);
+                            mGoogleMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(point.getDouble("lat")
+                                            , point.getDouble("lon")))
+                                    .title("My Locations"));
+                        }
+                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
+                    } else {
+                        Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    System.out.println("JSON Exception "+ e.getMessage());
+                }
+            }
+        }
     }
 }
