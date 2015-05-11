@@ -8,8 +8,10 @@ import android.widget.Toast;
 import com.uwt.strugglebus.geotracker.Model.Tracker;
 
 /**
- * Created by Kyle on 5/10/2015.
- */
+ ** Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
+ * Starts Tracker service on boot
+ * */
 public class LocationBroadcastReceiver extends BroadcastReceiver {
 
     @Override

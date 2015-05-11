@@ -12,6 +12,8 @@ import com.uwt.strugglebus.geotracker.R;
 import com.uwt.strugglebus.geotracker.View.LoginActivity;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This is the main activity class that the app launches with.
  * The class launches the registration or login activity depending if the user is new or not.
  */

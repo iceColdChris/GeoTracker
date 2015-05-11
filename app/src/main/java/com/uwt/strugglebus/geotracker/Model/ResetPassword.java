@@ -32,6 +32,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class sets up the appropriate logic to allow the user to reset their password.
  * The user must answer their security question correctly to trigger a response
  * from the webserver.

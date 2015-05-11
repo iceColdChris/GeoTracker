@@ -31,6 +31,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class sets up the information needed for the registration process.
  * The appropriate logic is in place to check that the user has passed requirements to register.
  */
