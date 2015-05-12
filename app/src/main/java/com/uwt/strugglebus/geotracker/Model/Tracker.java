@@ -122,27 +122,33 @@ public class Tracker extends IntentService {
             public void onProviderDisabled(String provider) {}
         };
         if (loc != null) {
-            System.out.println(loc.toString());
+//            System.out.println(loc.toString());
             Log.w("nsa.gov", loc.toString());
-            // (lat, lon, speed, heading, time)
-            String insert = "INSERT INTO " + TABLE + " VALUES(" + loc.getLatitude() + ", " +
-                    loc.getLongitude() + ", " + loc.getSpeed() + ", " + loc.getBearing()
-                    + ", " + loc.getTime() + ");";
-            db.execSQL(insert);
-            Log.w("sqlTest", insert);
+//            // (lat, lon, speed, heading, time)
+//            String insert = "INSERT INTO " + TABLE + " VALUES(" + loc.getLatitude() + ", " +
+//                    loc.getLongitude() + ", " + loc.getSpeed() + ", " + loc.getBearing()
+//                    + ", " + loc.getTime() + ");";
+//            db.execSQL(insert);
+//            Log.w("sqlTest", insert);
 
-//            SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
-//                    , Context.MODE_PRIVATE);
-//            String uid = prefs.getString("userID", "");
-//            System.out.println(uid);
-//            DownloadWebPageTask task = new DownloadWebPageTask();
-//            String url = "http://450.atwebpages.com/logAdd.php?lat=" + loc.getLatitude() +
-//                            "&lon=" + loc.getLongitude() +
-//                            "&speed=" + loc.getSpeed() +
-//                            "&heading=" + loc.getBearing() +
-//                            "&timestamp=" + loc.getTime() +
-//                            "&source=" + uid;
-//            task.execute(url);
+            SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
+                    , Context.MODE_PRIVATE);
+            String uid = prefs.getString("userID", "");
+            String lat = Double.toString(loc.getLatitude()).replace(".", "%2E");
+            String lon = Double.toString(loc.getLongitude()).replace(".", "%2E");
+            String speed = Float.toString(loc.getSpeed()).replace(".", "%2E");
+            String bearing = Float.toString(loc.getBearing()).replace(".", "%2E");
+            System.out.println(lat);
+            System.out.println(Double.toString(loc.getLatitude()));
+            System.out.println(Double.toString(loc.getLatitude()).replace(".", "%2E"));
+            DownloadWebPageTask task = new DownloadWebPageTask();
+            String url = "http://450.atwebpages.com/logAdd.php?lat=" + lat +
+                            "&lon=" + lon +
+                            "&speed=" + speed +
+                            "&heading=" + bearing +
+                            "&timestamp=" + (loc.getTime() / 1000) +
+                            "&source=" + uid;
+            task.execute(url);
         }
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);

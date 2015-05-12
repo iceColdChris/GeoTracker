@@ -211,8 +211,6 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
                     String success = obj.getString("result");
                     if(success != null && success.equals("success")) {
                         JSONArray points = new JSONArray(obj.getString("points"));
-                        LatLng firstLatLng = new LatLng(points.getJSONObject(0).getDouble("lat"),
-                                                        points.getJSONObject(0).getDouble("lat"));
                         for(int i = 0; i < points.length(); i++) {
                             JSONObject point = points.getJSONObject(i);
                             mGoogleMap.addMarker(new MarkerOptions()
@@ -220,7 +218,9 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
                                             , point.getDouble("lon")))
                                     .title("My Locations"));
                         }
-                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
+                        LatLng lastLatLng = new LatLng(points.getJSONObject(points.length() - 1).getDouble("lat"),
+                                points.getJSONObject(points.length() - 1).getDouble("lon"));
+                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 15));
                     } else {
                         Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
