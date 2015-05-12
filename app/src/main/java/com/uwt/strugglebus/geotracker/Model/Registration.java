@@ -200,7 +200,7 @@ public class Registration extends ActionBarActivity {
             for (String url : urls) {
                 DefaultHttpClient client = new DefaultHttpClient();
                 HttpGet httpGet = new HttpGet(url);
-                try {
+                    try {
                     HttpResponse execute = client.execute(httpGet);
                     InputStream content = execute.getEntity().getContent();
 
