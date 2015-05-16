@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.Model;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,9 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.uwt.strugglebus.geotracker.Controller.Eula;
 import com.uwt.strugglebus.geotracker.R;
-import com.uwt.strugglebus.geotracker.View.LoginActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;

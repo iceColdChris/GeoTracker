@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.View;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
-import com.uwt.strugglebus.geotracker.Model.ResetPassword;
 import com.uwt.strugglebus.geotracker.Model.Tracker;
 import com.uwt.strugglebus.geotracker.Model.LocationBroadcastReceiver;
 import com.uwt.strugglebus.geotracker.R;

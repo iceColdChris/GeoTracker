@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.View;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,9 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.uwt.strugglebus.geotracker.Model.Registration;
-import com.uwt.strugglebus.geotracker.Model.ResetPassword;
-import com.uwt.strugglebus.geotracker.Model.Tracker;
 import com.uwt.strugglebus.geotracker.R;
 
 import org.apache.http.HttpResponse;

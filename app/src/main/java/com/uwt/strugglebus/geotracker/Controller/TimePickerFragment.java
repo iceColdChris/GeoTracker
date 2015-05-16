@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.View;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -62,7 +62,6 @@ public class TimePickerFragment extends DialogFragment
         } else {
             time = (TextView)getActivity().findViewById(R.id.end_time_text);
         }
-        int hour = hourOfDay;
 //      TODO - Check if this is needed or else remove it.
 //        String ampm = "am";
 //        if(hour == 0) {
@@ -72,9 +71,9 @@ public class TimePickerFragment extends DialogFragment
 //            hour = hour % 12;
 //        }
         if(minute > 10) {
-            time.setText(hour + ":" + minute);
+            time.setText(hourOfDay + ":" + minute);
         } else {
-            time.setText(hour + ":0" + minute);
+            time.setText(hourOfDay + ":0" + minute);
         }
     }
 }

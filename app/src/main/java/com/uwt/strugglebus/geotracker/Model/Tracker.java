@@ -3,12 +3,10 @@ package com.uwt.strugglebus.geotracker.Model;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,27 +14,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.R;
-import com.uwt.strugglebus.geotracker.View.MyAccount;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens

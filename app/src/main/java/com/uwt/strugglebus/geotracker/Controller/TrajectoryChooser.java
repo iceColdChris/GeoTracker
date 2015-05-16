@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.View;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -17,7 +17,6 @@ import com.uwt.strugglebus.geotracker.R;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens

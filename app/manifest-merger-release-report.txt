@@ -41,13 +41,13 @@ ADDED from AndroidManifest.xml:14:9
 		ADDED from AndroidManifest.xml:15:13
 	android:value
 		ADDED from AndroidManifest.xml:16:13
-activity#com.uwt.strugglebus.geotracker.Model.MainActivity
+activity#com.uwt.strugglebus.geotracker.Controller.MainActivity
 ADDED from AndroidManifest.xml:18:9
 	android:label
 		ADDED from AndroidManifest.xml:20:13
 	android:name
 		ADDED from AndroidManifest.xml:19:13
-activity#com.uwt.strugglebus.geotracker.View.LoginActivity
+activity#com.uwt.strugglebus.geotracker.Controller.LoginActivity
 ADDED from AndroidManifest.xml:22:9
 	android:label
 		ADDED from AndroidManifest.xml:24:13
@@ -63,13 +63,13 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:27:17
 	android:name
 		ADDED from AndroidManifest.xml:27:27
-activity#com.uwt.strugglebus.geotracker.View.MyAccount
+activity#com.uwt.strugglebus.geotracker.Controller.MyAccount
 ADDED from AndroidManifest.xml:30:9
 	android:label
 		ADDED from AndroidManifest.xml:32:13
 	android:name
 		ADDED from AndroidManifest.xml:31:13
-activity#com.uwt.strugglebus.geotracker.Model.Registration
+activity#com.uwt.strugglebus.geotracker.Controller.Registration
 ADDED from AndroidManifest.xml:34:9
 	android:label
 		ADDED from AndroidManifest.xml:36:13
@@ -81,7 +81,7 @@ ADDED from AndroidManifest.xml:38:9
 		ADDED from AndroidManifest.xml:40:13
 	android:name
 		ADDED from AndroidManifest.xml:39:13
-activity#com.uwt.strugglebus.geotracker.Model.ResetPassword
+activity#com.uwt.strugglebus.geotracker.Controller.ResetPassword
 ADDED from AndroidManifest.xml:42:9
 	android:label
 		ADDED from AndroidManifest.xml:44:13

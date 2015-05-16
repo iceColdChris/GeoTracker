@@ -10,7 +10,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 
-import com.uwt.strugglebus.geotracker.Model.Registration;
 import com.uwt.strugglebus.geotracker.R;
 
 import org.apache.http.HttpResponse;

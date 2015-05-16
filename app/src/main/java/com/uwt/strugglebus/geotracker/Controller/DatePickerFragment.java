@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.View;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

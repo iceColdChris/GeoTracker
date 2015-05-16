@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.Model;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.uwt.strugglebus.geotracker.R;
-import com.uwt.strugglebus.geotracker.View.LoginActivity;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens

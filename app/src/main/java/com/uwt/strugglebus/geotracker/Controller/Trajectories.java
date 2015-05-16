@@ -1,10 +1,12 @@
-package com.uwt.strugglebus.geotracker.View;
+package com.uwt.strugglebus.geotracker.Controller;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -15,14 +17,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.R;
 
 import org.apache.http.HttpResponse;
@@ -35,86 +29,79 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Time;
-import java.util.List;
+
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
  *
- * This class is in charge of
- * setting up the google maps
- * api as well as the view.
- *
- * This map will show the location
- * of each poll as an arrow on the
- * map.
+ * This class is in charge of keeping
+ * track of keeping track of the users
+ * location.
  */
-public class MapActivity extends  ActionBarActivity implements OnMapReadyCallback {
+public class Trajectories extends ActionBarActivity {
 
-    private LocationLog mLocationLog;
-    private GoogleMap mGoogleMap;
+    private static final String DB_NAME = "Trajectories";
+    private static final String TABLE = "Locations";
+    private static final int ROWS = 5;
+
     private Context mContext;
 
     /**
      * {@inheritDoc}
      *
-     * On top of the above
-     * functionality this method
-     * sets up an instance of
-     * google maps.
+     * Ontop of the above functionality
+     * this method sets up the trajectory
+     * database.
+     *
+     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-
         mContext = getApplicationContext();
-        mLocationLog = getIntent().getParcelableExtra("locations");
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mGoogleMap = mapFragment.getMap();
-        mapFragment.getMapAsync(this);
+        setContentView(R.layout.activity_trajectories);
 
-        final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
-                getApplicationContext().MODE_PRIVATE);
+        final  SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+                Context.MODE_PRIVATE);
         String uid = prefs.getString("userID", "");
+        Intent it = getIntent();
+        long startTime = it.getLongExtra("startTime", 0);
+        long endTime = it.getLongExtra("endTime", 0);
 
+        System.out.println(startTime);
+        System.out.println(endTime);
         DownloadWebPageTask task = new DownloadWebPageTask();
-        String url = "http://450.atwebpages.com/view.php?uid=" + uid + "&start=" + 0 + "&end=" + System.currentTimeMillis();
+        String url = "http://450.atwebpages.com/view.php?uid=" + uid + "&start=" + startTime + "&end=" + endTime;
         task.execute(url);
-    }
 
-
-    /**
-     * TODO - Get this working
-     *
-     * {@inheritDoc}
-     *
-     * This method will be
-     * in charge of adding the
-     * location markers to the
-     * map.
-     *
-     * @param map A google map object
-     */
-    @Override
-    public void onMapReady(GoogleMap map) {
-
-        if (mLocationLog != null) {
-
-            List<Location> locations = mLocationLog.getLocationList();
-            if(locations.size() > 0) {
-                Location location = locations.get(0);
-                LatLng firstLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                for (int i = 0; i < locations.size(); i++) {
-                    Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(locations.get(i).getLatitude()
-                                    , locations.get(i).getLongitude()))
-                            .title("My Locations"));
-                }
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
-            }
-        }
-
+//        TableLayout table = (TableLayout) findViewById(R.id.traject_table);
+//        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+//
+//        final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
+//
+//        String query = "SELECT * FROM " + TABLE + ";";
+//        Cursor c = db.rawQuery(query, null);
+//        while(c.moveToNext()) {
+//            TableRow row = new TableRow(getApplicationContext());
+//            row.setLayoutParams(rowParams);
+//            row.setPadding(5, 5, 5, 5);
+//            String[] values = new String[ROWS];
+//            values[0] = c.getFloat(0) + "";
+//            values[1] = c.getFloat(1) + "";
+//            values[2] = c.getFloat(2) + "";
+//            values[3] = c.getFloat(3) + "";
+//            values[4] = c.getInt(4) + "";
+//
+//            for(int i = 0; i < ROWS; i++) {
+//                TextView temp = new TextView(getApplicationContext());
+//                temp.setBackgroundColor(Color.parseColor("#BBBBBB"));
+//                temp.setPadding(5,5,5,5);
+//                temp.setText(values[i], TextView.BufferType.NORMAL);
+//                temp.setTextColor(Color.BLACK);
+//                row.addView(temp);
+//            }
+//            table.addView(row);
+//        }
     }
 
     /**
@@ -123,12 +110,12 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_map, menu);
+        getMenuInflater().inflate(R.menu.menu_trajectories, menu);
         return true;
     }
 
     /**
-     * {@inheritDoc}
+     *{@inheritDoc}
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -136,23 +123,14 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        switch (id) {
-            case R.id.action_logout:
-                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(login);
-                finish();
-                break;
-            case R.id.action_account:
-                Intent account = new Intent(getApplicationContext(), MyAccount.class);
-                startActivity(account);
-                break;
-            default:
-                break;
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
     /*
  * This is a private helper class that is
  * in charge of connecting to the web
@@ -209,18 +187,36 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
                 try {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
+                    System.out.println(success);
                     if(success != null && success.equals("success")) {
                         JSONArray points = new JSONArray(obj.getString("points"));
+                        System.out.println(points);
+                        TableLayout table = (TableLayout) findViewById(R.id.traject_table);
+                        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
                         for(int i = 0; i < points.length(); i++) {
                             JSONObject point = points.getJSONObject(i);
-                            mGoogleMap.addMarker(new MarkerOptions()
-                                    .position(new LatLng(point.getDouble("lat")
-                                            , point.getDouble("lon")))
-                                    .title("My Locations"));
+                            TableRow row = new TableRow(mContext);
+                            row.setLayoutParams(rowParams);
+                            row.setPadding(5, 5, 5, 5);
+                            String[] values = {
+                                    point.getString("lat"),
+                                    point.getString("lon"),
+                                    point.getString("speed"),
+                                    point.getString("heading"),
+                                    point.getString("time")
+                            };
+
+                            for(int j = 0; j < values.length; j++) {
+                                TextView temp = new TextView(mContext);
+                                temp.setBackgroundColor(Color.parseColor("#BBBBBB"));
+                                temp.setPadding(5,5,5,5);
+                                temp.setText(values[j], TextView.BufferType.NORMAL);
+                                temp.setTextColor(Color.BLACK);
+                                row.addView(temp);
+                            }
+                            table.addView(row);
+
                         }
-                        LatLng lastLatLng = new LatLng(points.getJSONObject(points.length() - 1).getDouble("lat"),
-                                points.getJSONObject(points.length() - 1).getDouble("lon"));
-                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 15));
                     } else {
                         Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
