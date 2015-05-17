@@ -36,7 +36,7 @@ import java.io.InputStreamReader;
  */
 public class Registration extends ActionBarActivity {
 
-
+    /**Variables for Registration.*/
     private String mEmail;
     private String mPassword;
     private Activity mActivity;
@@ -56,7 +56,7 @@ public class Registration extends ActionBarActivity {
         setContentView(R.layout.activity_registration);
         mActivity = this;
 
-        //a spinner holding 4 different sequrity questions
+        //a spinner holding 4 different security questions
         Spinner spinner = (Spinner) findViewById(R.id.question_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.security_questions,
                 android.R.layout.simple_spinner_item);
@@ -66,6 +66,8 @@ public class Registration extends ActionBarActivity {
         Button accept = (Button) findViewById(R.id.reg_accept);
         Button cancel = (Button) findViewById(R.id.reg_cancel);
         final Activity mActivity = this;
+
+        //set the user's information
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

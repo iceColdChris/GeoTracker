@@ -25,6 +25,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
@@ -109,8 +111,7 @@ public class LoginActivity extends ActionBarActivity {
                     Intent login = new Intent(getApplicationContext(), MyAccount.class);
                     startActivity(login);
                     finish();
-                }
-            }*/
+                }*/
         });
 
         register.setOnClickListener(new View.OnClickListener(){

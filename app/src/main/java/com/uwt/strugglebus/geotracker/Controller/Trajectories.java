@@ -100,7 +100,9 @@ public class Trajectories extends ActionBarActivity {
 //                temp.setTextColor(Color.BLACK);
 //                row.addView(temp);
 //            }
-//            table.addView(row);
+//
+//
+//   table.addView(row);
 //        }
     }
 
