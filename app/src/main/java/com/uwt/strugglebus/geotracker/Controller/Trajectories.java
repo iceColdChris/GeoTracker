@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.View;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.app.Activity;
 import android.content.Context;
@@ -32,6 +32,8 @@ import java.io.InputStreamReader;
 
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class is in charge of keeping
  * track of keeping track of the users
  * location.
@@ -51,6 +53,7 @@ public class Trajectories extends ActionBarActivity {
      * this method sets up the trajectory
      * database.
      *
+     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,7 @@ public class Trajectories extends ActionBarActivity {
         setContentView(R.layout.activity_trajectories);
 
         final  SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
-                getApplicationContext().MODE_PRIVATE);
+                Context.MODE_PRIVATE);
         String uid = prefs.getString("userID", "");
         Intent it = getIntent();
         long startTime = it.getLongExtra("startTime", 0);
@@ -95,7 +98,9 @@ public class Trajectories extends ActionBarActivity {
 //                temp.setTextColor(Color.BLACK);
 //                row.addView(temp);
 //            }
-//            table.addView(row);
+//
+//
+//   table.addView(row);
 //        }
     }
 
@@ -185,6 +190,7 @@ public class Trajectories extends ActionBarActivity {
                     System.out.println(success);
                     if(success != null && success.equals("success")) {
                         JSONArray points = new JSONArray(obj.getString("points"));
+                        System.out.println(points);
                         TableLayout table = (TableLayout) findViewById(R.id.traject_table);
                         TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
                         for(int i = 0; i < points.length(); i++) {

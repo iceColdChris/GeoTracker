@@ -1,6 +1,7 @@
-package com.uwt.strugglebus.geotracker.View;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,13 +13,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.uwt.strugglebus.geotracker.ChangeSample;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
-import com.uwt.strugglebus.geotracker.Model.ResetPassword;
 import com.uwt.strugglebus.geotracker.Model.Tracker;
 import com.uwt.strugglebus.geotracker.Model.LocationBroadcastReceiver;
 import com.uwt.strugglebus.geotracker.R;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class is in charge of keeping track of all
  * the user's data. It is also the main screen after
  * login.
@@ -51,7 +54,7 @@ public class MyAccount extends ActionBarActivity {
         Tracker.setServiceAlarm(getApplicationContext(), true);
 
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
-                getApplicationContext().MODE_PRIVATE);
+                Context.MODE_PRIVATE);
         int uid = prefs.getInt("uid", -1);
         String mEmail = prefs.getString(getString(R.string.email), "email");
         String mPass = prefs.getString(getString(R.string.password), "password");
@@ -64,8 +67,8 @@ public class MyAccount extends ActionBarActivity {
         Button traject = (Button) findViewById(R.id.view_traject);
         Button setZones = (Button) findViewById(R.id.set_zones);
         Button changePass = (Button) findViewById(R.id.change_pass);
-        Button changeSec = (Button) findViewById(R.id.change_sec_a);
         Button logout = (Button) findViewById(R.id.logout);
+        Button sample = (Button) findViewById(R.id.sample_rate);
 
         map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,10 +98,11 @@ public class MyAccount extends ActionBarActivity {
                 startActivity(change);
             }
         });
-        changeSec.setOnClickListener(new View.OnClickListener() {
+        sample.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent changeRate = new Intent(getApplicationContext(), ChangeSample.class);
+                startActivity(changeRate);
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +111,7 @@ public class MyAccount extends ActionBarActivity {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("userID", null);
                 editor.apply();
+                Tracker.setServiceAlarm(getApplicationContext(), false);
 
                 Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);

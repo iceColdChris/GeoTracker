@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.Model;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,9 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.uwt.strugglebus.geotracker.Controller.Eula;
 import com.uwt.strugglebus.geotracker.R;
-import com.uwt.strugglebus.geotracker.View.LoginActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -31,12 +29,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class sets up the information needed for the registration process.
  * The appropriate logic is in place to check that the user has passed requirements to register.
  */
 public class Registration extends ActionBarActivity {
 
-
+    /**Variables for Registration.*/
     private String mEmail;
     private String mPassword;
     private Activity mActivity;
@@ -56,7 +56,7 @@ public class Registration extends ActionBarActivity {
         setContentView(R.layout.activity_registration);
         mActivity = this;
 
-        //a spinner holding 4 different sequrity questions
+        //a spinner holding 4 different security questions
         Spinner spinner = (Spinner) findViewById(R.id.question_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.security_questions,
                 android.R.layout.simple_spinner_item);
@@ -66,6 +66,8 @@ public class Registration extends ActionBarActivity {
         Button accept = (Button) findViewById(R.id.reg_accept);
         Button cancel = (Button) findViewById(R.id.reg_cancel);
         final Activity mActivity = this;
+
+        //set the user's information
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,7 +200,7 @@ public class Registration extends ActionBarActivity {
             for (String url : urls) {
                 DefaultHttpClient client = new DefaultHttpClient();
                 HttpGet httpGet = new HttpGet(url);
-                try {
+                    try {
                     HttpResponse execute = client.execute(httpGet);
                     InputStream content = execute.getEntity().getContent();
 

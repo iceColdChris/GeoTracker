@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.View;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -12,6 +12,7 @@ import com.uwt.strugglebus.geotracker.R;
 import java.util.Calendar;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
  * This class is in charge of
  * the date picker the user
  * sees when choosing what
@@ -60,6 +61,6 @@ public class DatePickerFragment extends DialogFragment
         } else {
             date = (TextView)getActivity().findViewById(R.id.end_date_text);
         }
-        date.setText(""+ month + "/" + day + "/" + year);
+        date.setText(""+ (1 + month) + "/" + day + "/" + year);
     }
 }

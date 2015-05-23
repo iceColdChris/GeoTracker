@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.Model;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -15,11 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.R;
-import com.uwt.strugglebus.geotracker.View.LoginActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -32,6 +29,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class sets up the appropriate logic to allow the user to reset their password.
  * The user must answer their security question correctly to trigger a response
  * from the webserver.

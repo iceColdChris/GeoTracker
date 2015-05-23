@@ -10,7 +10,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 
-import com.uwt.strugglebus.geotracker.Model.Registration;
 import com.uwt.strugglebus.geotracker.R;
 
 import org.apache.http.HttpResponse;
@@ -24,6 +23,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class contains the logic for presenting the end user license agreement with the user.
  * They must read and accept the terms to use our app.
  */

@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.View;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,9 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.uwt.strugglebus.geotracker.Model.Registration;
-import com.uwt.strugglebus.geotracker.Model.ResetPassword;
-import com.uwt.strugglebus.geotracker.Model.Tracker;
 import com.uwt.strugglebus.geotracker.R;
 
 import org.apache.http.HttpResponse;
@@ -28,8 +25,12 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
+ * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class contains the logic needed for the login page.
  * The necessary buttons are initialized and the appropriate logic to let the user log-in.
  */
@@ -62,6 +63,10 @@ public class LoginActivity extends ActionBarActivity {
 
         final  SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 getApplicationContext().MODE_PRIVATE);
+
+//        if(prefs.getBoolean("eula_accept", false)) {
+//            Tracker.setServiceAlarm(mContext, true);
+//        }
 
         String uid = prefs.getString("userID", null);
         if(uid != null) { //user exists in shared prefs
@@ -106,8 +111,7 @@ public class LoginActivity extends ActionBarActivity {
                     Intent login = new Intent(getApplicationContext(), MyAccount.class);
                     startActivity(login);
                     finish();
-                }
-            }*/
+                }*/
         });
 
         register.setOnClickListener(new View.OnClickListener(){
@@ -213,6 +217,7 @@ public class LoginActivity extends ActionBarActivity {
                                 , Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString("userID", obj.getString("userid"));
+                        System.out.println(obj.getString("userid"));
                         editor.putString(getString(R.string.email), mEmail);
                         editor.putString(getString(R.string.password), mPassword);
                         editor.apply();

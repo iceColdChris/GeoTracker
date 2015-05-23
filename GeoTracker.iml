@@ -4,10 +4,6 @@
     <facet type="java-gradle" name="Java-Gradle">
       <configuration>
         <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" />
-<<<<<<< Updated upstream
-        <option name="BUILDABLE" value="false" />
-=======
->>>>>>> Stashed changes
       </configuration>
     </facet>
   </component>
@@ -19,9 +15,5 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
-<<<<<<< Updated upstream
-</module>
-=======
 </module>
 
->>>>>>> Stashed changes

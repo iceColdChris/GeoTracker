@@ -18,7 +18,7 @@
     <string name="logout">Logout</string>
     <string name="old_password">Old Password</string>
 
-
+    <string name="change_sample">Change Sampling Rate</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="security_q">Security Questions</string>
     <string name="security_a">Security Answer</string>
@@ -103,12 +103,20 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="view_points_url" translatable="false">450.atwebpages.com/view.php</string>
     <string name="invalid_confirm">Invalid Confirm Password, does not match password</string>
     <string name="password">Password</string>
-    <string name="title_activity_trajectories">Trajectories</string>
+    <string name="title_activity_trajectories" translatable="false">Trajectories</string>
 
-    <string name="lat">Latitude</string>
-    <string name="lon">Longitude</string>
-    <string name="speed">Speed</string>
-    <string name="heading">Heading</string>
-    <string name="time">Time</string>
+    <string name="lat" translatable="false">Latitude</string>
+    <string name="lon" translatable="false">Longitude</string>
+    <string name="speed" translatable="false">Speed</string>
+    <string name="heading" translatable="false">Heading</string>
+    <string name="time" translatable="false">Time</string>
+    <string name="title_activity_change_sample">Change Sampling Rate</string>
+
+    <string name="accept_save">Accept and Save Changes</string>
+    <string name="back">back</string>
+    <string name="geo_sample_rate">Record location every </string>
+    <string name="server_push">Update to Server Every </string>
+    <string name="push_manual">Update to server manually only</string>
+    <string name="push_power">Only update to server when connected to power</string>
 
 </resources>

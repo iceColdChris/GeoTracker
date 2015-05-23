@@ -1,18 +1,14 @@
-package com.uwt.strugglebus.geotracker.View;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.R;
 
@@ -35,10 +32,11 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Time;
 import java.util.List;
 
 /**
+ * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
  * This class is in charge of
  * setting up the google maps
  * api as well as the view.
@@ -73,7 +71,7 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
-                getApplicationContext().MODE_PRIVATE);
+                Context.MODE_PRIVATE);
         String uid = prefs.getString("userID", "");
 
         DownloadWebPageTask task = new DownloadWebPageTask();
@@ -209,16 +207,19 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
                     String success = obj.getString("result");
                     if(success != null && success.equals("success")) {
                         JSONArray points = new JSONArray(obj.getString("points"));
-                        LatLng firstLatLng = new LatLng(points.getJSONObject(0).getDouble("lat"),
-                                                        points.getJSONObject(0).getDouble("lat"));
+                        PolylineOptions line = new PolylineOptions();
                         for(int i = 0; i < points.length(); i++) {
                             JSONObject point = points.getJSONObject(i);
+                            LatLng marker = new LatLng(point.getDouble("lat"), point.getDouble("lon"));
+                            line.add(marker);
                             mGoogleMap.addMarker(new MarkerOptions()
-                                    .position(new LatLng(point.getDouble("lat")
-                                            , point.getDouble("lon")))
+                                    .position(marker)
                                     .title("My Locations"));
                         }
-                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
+                        LatLng lastLatLng = new LatLng(points.getJSONObject(points.length() - 1).getDouble("lat"),
+                                points.getJSONObject(points.length() - 1).getDouble("lon"));
+                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 15));
+                        mGoogleMap.addPolyline(line);
                     } else {
                         Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
