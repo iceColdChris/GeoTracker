@@ -18,7 +18,7 @@
     <string name="logout">Logout</string>
     <string name="old_password">Old Password</string>
 
-
+    <string name="change_sample">Change Sampling Rate</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="security_q">Security Questions</string>
     <string name="security_a">Security Answer</string>
@@ -110,5 +110,10 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="speed" translatable="false">Speed</string>
     <string name="heading" translatable="false">Heading</string>
     <string name="time" translatable="false">Time</string>
+    <string name="title_activity_change_sample">Change Sampling Rate</string>
+
+    <string name="accept_save">Accept and Save Changes</string>
+    <string name="back">back</string>
+    <string name="server_push">Update to Server Every </string>
 
 </resources>

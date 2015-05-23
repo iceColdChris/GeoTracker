@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.uwt.strugglebus.geotracker.ChangeSample;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.Model.Tracker;
 import com.uwt.strugglebus.geotracker.Model.LocationBroadcastReceiver;
@@ -65,8 +66,8 @@ public class MyAccount extends ActionBarActivity {
         Button traject = (Button) findViewById(R.id.view_traject);
         Button setZones = (Button) findViewById(R.id.set_zones);
         Button changePass = (Button) findViewById(R.id.change_pass);
-        Button changeSec = (Button) findViewById(R.id.change_sec_a);
         Button logout = (Button) findViewById(R.id.logout);
+        Button sample = (Button) findViewById(R.id.sample_rate);
 
         map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,10 +97,11 @@ public class MyAccount extends ActionBarActivity {
                 startActivity(change);
             }
         });
-        changeSec.setOnClickListener(new View.OnClickListener() {
+        sample.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent changeRate = new Intent(getApplicationContext(), ChangeSample.class);
+                startActivity(changeRate);
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {

@@ -7,26 +7,26 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <service
             android:name=".Model.Tracker"
-            android:exported="false"
             android:enabled="true"
-            android:process=":gps_process">
+            android:exported="false"
+            android:process=":gps_process" >
         </service>
 
-        <receiver android:name=".Model.LocationBroadcastReceiver"
+        <receiver
+            android:name=".Model.LocationBroadcastReceiver"
             android:enabled="false"
-            android:process=":gps_process">
+            android:process=":gps_process" >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
@@ -49,7 +49,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".Controller.MyAccount"
@@ -67,11 +66,13 @@
             android:name=".Controller.TrajectoryChooser"
             android:label="@string/title_activity_trajectory_chooser" >
         </activity>
-
         <activity
             android:name=".Controller.Trajectories"
             android:label="@string/title_activity_trajectories" >
-
+        </activity>
+        <activity
+            android:name=".ChangeSample"
+            android:label="@string/title_activity_change_sample" >
         </activity>
     </application>
 
