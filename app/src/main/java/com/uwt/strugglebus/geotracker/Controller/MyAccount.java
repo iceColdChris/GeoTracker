@@ -1,6 +1,7 @@
 package com.uwt.strugglebus.geotracker.Controller;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -53,7 +54,7 @@ public class MyAccount extends ActionBarActivity {
         Tracker.setServiceAlarm(getApplicationContext(), true);
 
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
-                getApplicationContext().MODE_PRIVATE);
+                Context.MODE_PRIVATE);
         int uid = prefs.getInt("uid", -1);
         String mEmail = prefs.getString(getString(R.string.email), "email");
         String mPass = prefs.getString(getString(R.string.password), "password");

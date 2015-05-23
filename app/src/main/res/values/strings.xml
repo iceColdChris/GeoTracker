@@ -114,6 +114,9 @@ distribution media, documentation, registration cards, and insertions.</string>
 
     <string name="accept_save">Accept and Save Changes</string>
     <string name="back">back</string>
+    <string name="geo_sample_rate">Record location every </string>
     <string name="server_push">Update to Server Every </string>
+    <string name="push_manual">Update to server manually only</string>
+    <string name="push_power">Only update to server when connected to power</string>
 
 </resources>
