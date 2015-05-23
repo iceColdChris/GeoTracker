@@ -92,7 +92,6 @@ public class TrajectoryChooser extends ActionBarActivity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("clicked");
                 String[] startDateS = startDateText.getText().toString().split("/");
                 String[] startTimeS = startTimeText.getText().toString().split(":");
 
@@ -106,8 +105,6 @@ public class TrajectoryChooser extends ActionBarActivity {
 
                 long startTime = (startCal.getTimeInMillis() + 86400000) / 1000;
                 long endTime = (endCal.getTimeInMillis() + 86400000) / 1000;
-                System.out.println(startTime);
-                System.out.println(endTime);
                 if(startTime > endTime) {
                     //TODO: put int strings
                     Toast.makeText(getApplicationContext(),"start time after end time" , Toast.LENGTH_SHORT).show();

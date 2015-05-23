@@ -103,12 +103,12 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="view_points_url" translatable="false">450.atwebpages.com/view.php</string>
     <string name="invalid_confirm">Invalid Confirm Password, does not match password</string>
     <string name="password">Password</string>
-    <string name="title_activity_trajectories">Trajectories</string>
+    <string name="title_activity_trajectories" translatable="false">Trajectories</string>
 
-    <string name="lat">Latitude</string>
-    <string name="lon">Longitude</string>
-    <string name="speed">Speed</string>
-    <string name="heading">Heading</string>
-    <string name="time">Time</string>
+    <string name="lat" translatable="false">Latitude</string>
+    <string name="lon" translatable="false">Longitude</string>
+    <string name="speed" translatable="false">Speed</string>
+    <string name="heading" translatable="false">Heading</string>
+    <string name="time" translatable="false">Time</string>
 
 </resources>

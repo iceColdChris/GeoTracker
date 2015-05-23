@@ -68,8 +68,6 @@ public class Trajectories extends ActionBarActivity {
         long startTime = it.getLongExtra("startTime", 0);
         long endTime = it.getLongExtra("endTime", 0);
 
-        System.out.println(startTime);
-        System.out.println(endTime);
         DownloadWebPageTask task = new DownloadWebPageTask();
         String url = "http://450.atwebpages.com/view.php?uid=" + uid + "&start=" + startTime + "&end=" + endTime;
         task.execute(url);

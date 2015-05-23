@@ -18,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.R;
 
@@ -206,16 +207,19 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
                     String success = obj.getString("result");
                     if(success != null && success.equals("success")) {
                         JSONArray points = new JSONArray(obj.getString("points"));
+                        PolylineOptions line = new PolylineOptions();
                         for(int i = 0; i < points.length(); i++) {
                             JSONObject point = points.getJSONObject(i);
+                            LatLng marker = new LatLng(point.getDouble("lat"), point.getDouble("lon"));
+                            line.add(marker);
                             mGoogleMap.addMarker(new MarkerOptions()
-                                    .position(new LatLng(point.getDouble("lat")
-                                            , point.getDouble("lon")))
+                                    .position(marker)
                                     .title("My Locations"));
                         }
                         LatLng lastLatLng = new LatLng(points.getJSONObject(points.length() - 1).getDouble("lat"),
                                 points.getJSONObject(points.length() - 1).getDouble("lon"));
                         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 15));
+                        mGoogleMap.addPolyline(line);
                     } else {
                         Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
