@@ -79,13 +79,6 @@ public class Registration extends ActionBarActivity {
                 String question = ((Spinner) findViewById(R.id.question_spinner)).getSelectedItem().toString();
                 String answer = ((EditText) findViewById(R.id.security_answer)).getText().toString();
 
-                if(password.equals(confirm_password)) {
-                    Eula eula = new Eula(mActivity);
-                    eula.download();
-//                    eula.show();
-                    mEmail = email;
-                    mPassword = password;
-                }
 
 
                 //check to see if there is valid input TODO: test this if statement
@@ -114,11 +107,17 @@ public class Registration extends ActionBarActivity {
                     editor.putString(getString(R.string.password), password);
                     editor.putString(getString(R.string.security_q), question);
                     editor.putString(getString(R.string.security_a), answer);
+
+                    if(password.equals(confirm_password)) {
+                        Eula eula = new Eula(mActivity);
+                        eula.download();
+                        mEmail = email;
+                        mPassword = password;
+                    }
+
                     editor.commit();
-                    //switch to eula
-                    Eula eula = new Eula(mActivity);
-                  //  eula.show();
-                }
+
+            }
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
