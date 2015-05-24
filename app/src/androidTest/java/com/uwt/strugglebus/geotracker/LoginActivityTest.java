@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.robotium.solo.Solo;
 import com.uwt.strugglebus.geotracker.Controller.LoginActivity;
+import com.uwt.strugglebus.geotracker.Controller.MyAccount;
+import com.uwt.strugglebus.geotracker.Controller.ResetPassword;
 
 /**
  * A test class using Robotium for the Log-in Activity.
@@ -42,33 +44,62 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
     }
 
     /**
-     * Test the text fields and buttons in the Log-In activity.
+     * Test the text fields in the Log-In activity.
      * @throws Exception
      */
-    public void test_MainActivityChangeTextView_hi() throws Exception {
+    public void testTextFields() throws Exception {
         solo.unlockScreen();
         solo.assertCurrentActivity("Expected Log-In activity", "LoginActivity");
 
         Button accept_button = (Button) solo.getView(R.id.login);
-        Button cancel_button = (Button) solo.getView(R.id.register);
         Button forgot_button = (Button) solo.getView(R.id.forgot_password);
 
-        TextView email_field = (TextView) solo.getView(R.id.email);
-        TextView password_field = (TextView) solo.getView(R.id.password);
+        solo.enterText(0, "alexp8@uw.edu");
+        boolean textFound = solo.searchText("alexp8@uw.edu");
+        assertEquals("email found", textFound);
+        solo.enterText(1, "123456");
+        textFound = solo.searchText("123456");
+        assertEquals("password inputted", "123456");
+
+
+    }
+
+    /**
+     * Tests the buttons in the Log-In activity.
+     * @throws Exception
+     */
+    public void testButtons() throws Exception {
+
+        //go to the reset password activity, then go back to log-in
+        final Button forgot_button = (Button) solo.getView(R.id.forgot_password);
+        solo.clickOnButton(solo.getString(forgot_button.toString()));
+        solo.assertCurrentActivity("wrong activity", ResetPassword.class);
+        solo.goBack();
+        solo.assertCurrentActivity("wrong activity", LoginActivity.class);
+
+        //log in and go to my account
+        final Button accept_button = (Button) solo.getView(R.id.login);
+        solo.clickOnButton(solo.getString(accept_button.toString()));
+        solo.assertCurrentActivity("wrong activity", MyAccount.class);
+        solo.goBack();
+        solo.assertCurrentActivity("wrong activity", LoginActivity.class);
+
+    }
+
+    /**
+     * Tests the landscape orientation in the Log-In activity.
+     * @throws Exception
+     */
+    public void testOrientation() throws Exception {
 
         solo.enterText(0, "alexp8@uw.edu");
-        assertEquals("alexp8@uw.edu", email_field.getText());
         solo.enterText(1, "123456");
-        assertEquals("123456", email_field.getText());
 
+        solo.setActivityOrientation(Solo.LANDSCAPE);
 
-    }
-
-    public void testEquals() throws Exception {
-
-    }
-
-    public void testBoolean() throws Exception {
-        assertTrue(true);
+        boolean textFound = solo.searchText("alexp8@uw.edu");
+        assertEquals("email found", textFound);
+        textFound = solo.searchText("123456");
+        assertEquals("password inputted", textFound);
     }
 }
