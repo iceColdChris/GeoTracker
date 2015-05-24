@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker;
+package com.uwt.strugglebus.geotracker.Controller;
 
 import android.accounts.Account;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.uwt.strugglebus.geotracker.Controller.MyAccount;
+import com.uwt.strugglebus.geotracker.R;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.text.Html;
 
 import com.uwt.strugglebus.geotracker.R;
 
@@ -130,7 +131,7 @@ public class Eula {
                     String title = mActivity.getString(R.string.app_name) + " v" + mVersionInfo.versionName;
                     mAlertBuilder = new AlertDialog.Builder(mActivity)
                             .setTitle(title)
-                            .setMessage(agreement)
+                            .setMessage(Html.fromHtml(agreement))
                             .setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
 
                                 @Override

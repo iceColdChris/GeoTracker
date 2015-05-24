@@ -27,6 +27,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
@@ -85,7 +87,7 @@ public class Registration extends ActionBarActivity {
                     mPassword = password;
                 }
 
-                /*
+
                 //check to see if there is valid input TODO: test this if statement
                 //!email.equals(null) && !password.equals(null) && !confirm_password.equals(null)
                 //&& !answer.equals(null) && confirm_password.equals(password)
@@ -115,8 +117,8 @@ public class Registration extends ActionBarActivity {
                     editor.commit();
                     //switch to eula
                     Eula eula = new Eula(mActivity);
-                    eula.show();
-                }*/
+                  //  eula.show();
+                }
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {

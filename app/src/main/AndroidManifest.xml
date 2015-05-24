@@ -71,9 +71,10 @@
             android:label="@string/title_activity_trajectories" >
         </activity>
         <activity
-            android:name=".ChangeSample"
+            android:name=".Controller.ChangeSample"
             android:label="@string/title_activity_change_sample" >
         </activity>
+
     </application>
 
 </manifest>
