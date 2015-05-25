@@ -1,11 +1,10 @@
 package com.uwt.strugglebus.geotracker.Controller;
 
-import android.accounts.Account;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.uwt.strugglebus.geotracker.Controller.MyAccount;
 import com.uwt.strugglebus.geotracker.R;
 
 /**
@@ -46,7 +44,6 @@ public class ChangeSample extends ActionBarActivity {
 
         final SeekBar geoRate = (SeekBar) findViewById(R.id.geo_bar);
         final TextView geoRateText = (TextView) findViewById(R.id.rate);
-
         if(current > -1) {
             geoRate.setProgress(current - geoMin);
             geoRateText.setText(" " + (current) + " seconds");

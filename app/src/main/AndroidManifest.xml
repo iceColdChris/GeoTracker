@@ -75,6 +75,10 @@
             android:label="@string/title_activity_change_sample" >
         </activity>
 
+        <service
+            android:name=".Controller.Tracker2"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
