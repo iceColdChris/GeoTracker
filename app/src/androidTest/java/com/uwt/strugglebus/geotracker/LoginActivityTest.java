@@ -51,15 +51,12 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
         solo.unlockScreen();
         solo.assertCurrentActivity("Expected Log-In activity", "LoginActivity");
 
-        Button accept_button = (Button) solo.getView(R.id.login);
-        Button forgot_button = (Button) solo.getView(R.id.forgot_password);
-
         solo.enterText(0, "alexp8@uw.edu");
         boolean textFound = solo.searchText("alexp8@uw.edu");
-        assertEquals("email found", textFound);
+        assertTrue("email found", textFound);
         solo.enterText(1, "123456");
         textFound = solo.searchText("123456");
-        assertEquals("password inputted", "123456");
+        assertTrue("password inputted", textFound);
 
 
     }
@@ -72,14 +69,14 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
 
         //go to the reset password activity, then go back to log-in
         final Button forgot_button = (Button) solo.getView(R.id.forgot_password);
-        solo.clickOnButton(solo.getString(forgot_button.toString()));
+        solo.clickOnView(forgot_button);
         solo.assertCurrentActivity("wrong activity", ResetPassword.class);
         solo.goBack();
         solo.assertCurrentActivity("wrong activity", LoginActivity.class);
 
         //log in and go to my account
         final Button accept_button = (Button) solo.getView(R.id.login);
-        solo.clickOnButton(solo.getString(accept_button.toString()));
+        solo.clickOnView(accept_button);
         solo.assertCurrentActivity("wrong activity", MyAccount.class);
         solo.goBack();
         solo.assertCurrentActivity("wrong activity", LoginActivity.class);
@@ -98,8 +95,9 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
         solo.setActivityOrientation(Solo.LANDSCAPE);
 
         boolean textFound = solo.searchText("alexp8@uw.edu");
-        assertEquals("email found", textFound);
+        assertTrue("email found", textFound);
         textFound = solo.searchText("123456");
-        assertEquals("password inputted", textFound);
+        assertTrue("password inputted", textFound);
+        solo.setActivityOrientation(Solo.PORTRAIT);
     }
 }

@@ -47,10 +47,22 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
         solo.unlockScreen();
         solo.assertCurrentActivity("Expected Registration activity", "Registration");
 
+        solo.enterText(0, "alexp8@uw.edu");
+        boolean textFound = solo.searchText("alexp8@uw.edu");
+        assertEquals("email found", textFound);
+        solo.enterText(1, "123456");
+        textFound = solo.searchText("123456");
+        assertEquals("password inputted", "123456");
+        solo.enterText(2, "123456");
+        textFound = solo.searchText("123456");
+        assertEquals("confirmation password inputted", "123456");
+        solo.enterText(3, "Germany");
+        textFound = solo.searchText("Germany");
+        assertEquals("security answer inputted", "Germany");
 
 
 
-    }
+       }
 
     /**
      * Tests the buttons in the Registration activity.
@@ -58,7 +70,8 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
      */
     public void testButtons() throws Exception {
 
-
+        Button register_button = (Button) solo.getView(R.id.reg_accept);
+        Button cancel_button = (Button) solo.getView(R.id.reg_cancel);
     }
 
     /**
@@ -67,7 +80,18 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
      */
     public void testOrientation() throws Exception {
 
-        solo.enterText(0, "alexp8@uw.edu");
+        solo.enterText(0, "amp1993@gmail.com");
+        solo.enterText(1, "password");
+        solo.enterText(2, "password");
+        solo.enterText(3, "Seattle");
 
+        solo.setActivityOrientation(Solo.LANDSCAPE);
+
+        boolean textFound = solo.searchText("amp1993@gmail.com");
+        assertEquals("email found", textFound);
+        textFound = solo.searchText("password");
+        assertEquals("password inputted", textFound);
+        textFound = solo.searchText("Seattle");
+        assertEquals("security answer inputted", textFound);
     }
 }
