@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.Controller;
+package com.uwt.strugglebus.geotracker.Model;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -70,8 +70,10 @@ public class Tracker2 extends IntentService implements
      */
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.i("fused", "handle intent");
         if(mGoogleApiClient == null) {
             buildGoogleApiClient();
+            mGoogleApiClient.connect();
         }
         mRequestingLocationUpdates = true;
     }
@@ -86,10 +88,13 @@ public class Tracker2 extends IntentService implements
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+        Log.i("fused", "build google api");
+
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
     }
 
     /**
@@ -103,9 +108,11 @@ public class Tracker2 extends IntentService implements
      * Requests location updates from the FusedLocationApi.
      */
     protected void startLocationUpdates() {
+        Log.i("fused", "starting location updates");
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
     }
+
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -122,17 +129,21 @@ public class Tracker2 extends IntentService implements
 
     @Override
     public void onConnectionSuspended(int i) {
+        Log.i("fused", "connection suspended");
         mGoogleApiClient.connect();
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.i("fused", "location changed" + location.toString());
         mCurrentLocation = location;
+        Log.i("fused", "time from last update" +DateFormat.getTimeInstance().format(new Date()) + ", " + mLastUpdateTime);
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i("fused", "connection failed");
         Log.i("error", "Connection failed: ConnectionResult.getErrorCode() = " + connectionResult.getErrorCode());
 
     }

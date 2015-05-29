@@ -76,7 +76,7 @@
         </activity>
 
         <service
-            android:name=".Controller.Tracker2"
+            android:name=".Model.Tracker2"
             android:exported="false" >
         </service>
     </application>
