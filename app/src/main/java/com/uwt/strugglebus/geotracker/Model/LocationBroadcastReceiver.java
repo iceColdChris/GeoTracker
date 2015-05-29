@@ -19,7 +19,8 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         Toast.makeText(context, "I'm running", Toast.LENGTH_SHORT).show();
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             // Set the alarm here.
-            Tracker.setServiceAlarm(context, true);
+            context.startService(new Intent(context, Tracker2.class));
+            //Tracker.setServiceAlarm(context, true);
         }
     }
 }

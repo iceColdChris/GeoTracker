@@ -81,6 +81,20 @@ public class Tracker extends IntentService {
         }
     }
 
+    public static void setServiceAlarm(Context context, boolean isOn, int interval) {
+        Intent i = new Intent(context, Tracker.class);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        if (isOn) {
+            alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
+                    , interval, pendingIntent);
+        } else {
+            alarmManager.cancel(pendingIntent);
+            pendingIntent.cancel();
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -91,7 +105,7 @@ public class Tracker extends IntentService {
 
         //connect / create local db
         final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE +"(lat REAL,lon REAL, speed REAL, heading REAL, time BIGINT);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE +"(lat REAL,lon REAL, speed REAL, heading REAL, time BIGINT, uid INT);");
 
         // Acquire a reference to the system Location Manager
         final LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
@@ -112,11 +126,7 @@ public class Tracker extends IntentService {
         if (loc != null) {
             Log.w("nsa.gov", loc.toString());
 //            // (lat, lon, speed, heading, time)
-//            String insert = "INSERT INTO " + TABLE + " VALUES(" + loc.getLatitude() + ", " +
-//                    loc.getLongitude() + ", " + loc.getSpeed() + ", " + loc.getBearing()
-//                    + ", " + loc.getTime() + ");";
-//            db.execSQL(insert);
-//            Log.w("sqlTestInsert", insert);
+
 
 //            String delete = "DELETE FROM " + TABLE + " WHERE time=" + loc.getTime() + ";";
 //            db.execSQL(delete);
@@ -130,6 +140,13 @@ public class Tracker extends IntentService {
             String speed = Float.toString(loc.getSpeed()).replace(".", "%2E");
             String bearing = Float.toString(loc.getBearing()).replace(".", "%2E");
 
+            String insert = "INSERT INTO " + TABLE + " VALUES(" + loc.getLatitude() + ", " +
+                    loc.getLongitude() + ", " + loc.getSpeed() + ", " + loc.getBearing()
+                    + ", " + loc.getTime() +", " +  ");";
+            db.execSQL(insert);
+            Log.w("sqlTestInsert", insert);
+
+            //TODO: move into its own service
             DownloadWebPageTask task = new DownloadWebPageTask();
             String url = "http://450.atwebpages.com/logAdd.php?lat=" + lat +
                             "&lon=" + lon +
@@ -152,6 +169,8 @@ public class Tracker extends IntentService {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
+
 
     /*
  * This is a private helper class that is
