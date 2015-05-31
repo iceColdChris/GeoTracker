@@ -36,7 +36,11 @@ public class MyAccount extends ActionBarActivity {
 
     private LocationLog mLocationLog;
     private Tracker2 mTracker;
+    private SharedPreferences mPrefs;
 
+    /**
+     * TODO: COMMENT
+     */
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -63,6 +67,8 @@ public class MyAccount extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPrefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+                Context.MODE_PRIVATE);
         mLocationLog = new LocationLog();
         setContentView(R.layout.activity_my_account);
 
@@ -82,13 +88,12 @@ public class MyAccount extends ActionBarActivity {
                 PackageManager.DONT_KILL_APP);
         //Tracker.setServiceAlarm(getApplicationContext(), true);
 
-        final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
-                Context.MODE_PRIVATE);
-        int uid = prefs.getInt("uid", -1);
-        String mEmail = prefs.getString(getString(R.string.email), "email");
-        String mPass = prefs.getString(getString(R.string.password), "password");
-        String mQuestion = prefs.getString(getString(R.string.security_q), "question");
-        String mAnswer = prefs.getString(getString(R.string.security_a), "answer");
+
+        int uid = mPrefs.getInt("uid", -1);
+        String mEmail = mPrefs.getString(getString(R.string.email), "email");
+        String mPass = mPrefs.getString(getString(R.string.password), "password");
+        String mQuestion = mPrefs.getString(getString(R.string.security_q), "question");
+        String mAnswer = mPrefs.getString(getString(R.string.security_a), "answer");
 
         email.setText(mEmail);
 
@@ -112,6 +117,7 @@ public class MyAccount extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Tracker2 track = MyServices.getTracker();
+
                 if(track != null) {
                     Toast.makeText(getApplicationContext(), track.toString(), Toast.LENGTH_LONG).show();
                 } else if(mTracker != null) {
@@ -151,11 +157,10 @@ public class MyAccount extends ActionBarActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = prefs.edit();
+                SharedPreferences.Editor editor = mPrefs.edit();
                 editor.putString("userID", null);
                 editor.apply();
-                Tracker.setServiceAlarm(getApplicationContext(), false);
-
+                mTracker.stopLocationUpdates();
                 Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 finish();

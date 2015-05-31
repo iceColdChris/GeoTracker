@@ -1,7 +1,9 @@
 package com.uwt.strugglebus.geotracker.Model;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Binder;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.uwt.strugglebus.geotracker.R;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -59,6 +62,7 @@ public class Tracker2 extends IntentService implements
     protected String mLastUpdateTime;
 
     private final IBinder mBinder = new LocalBinder();
+    private SharedPreferences mPrefs;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -75,6 +79,8 @@ public class Tracker2 extends IntentService implements
      */
     @Override
     protected void onHandleIntent(Intent intent) {
+        mPrefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+                Context.MODE_PRIVATE);
         Log.i("fused", "handle intent");
         if(mGoogleApiClient == null) {
             buildGoogleApiClient();
@@ -98,21 +104,21 @@ public class Tracker2 extends IntentService implements
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        updateState();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
     }
 
     /**
      * Removes location updates from the FusedLocationApi.
      */
-    protected void stopLocationUpdates() {
+    public void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     /**
      * Requests location updates from the FusedLocationApi.
      */
-    protected void startLocationUpdates() {
+    public void startLocationUpdates() {
         Log.i("fused", "starting location updates");
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
@@ -155,10 +161,37 @@ public class Tracker2 extends IntentService implements
 
     /**
      * Change the location update time
-     * @param interval time until next update
+     * @param interval time until next update in seconds
      */
-    public void setInterval(long interval) {
-        Log.i("fused", "change interval");
+    public void setInterval(int interval) {
+        SharedPreferences.Editor edit = mPrefs.edit();
+        edit.putInt("geoRate", interval);
+        edit.apply();
+        boolean isOn = mPrefs.getBoolean("geoOn", false);
+        stopLocationUpdates();
+        mLocationRequest.setFastestInterval(interval * 1000);
+        mLocationRequest.setInterval(interval * 2000);
+        if(isOn) {
+            //restart location request
+            startLocationUpdates();
+        }
+    }
+
+    /**
+     * based on settings in shared preferences starts / stops the service and adjusts the interval
+     */
+    public void updateState() {
+        boolean isOn = mPrefs.getBoolean("geoOn", false);
+        int geoRate = mPrefs.getInt("geoRate", -1);
+        if(mGoogleApiClient != null  && mGoogleApiClient.isConnected()) {
+            stopLocationUpdates();
+        }
+        mLocationRequest.setFastestInterval(geoRate * 1000);
+        mLocationRequest.setInterval(geoRate * 2000);
+        if(isOn && mGoogleApiClient != null  && mGoogleApiClient.isConnected()) {
+            //restart location request
+            startLocationUpdates();
+        }
     }
 
     @Override

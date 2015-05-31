@@ -120,6 +120,7 @@ public class ChangeSample extends ActionBarActivity {
 
         Button accept = (Button) findViewById(R.id.accept_changes);
         Button back = (Button) findViewById(R.id.back);
+
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,6 +130,7 @@ public class ChangeSample extends ActionBarActivity {
                 edit.putInt("geoRate", geoRate.getProgress() + geoMin);
                 edit.putInt("pushRate", pushRate.getProgress() + 1);
                 edit.apply();
+                MyServices.getTracker().setInterval(geoRate.getProgress() + geoMin);
                 Intent account = new Intent(getApplicationContext(), MyAccount.class);
                 startActivity(account);
                 finish();

@@ -1,7 +1,7 @@
 package com.uwt.strugglebus.geotracker.Model;
 
 /**
- * Created by Josh on 5/30/2015.
+ * Holds a static references to app services that are needed in multiple activities
  */
 public class MyServices {
     private static Tracker2 mTracker = null;
