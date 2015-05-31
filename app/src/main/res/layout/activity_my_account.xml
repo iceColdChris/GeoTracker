@@ -27,6 +27,11 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/stop_tracker"
+            android:id="@+id/toggle_tracker"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/set_zones"
             android:id="@+id/set_zones"/>
         <Button

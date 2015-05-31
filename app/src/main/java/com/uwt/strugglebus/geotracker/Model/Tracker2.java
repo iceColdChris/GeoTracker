@@ -3,7 +3,9 @@ package com.uwt.strugglebus.geotracker.Model;
 import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Binder;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -19,7 +21,8 @@ import java.util.Date;
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  * <p/>
- * TODO: Customize class - update intent actions, extra parameters and static
+ * TODO: On start pull from shared prefs
+ * TODO: ChangeRate()
  * helper methods.
  */
 public class Tracker2 extends IntentService implements
@@ -54,6 +57,8 @@ public class Tracker2 extends IntentService implements
      * Time when the location was updated represented as a String.
      */
     protected String mLastUpdateTime;
+
+    private final IBinder mBinder = new LocalBinder();
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -145,6 +150,27 @@ public class Tracker2 extends IntentService implements
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.i("fused", "connection failed");
         Log.i("error", "Connection failed: ConnectionResult.getErrorCode() = " + connectionResult.getErrorCode());
+
+    }
+
+    /**
+     * Change the location update time
+     * @param interval time until next update
+     */
+    public void setInterval(long interval) {
+        Log.i("fused", "change interval");
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
+
+    public class LocalBinder extends Binder {
+
+        public Tracker2 getService(){
+            return Tracker2.this;
+        }
 
     }
 }

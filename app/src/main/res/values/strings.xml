@@ -118,5 +118,7 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="server_push">Update to Server Every </string>
     <string name="push_manual">Update to server manually only</string>
     <string name="push_power">Only update to server when connected to power</string>
+    <string name="start_tracker">Start Tracker</string>
+    <string name="stop_tracker">Stop Tracker</string>
 
 </resources>

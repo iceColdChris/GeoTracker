@@ -68,7 +68,8 @@ public class LoginActivity extends ActionBarActivity {
 //        if(prefs.getBoolean("eula_accept", false)) {
 //            Tracker.setServiceAlarm(mContext, true);
 //        }
-        getApplicationContext().startService(new Intent(getApplicationContext(), Tracker2.class));
+
+       // getApplicationContext().startService(new Intent(getApplicationContext(), Tracker2.class));
 
         String uid = prefs.getString("userID", null);
         if(uid != null) { //user exists in shared prefs

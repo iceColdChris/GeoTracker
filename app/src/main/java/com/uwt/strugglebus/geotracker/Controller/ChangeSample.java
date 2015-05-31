@@ -12,7 +12,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.uwt.strugglebus.geotracker.Model.MyServices;
+import com.uwt.strugglebus.geotracker.Model.Tracker2;
 import com.uwt.strugglebus.geotracker.R;
 
 /**
@@ -140,6 +143,19 @@ public class ChangeSample extends ActionBarActivity {
             }
         });
 
+        Button test = (Button) findViewById(R.id.test_tracker);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tracker2 track = MyServices.getTracker();
+                if(track != null) {
+                    Toast.makeText(getApplicationContext(), track.toString(), Toast.LENGTH_LONG).show();
+                    track.setInterval(1000000000);
+                } else {
+                    Toast.makeText(getApplicationContext(), "nulltracker" , Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
 

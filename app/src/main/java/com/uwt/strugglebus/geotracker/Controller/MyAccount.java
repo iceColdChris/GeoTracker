@@ -3,19 +3,26 @@ package com.uwt.strugglebus.geotracker.Controller;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
+import com.uwt.strugglebus.geotracker.Model.MyServices;
 import com.uwt.strugglebus.geotracker.Model.Tracker;
 import com.uwt.strugglebus.geotracker.Model.LocationBroadcastReceiver;
+import com.uwt.strugglebus.geotracker.Model.Tracker2;
+import com.uwt.strugglebus.geotracker.Model.Tracker2.LocalBinder;
 import com.uwt.strugglebus.geotracker.R;
 
 /**
@@ -28,6 +35,23 @@ import com.uwt.strugglebus.geotracker.R;
 public class MyAccount extends ActionBarActivity {
 
     private LocationLog mLocationLog;
+    private Tracker2 mTracker;
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Tracker2.LocalBinder binder = (Tracker2.LocalBinder) service;
+            mTracker = binder.getService();
+            MyServices.setTracker(mTracker);
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
 
     /**
      * {@inheritDoc}
@@ -41,6 +65,12 @@ public class MyAccount extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         mLocationLog = new LocationLog();
         setContentView(R.layout.activity_my_account);
+
+        //create and bind service
+        Intent i = new Intent(this, Tracker2.class);
+        getApplicationContext().startService(i);
+        getApplicationContext().bindService(i, mConnection, Context.BIND_AUTO_CREATE);
+
         TextView email = (TextView) findViewById(R.id.account_email);
 
         ComponentName receiver = new ComponentName(getApplicationContext(), LocationBroadcastReceiver.class);
@@ -50,7 +80,7 @@ public class MyAccount extends ActionBarActivity {
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP);
-        Tracker.setServiceAlarm(getApplicationContext(), true);
+        //Tracker.setServiceAlarm(getApplicationContext(), true);
 
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 Context.MODE_PRIVATE);
@@ -68,6 +98,7 @@ public class MyAccount extends ActionBarActivity {
         Button changePass = (Button) findViewById(R.id.change_pass);
         Button logout = (Button) findViewById(R.id.logout);
         Button sample = (Button) findViewById(R.id.sample_rate);
+        Button toggleTracker = (Button) findViewById(R.id.toggle_tracker);
 
         map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +106,19 @@ public class MyAccount extends ActionBarActivity {
                 Intent map = new Intent(getApplicationContext(), MapActivity.class);
                 map.putExtra("locations", mLocationLog);
                 startActivity(map);
+            }
+        });
+        toggleTracker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tracker2 track = MyServices.getTracker();
+                if(track != null) {
+                    Toast.makeText(getApplicationContext(), track.toString(), Toast.LENGTH_LONG).show();
+                } else if(mTracker != null) {
+                    Toast.makeText(getApplicationContext(), mTracker.toString(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "nulltracker" , Toast.LENGTH_LONG).show();
+                }
             }
         });
         traject.setOnClickListener(new View.OnClickListener() {
