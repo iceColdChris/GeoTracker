@@ -183,14 +183,16 @@ public class Tracker2 extends IntentService implements
     public void updateState() {
         boolean isOn = mPrefs.getBoolean("geoOn", false);
         int geoRate = mPrefs.getInt("geoRate", -1);
-        if(mGoogleApiClient != null  && mGoogleApiClient.isConnected()) {
-            stopLocationUpdates();
-        }
-        mLocationRequest.setFastestInterval(geoRate * 1000);
-        mLocationRequest.setInterval(geoRate * 2000);
-        if(isOn && mGoogleApiClient != null  && mGoogleApiClient.isConnected()) {
-            //restart location request
-            startLocationUpdates();
+        if(geoRate >= 0) {
+            if(mGoogleApiClient != null  && mGoogleApiClient.isConnected()) {
+                stopLocationUpdates();
+            }
+            mLocationRequest.setFastestInterval(geoRate * 1000);
+            mLocationRequest.setInterval(geoRate * 2000);
+            if(isOn && mGoogleApiClient != null  && mGoogleApiClient.isConnected()) {
+                //restart location request
+                startLocationUpdates();
+            }
         }
     }
 

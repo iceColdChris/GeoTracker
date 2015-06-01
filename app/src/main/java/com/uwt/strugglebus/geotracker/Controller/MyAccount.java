@@ -69,6 +69,7 @@ public class MyAccount extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         mPrefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 Context.MODE_PRIVATE);
+
         mLocationLog = new LocationLog();
         setContentView(R.layout.activity_my_account);
 
