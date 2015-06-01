@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.robotium.solo.Solo;
 import com.uwt.strugglebus.geotracker.Controller.LoginActivity;
 import com.uwt.strugglebus.geotracker.Controller.MyAccount;
+import com.uwt.strugglebus.geotracker.Controller.Registration;
 import com.uwt.strugglebus.geotracker.Controller.ResetPassword;
 
 /**
@@ -31,6 +32,10 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
     public void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
+        solo.unlockScreen();
+        solo.assertCurrentActivity("Expected Log-In activity", "LoginActivity");
+
+
     }
 
     /**
@@ -47,9 +52,9 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
      * Test the text fields in the Log-In activity.
      * @throws Exception
      */
-    public void testTextFields() throws Exception {
-        solo.unlockScreen();
-        solo.assertCurrentActivity("Expected Log-In activity", "LoginActivity");
+    public void testTextFields() {
+        solo.waitForActivity(LoginActivity.class);
+        solo.assertCurrentActivity("Wrong activity", LoginActivity.class);
 
         solo.enterText(0, "alexp8@uw.edu");
         boolean textFound = solo.searchText("alexp8@uw.edu");
@@ -57,8 +62,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
         solo.enterText(1, "123456");
         textFound = solo.searchText("123456");
         assertTrue("password inputted", textFound);
-
-
     }
 
     /**
@@ -66,6 +69,19 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
      * @throws Exception
      */
     public void testButtons() {
+        solo.assertCurrentActivity("Wrong activity", LoginActivity.class);
+
+        //log in with bad information and go try to my account
+        final Button login_button = (Button) solo.getView(R.id.login);
+        solo.clickOnView(login_button);
+        solo.assertCurrentActivity("wrong activity", LoginActivity.class);
+
+        //go to registration
+        final Button register_button = (Button) solo.getView(R.id.register);
+        solo.clickOnView(register_button);
+        solo.waitForActivity(Registration.class);
+        solo.assertCurrentActivity("wrong activity", Registration.class);
+        solo.goBack();
 
         //go to the reset password activity, then go back to log-in
         final Button forgot_button = (Button) solo.getView(R.id.forgot_password);
@@ -76,24 +92,29 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
         solo.waitForActivity(LoginActivity.class);
         solo.assertCurrentActivity("wrong activity", LoginActivity.class);
 
-
-        //log in and go to my account
-        final Button accept_button = (Button) solo.getView(R.id.login);
-        solo.clickOnView(accept_button);
+        //enter the correct information then go to my account
+        solo.enterText(0, "zhirzh42@yahoo.com");
+        solo.enterText(1, "123456");
+        solo.clickOnView(login_button);
         solo.waitForActivity(MyAccount.class);
-        solo.assertCurrentActivity("wrong activity", MyAccount.class);
-        solo.goBack();
+
+        //log out of the account
+        final Button logout_button = (Button) solo.getView(R.id.logout);
+        solo.clickOnView(logout_button);
         solo.waitForActivity(LoginActivity.class);
         solo.assertCurrentActivity("wrong activity", LoginActivity.class);
-        
+
+
+        //done
     }
 
     /**
      * Tests the landscape orientation in the Log-In activity.
      * @throws Exception
      */
-    public void testOrientation() throws Exception {
+    public void testOrientation() {
 
+        solo.assertCurrentActivity("Wrong activity", LoginActivity.class);
         solo.enterText(0, "alexp8@uw.edu");
         solo.enterText(1, "123456");
 

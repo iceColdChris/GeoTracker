@@ -43,9 +43,9 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
      * Test the text fields in the Registration activity.
      * @throws Exception
      */
-    public void testTextFields() throws Exception {
+    public void testTextFields() {
         solo.unlockScreen();
-        solo.assertCurrentActivity("Expected Registration activity", "Registration");
+        solo.assertCurrentActivity("Expected Registration activity", Registration.class);
 
         solo.enterText(0, "alexp8@uw.edu");
         boolean textFound = solo.searchText("alexp8@uw.edu");

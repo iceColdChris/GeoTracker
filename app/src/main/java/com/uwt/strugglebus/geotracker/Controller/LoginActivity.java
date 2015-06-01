@@ -118,7 +118,6 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View v){
                 Intent register = new Intent(getApplicationContext(), Registration.class);
                 startActivity(register);
-                finish();
             }
         });
 
@@ -126,7 +125,6 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Intent forgot = new Intent(getApplicationContext(), ResetPassword.class);
                 startActivity(forgot);
-                finish();
             }
         });
 //        TODO - Finish implementing or remove if not needed
@@ -224,7 +222,6 @@ public class LoginActivity extends ActionBarActivity {
                         System.out.println(obj.getString("userid"));
                         Intent account = new Intent(mContext, MyAccount.class);
                         startActivity(account);
-                        mActivity.finish();
                     } else {
                         Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
