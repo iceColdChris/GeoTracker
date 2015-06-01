@@ -144,20 +144,6 @@ public class ChangeSample extends ActionBarActivity {
                 finish();
             }
         });
-
-        Button test = (Button) findViewById(R.id.test_tracker);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Tracker2 track = MyServices.getTracker();
-                if(track != null) {
-                    Toast.makeText(getApplicationContext(), track.toString(), Toast.LENGTH_LONG).show();
-                    track.setInterval(1000000000);
-                } else {
-                    Toast.makeText(getApplicationContext(), "nulltracker" , Toast.LENGTH_LONG).show();
-                }
-            }
-        });
     }
 
 
