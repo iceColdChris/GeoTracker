@@ -1,4 +1,6 @@
-package com.uwt.strugglebus.geotracker.Model;
+package com.uwt.strugglebus.geotracker.Services;
+
+import com.uwt.strugglebus.geotracker.Model.Tracker2;
 
 /**
  * Holds a static references to app services that are needed in multiple activities

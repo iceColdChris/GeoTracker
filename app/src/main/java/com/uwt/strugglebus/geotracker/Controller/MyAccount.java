@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.Model.LocationBroadcastReceiver;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
-import com.uwt.strugglebus.geotracker.Model.MyServices;
+import com.uwt.strugglebus.geotracker.Services.MyServices;
 import com.uwt.strugglebus.geotracker.Model.Tracker2;
 import com.uwt.strugglebus.geotracker.R;
 

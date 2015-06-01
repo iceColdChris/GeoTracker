@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.Controller;
+package com.uwt.strugglebus.geotracker.Services;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
