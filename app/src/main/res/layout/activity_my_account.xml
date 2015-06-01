@@ -12,7 +12,7 @@
         <TextView android:text="@string/email" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/account_email"
-            android:textSize="18pt"/>
+            android:textSize="16pt"/>
 
         <Button
             android:layout_width="match_parent"

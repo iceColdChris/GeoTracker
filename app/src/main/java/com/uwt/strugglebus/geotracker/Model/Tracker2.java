@@ -71,6 +71,19 @@ public class Tracker2 extends IntentService implements
         super("Tracker2");
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        mTracking = true;
+        mPrefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+                Context.MODE_PRIVATE);
+        Log.i("fused", "handle intent");
+        if(mGoogleApiClient == null) {
+            buildGoogleApiClient();
+            mGoogleApiClient.connect();
+        }
+        mRequestingLocationUpdates = true;
+        return START_STICKY;
+    }
 
     /**
      * {@inheritDoc}
@@ -112,6 +125,7 @@ public class Tracker2 extends IntentService implements
      * Removes location updates from the FusedLocationApi.
      */
     public void stopLocationUpdates() {
+        Log.i("fused", "stopping location services");
         mPrefs.edit().putBoolean("geoOn", false).apply();
         mTracking = false;
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -221,10 +235,14 @@ public class Tracker2 extends IntentService implements
     }
 
     public class LocalBinder extends Binder {
-
         public Tracker2 getService(){
             return Tracker2.this;
         }
+    }
 
+    @Override
+    public void onDestroy(){
+        Log.i("fused", "Service go by by");
+        super.onDestroy();
     }
 }
