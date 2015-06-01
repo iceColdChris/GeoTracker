@@ -46,6 +46,6 @@ public class NetworkTest {
             return false; //The phone doesnt have internet access
         }
 
-        return false; //The phone doesnt have internet access
+        return false; //The phone doesn't have internet access
     }
 }

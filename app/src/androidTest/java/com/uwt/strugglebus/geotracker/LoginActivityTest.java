@@ -65,22 +65,27 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
      * Tests the buttons in the Log-In activity.
      * @throws Exception
      */
-    public void testButtons() throws Exception {
+    public void testButtons() {
 
         //go to the reset password activity, then go back to log-in
         final Button forgot_button = (Button) solo.getView(R.id.forgot_password);
         solo.clickOnView(forgot_button);
+        solo.waitForActivity(ResetPassword.class);
         solo.assertCurrentActivity("wrong activity", ResetPassword.class);
         solo.goBack();
+        solo.waitForActivity(LoginActivity.class);
         solo.assertCurrentActivity("wrong activity", LoginActivity.class);
+
 
         //log in and go to my account
         final Button accept_button = (Button) solo.getView(R.id.login);
         solo.clickOnView(accept_button);
+        solo.waitForActivity(MyAccount.class);
         solo.assertCurrentActivity("wrong activity", MyAccount.class);
         solo.goBack();
+        solo.waitForActivity(LoginActivity.class);
         solo.assertCurrentActivity("wrong activity", LoginActivity.class);
-
+        
     }
 
     /**
