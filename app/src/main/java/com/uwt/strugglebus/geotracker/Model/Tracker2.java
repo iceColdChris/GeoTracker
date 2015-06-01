@@ -24,8 +24,7 @@ import java.util.Date;
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  * <p/>
- * TODO: On start pull from shared prefs
- * TODO: ChangeRate()
+ * TODO: Comments
  * helper methods.
  */
 public class Tracker2 extends IntentService implements
@@ -62,6 +61,7 @@ public class Tracker2 extends IntentService implements
 
     private final IBinder mBinder = new LocalBinder();
     private SharedPreferences mPrefs;
+    private boolean mTracking;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -78,6 +78,7 @@ public class Tracker2 extends IntentService implements
      */
     @Override
     protected void onHandleIntent(Intent intent) {
+        mTracking = true;
         mPrefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 Context.MODE_PRIVATE);
         Log.i("fused", "handle intent");
@@ -111,6 +112,8 @@ public class Tracker2 extends IntentService implements
      * Removes location updates from the FusedLocationApi.
      */
     public void stopLocationUpdates() {
+        mPrefs.edit().putBoolean("geoOn", false).apply();
+        mTracking = false;
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
@@ -119,6 +122,8 @@ public class Tracker2 extends IntentService implements
      */
     public void startLocationUpdates() {
         Log.i("fused", "starting location updates");
+        mPrefs.edit().putBoolean("geoOn", true).apply();
+        mTracking = true;
         if(mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
@@ -199,6 +204,20 @@ public class Tracker2 extends IntentService implements
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
+    }
+
+    public void toggleTracking() {
+        if(mTracking) {
+            mTracking = false;
+            stopLocationUpdates();
+        } else {
+            mTracking = true;
+            startLocationUpdates();
+        }
+    }
+
+    public boolean isTracking(){
+        return mTracking;
     }
 
     public class LocalBinder extends Binder {

@@ -103,7 +103,7 @@ public class MyAccount extends ActionBarActivity {
         Button changePass = (Button) findViewById(R.id.change_pass);
         Button logout = (Button) findViewById(R.id.logout);
         Button sample = (Button) findViewById(R.id.sample_rate);
-        Button toggleTracker = (Button) findViewById(R.id.toggle_tracker);
+        final Button toggleTracker = (Button) findViewById(R.id.toggle_tracker);
 
         map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +119,16 @@ public class MyAccount extends ActionBarActivity {
                 Tracker2 track = MyServices.getTracker();
 
                 if(track != null) {
-                    Toast.makeText(getApplicationContext(), track.toString(), Toast.LENGTH_LONG).show();
+                    track.toggleTracking();
+                    String s = "on";
+                    if (track.isTracking()) {
+                        toggleTracker.setText(R.string.stop_tracker);
+                    } else {
+                        s = "off";
+                        toggleTracker.setText(R.string.start_tracker);
+
+                    }
+                    Toast.makeText(getApplicationContext(), "Tracker is now " + s, Toast.LENGTH_LONG).show();
                 }
             }
         });
