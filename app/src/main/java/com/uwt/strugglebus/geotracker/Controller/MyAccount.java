@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,12 +16,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.uwt.strugglebus.geotracker.Model.LocationBroadcastReceiver;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.Model.MyServices;
-import com.uwt.strugglebus.geotracker.Model.Tracker;
-import com.uwt.strugglebus.geotracker.Model.LocationBroadcastReceiver;
 import com.uwt.strugglebus.geotracker.Model.Tracker2;
-import com.uwt.strugglebus.geotracker.Model.Tracker2.LocalBinder;
 import com.uwt.strugglebus.geotracker.R;
 
 /**
@@ -72,7 +69,9 @@ public class MyAccount extends ActionBarActivity {
 
         mLocationLog = new LocationLog();
         setContentView(R.layout.activity_my_account);
-
+        SharedPreferences.Editor edit = mPrefs.edit();
+        edit.putBoolean("geoOn", true);
+        edit.apply();
         //create and bind service
         Intent i = new Intent(this, Tracker2.class);
         getApplicationContext().startService(i);
@@ -90,11 +89,11 @@ public class MyAccount extends ActionBarActivity {
         //Tracker.setServiceAlarm(getApplicationContext(), true);
 
 
-        int uid = mPrefs.getInt("uid", -1);
+        //int uid = mPrefs.getInt("uid", -1);
         String mEmail = mPrefs.getString(getString(R.string.email), "email");
-        String mPass = mPrefs.getString(getString(R.string.password), "password");
-        String mQuestion = mPrefs.getString(getString(R.string.security_q), "question");
-        String mAnswer = mPrefs.getString(getString(R.string.security_a), "answer");
+        //String mPass = mPrefs.getString(getString(R.string.password), "password");
+        //String mQuestion = mPrefs.getString(getString(R.string.security_q), "question");
+        //String mAnswer = mPrefs.getString(getString(R.string.security_a), "answer");
 
         email.setText(mEmail);
 
@@ -121,10 +120,6 @@ public class MyAccount extends ActionBarActivity {
 
                 if(track != null) {
                     Toast.makeText(getApplicationContext(), track.toString(), Toast.LENGTH_LONG).show();
-                } else if(mTracker != null) {
-                    Toast.makeText(getApplicationContext(), mTracker.toString(), Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "nulltracker" , Toast.LENGTH_LONG).show();
                 }
             }
         });

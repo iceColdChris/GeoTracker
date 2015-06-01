@@ -12,10 +12,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.Model.MyServices;
-import com.uwt.strugglebus.geotracker.Model.Tracker2;
 import com.uwt.strugglebus.geotracker.R;
 
 /**

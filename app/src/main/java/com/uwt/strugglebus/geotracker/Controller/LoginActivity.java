@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.uwt.strugglebus.geotracker.Model.Tracker2;
 import com.uwt.strugglebus.geotracker.R;
 
 import org.apache.http.HttpResponse;
@@ -26,8 +25,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
