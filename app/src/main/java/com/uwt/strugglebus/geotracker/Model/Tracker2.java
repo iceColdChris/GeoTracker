@@ -21,17 +21,15 @@ import java.text.DateFormat;
 import java.util.Date;
 
 /**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p/>
- * TODO: Comments
- * helper methods.
+ *  Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ *
+ *  Service that uses Google Play Fused Locations services to get user's geo-location every interval
+ *  And saves the location points in a sqli database
  */
 public class Tracker2 extends IntentService implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
-
 
     /**
      * Provides the entry point to Google Play services.
@@ -71,6 +69,10 @@ public class Tracker2 extends IntentService implements
         super("Tracker2");
     }
 
+    /**
+     * {@inheritDoc}
+     * Gets shared prefs, builds the API Client, and starts the service
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mTracking = true;
@@ -87,7 +89,7 @@ public class Tracker2 extends IntentService implements
 
     /**
      * {@inheritDoc}
-     *
+     * Gets shared prefs, builds the API Client, and starts the service
      */
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -115,7 +117,7 @@ public class Tracker2 extends IntentService implements
         Log.i("fused", "build google api");
 
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS * 2);
         mLocationRequest.setFastestInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         updateState();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -145,6 +147,10 @@ public class Tracker2 extends IntentService implements
     }
 
 
+    /**
+     * {@inheritDoc}
+     * When onConnected message sent, if requesting locations, start location updates
+     */
     @Override
     public void onConnected(Bundle bundle) {
         Log.i("fused", "Connected to google play");
@@ -152,18 +158,25 @@ public class Tracker2 extends IntentService implements
             mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         }
-
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * If connection is suspended try to reconnect
+     */
     @Override
     public void onConnectionSuspended(int i) {
         Log.i("fused", "connection suspended");
         mGoogleApiClient.connect();
     }
 
+    /**
+     * {@inheritDoc}
+     * update current location and last update time when the location is changed
+     */
     @Override
     public void onLocationChanged(Location location) {
         Log.i("fused", "location changed" + location.toString());
@@ -172,6 +185,10 @@ public class Tracker2 extends IntentService implements
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
     }
 
+    /**
+     * {@inheritDoc}
+     * print out error if connection failed
+     */
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.i("fused", "connection failed");
@@ -215,6 +232,10 @@ public class Tracker2 extends IntentService implements
         }
     }
 
+
+    /**
+     * Used to bind this service to an activity
+     */
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -230,19 +251,23 @@ public class Tracker2 extends IntentService implements
         }
     }
 
+    /**
+     * @return is the service currently getting locations
+     */
     public boolean isTracking(){
         return mTracking;
     }
 
+    /**
+     * Binder class used for onBind
+     */
     public class LocalBinder extends Binder {
+
+        /**
+         * @return the Traccker2 service attached to this Binder
+         */
         public Tracker2 getService(){
             return Tracker2.this;
         }
-    }
-
-    @Override
-    public void onDestroy(){
-        Log.i("fused", "Service go by by");
-        super.onDestroy();
     }
 }

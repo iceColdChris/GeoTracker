@@ -30,7 +30,6 @@ public class ChangeSample extends ActionBarActivity {
      *
      * Sets sliders and check boxes to default value, or shared prefs value if it exists
      * If the uses clicks accept and save then the new values are saved in shared prefs
-     * and TODO: updates services
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
