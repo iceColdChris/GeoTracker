@@ -61,6 +61,11 @@ public class Tracker2 extends IntentService implements
     protected Location mCurrentLocation;
 
     /**
+     * Represents the previous geographical location.
+     */
+    protected Location mPrevLocation;
+
+    /**
      * Tracks the status of the location updates request. Value changes when the user presses the
      * Start Updates and Stop Updates buttons.
      */
@@ -199,25 +204,22 @@ public class Tracker2 extends IntentService implements
         Log.i("fused", "time from last update" +DateFormat.getTimeInstance().format(new Date()) + ", " + mLastUpdateTime);
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
 
-
-        final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
-        String insert = "INSERT INTO " + TABLE + " VALUES (" + mCurrentLocation.getLatitude() +
-                ", " + mCurrentLocation.getLongitude() +
-                ", " + mCurrentLocation.getSpeed() +
-                ", " + mCurrentLocation.getBearing() +
-                ", " + (mCurrentLocation.getTime() / 1000) + ");";
-        db.execSQL(insert);
-        Log.w("sqlTestDelete", insert);
-
-//        String delete = "DELETE FROM " + TABLE + " WHERE time BETWEEN " + (mCurrentLocation.getTime() / 1000) +
-//                          " AND " + mCurrentLocation.getTime() / 1000 + ";";
-//        db.execSQL(delete);
-//        Log.w("sqlTestDelete", delete);
-        String uid = mPrefs.getString("userID", "");
-        String lat = Double.toString(mCurrentLocation.getLatitude()).replace(".", "%2E");
-        String lon = Double.toString(mCurrentLocation.getLongitude()).replace(".", "%2E");
-        String speed = Float.toString(mCurrentLocation.getSpeed()).replace(".", "%2E");
-        String bearing = Float.toString(mCurrentLocation.getBearing()).replace(".", "%2E");
+        if (mCurrentLocation != null && mPrevLocation != null &&
+                mCurrentLocation.getLatitude() != mPrevLocation.getLatitude() &&
+                mCurrentLocation.getLongitude() != mPrevLocation.getLongitude()) {
+            String uid = mPrefs.getString("userID", "");
+            final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + "(lat REAL, lon REAL, speed REAL, heading REAL, time BIGINT, uid VARCHAR(50));");
+            String insert = "INSERT INTO " + TABLE + " VALUES (" + mCurrentLocation.getLatitude() +
+                    ", " + mCurrentLocation.getLongitude() +
+                    ", " + mCurrentLocation.getSpeed() +
+                    ", " + mCurrentLocation.getBearing() +
+                    ", " + (mCurrentLocation.getTime() / 1000) +
+                    ", \"" + uid + "\");";
+            db.execSQL(insert);
+            Log.w("sqlTestDelete", insert);
+        }
+        mPrevLocation = mCurrentLocation;
     }
 
     /**

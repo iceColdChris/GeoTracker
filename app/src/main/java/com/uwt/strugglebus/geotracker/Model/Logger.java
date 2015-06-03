@@ -8,16 +8,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
 import com.uwt.strugglebus.geotracker.R;
+import com.uwt.strugglebus.geotracker.Services.UtilityTests;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -28,6 +25,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
 *  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
@@ -40,6 +39,7 @@ public class Logger extends IntentService {
     private static final String DB_NAME = "Trajectories";
     private static final String TABLE = "Locations";
 
+//    private static Context mContext;
 
     private final LocalBinder mBinder = new LocalBinder();
 
@@ -56,21 +56,27 @@ public class Logger extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("Logger", "onStart");
+        commitToWeb();
+        return START_STICKY;
+    }
+
+    public void commitToWeb() {
         final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
+
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
+                , Context.MODE_PRIVATE);
+        String uid = prefs.getString("userID", "");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + "(lat REAL, lon REAL, speed REAL, heading REAL, time BIGINT, uid INT);");
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE + " WHERE uid = \"" + uid + "\";", null);
 
-        Cursor cursor = db.rawQuery("SELECT  FROM " + TABLE + "WHERE ", null);
-
-        if (cursor != null) {
-//            // (lat, lon, speed, heading, time)
-            SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
-                    , Context.MODE_PRIVATE);
-            String uid = prefs.getString("userID", "");
+        if (cursor != null && UtilityTests.isWIFIConnected(getApplicationContext()) && UtilityTests.isCharging(getApplicationContext())) { //TODO: check for power connection
+//          (lat, lon, speed, heading, time, uid)
             String lat, lon, speed, bearing, url;
             long curTime = 0, firstTime = Integer.MAX_VALUE, lastTime = 0;
-            DownloadWebPageTask task = new DownloadWebPageTask();
+            String[] list = new String[cursor.getCount()];
 
             if  (cursor.moveToFirst()) {
+                int i = 0;
                 do {
                     double tempLat = cursor.getDouble(cursor.getColumnIndex("lat"));
                     double tempLon = cursor.getDouble(cursor.getColumnIndex("lon"));
@@ -96,16 +102,20 @@ public class Logger extends IntentService {
                             "&heading=" + bearing +
                             "&timestamp=" + curTime +
                             "&source=" + uid;
-                    task.execute(url);
+                    list[i] = url;
+                    i++;
                 }while (cursor.moveToNext());
             }
+
+            DownloadWebPageTask task = new DownloadWebPageTask();
+            task.execute(list);
 
             String delete = "DELETE FROM " + TABLE + " WHERE time BETWEEN " + firstTime +
                     " AND " + lastTime + ";";
             db.execSQL(delete);
             Log.w("sqlTestDelete", delete);
+            cursor.close();
         }
-        return START_STICKY;
     }
 
 
@@ -121,6 +131,7 @@ public class Logger extends IntentService {
         Intent i = new Intent(context, Tracker.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        mContext = context;
 
         if (isOn) {
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()

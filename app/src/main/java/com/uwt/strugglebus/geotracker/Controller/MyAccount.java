@@ -32,6 +32,8 @@ import com.uwt.strugglebus.geotracker.R;
  */
 public class MyAccount extends ActionBarActivity {
 
+    private static final int HOUR = 3600000;
+
     private LocationLog mLocationLog;
     private Tracker2 mTracker;
     private Logger mLogger;
@@ -43,9 +45,9 @@ public class MyAccount extends ActionBarActivity {
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-                Tracker2.LocalBinder binder = (Tracker2.LocalBinder) service;
-                mTracker = binder.getService();
-                MyServices.setTracker(mTracker);
+            Tracker2.LocalBinder binder = (Tracker2.LocalBinder) service;
+            mTracker = binder.getService();
+            MyServices.setTracker(mTracker);
         }
 
         @Override
@@ -120,11 +122,11 @@ public class MyAccount extends ActionBarActivity {
 
         Button map = (Button) findViewById(R.id.view_map);
         Button traject = (Button) findViewById(R.id.view_traject);
-        Button setZones = (Button) findViewById(R.id.set_zones);
         Button changePass = (Button) findViewById(R.id.change_pass);
         Button logout = (Button) findViewById(R.id.logout);
         Button sample = (Button) findViewById(R.id.sample_rate);
         final Button toggleTracker = (Button) findViewById(R.id.toggle_tracker);
+        Button commitToWeb = (Button) findViewById(R.id.commit_to_web);
 
         map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,18 +140,17 @@ public class MyAccount extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Tracker2 track = MyServices.getTracker();
-                Logger log = MyServices.getLogger();
 
                 if(track != null) {
                     track.toggleTracking();
                     String s = "on";
                     if (track.isTracking()) {
                         toggleTracker.setText(R.string.stop_tracker);
-                        log.setServiceAlarm(getApplicationContext(), true, 3600000);
+                        Logger.setServiceAlarm(getApplicationContext(), true, HOUR);
                     } else {
                         s = "off";
                         toggleTracker.setText(R.string.start_tracker);
-                        log.setServiceAlarm(getApplicationContext(), false, 0);
+                        Logger.setServiceAlarm(getApplicationContext(), false, 0);
                     }
                     Toast.makeText(getApplicationContext(), "Tracker is now " + s, Toast.LENGTH_LONG).show();
                 }
@@ -160,12 +161,6 @@ public class MyAccount extends ActionBarActivity {
             public void onClick(View v) {
                 Intent traject = new Intent(getApplicationContext(), TrajectoryChooser.class);
                 startActivity(traject);
-            }
-        });
-        setZones.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
         changePass.setOnClickListener(new View.OnClickListener() {
@@ -189,10 +184,16 @@ public class MyAccount extends ActionBarActivity {
                 editor.putString("userID", null);
                 editor.apply();
                 mTracker.stopLocationUpdates();
-                mLogger.setServiceAlarm(getApplication(), false, 0);
+                Logger.setServiceAlarm(getApplication(), false, 0);
                 Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 finish();
+            }
+        });
+        commitToWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLogger.commitToWeb();
             }
         });
     }

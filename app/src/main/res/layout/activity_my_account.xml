@@ -32,8 +32,8 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/set_zones"
-            android:id="@+id/set_zones"/>
+            android:text="@string/commit_to_web"
+            android:id="@+id/commit_to_web"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

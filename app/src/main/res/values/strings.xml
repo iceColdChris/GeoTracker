@@ -93,6 +93,7 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="set_zones">Set Recording Zones</string>
     <string name="change_pass">Change Password</string>
     <string name="change_sec_a">Change Security Question or Answer</string>
+    <string name="commit_to_web">Commit To Web Service</string>
     <string name="title_activity_trajectory_chooser" translatable="false">TrajectoryChooser</string>
     <string name="title_activity_change_password" translatable="false">ChangePassword</string>
 
