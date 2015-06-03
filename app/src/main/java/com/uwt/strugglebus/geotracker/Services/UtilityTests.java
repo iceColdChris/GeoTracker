@@ -54,15 +54,25 @@ public class UtilityTests {
     }
 
 
+    /**
+     * Checks the current charging state of the android device.
+     * @param context the context
+     * @return the charging state of the device
+     */
     public static boolean isCharging(Context context) {
         boolean isPlugged= false;
 
         Intent intent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-        isPlugged = plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB;
+
+        //Is the android plugged in?
+        isPlugged = (plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB);
+
+        //Checks for wireless charging in for the S6
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
             isPlugged = isPlugged || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS;
         }
-        return isPlugged;
+
+        return isPlugged;//Returns the plugin state of the android device
     }
 }
