@@ -4,6 +4,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
 import com.robotium.solo.Solo;
+import com.uwt.strugglebus.geotracker.Controller.LoginActivity;
 import com.uwt.strugglebus.geotracker.Controller.MyAccount;
 import com.uwt.strugglebus.geotracker.Controller.Registration;
 
@@ -27,6 +28,8 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
     public void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
+        solo.unlockScreen();
+        solo.assertCurrentActivity("Expected Registration activity", Registration.class);
     }
 
     /**
@@ -44,25 +47,20 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
      * @throws Exception
      */
     public void testTextFields() {
-        solo.unlockScreen();
-        solo.assertCurrentActivity("Expected Registration activity", Registration.class);
 
         solo.enterText(0, "alexp8@uw.edu");
         boolean textFound = solo.searchText("alexp8@uw.edu");
-        assertEquals("email found", textFound);
+        assertTrue("email found", textFound);
         solo.enterText(1, "123456");
         textFound = solo.searchText("123456");
-        assertEquals("password inputted", "123456");
+        assertTrue("password inputted", textFound);
         solo.enterText(2, "123456");
         textFound = solo.searchText("123456");
-        assertEquals("confirmation password inputted", "123456");
+        assertTrue("confirmation password inputted", textFound);
         solo.enterText(3, "Germany");
         textFound = solo.searchText("Germany");
-        assertEquals("security answer inputted", "Germany");
-
-
-
-       }
+        assertTrue("security answer inputted", textFound);
+    }
 
     /**
      * Tests the buttons in the Registration activity.
@@ -70,8 +68,15 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
      */
     public void testButtons() throws Exception {
 
-        Button register_button = (Button) solo.getView(R.id.reg_accept);
-        Button cancel_button = (Button) solo.getView(R.id.reg_cancel);
+        final Button register_button = (Button) solo.getView(R.id.reg_accept);
+        final Button cancel_button = (Button) solo.getView(R.id.reg_cancel);
+        solo.clickOnView(register_button);
+        solo.waitForActivity(Registration.class);
+        solo.assertCurrentActivity("Expected Registration Activity", Registration.class);
+        solo.clickOnView(cancel_button);
+        solo.waitForActivity(LoginActivity.class);
+        solo.assertCurrentActivity("Expected Login Activity", LoginActivity.class);
+
     }
 
     /**
@@ -88,10 +93,10 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
         solo.setActivityOrientation(Solo.LANDSCAPE);
 
         boolean textFound = solo.searchText("amp1993@gmail.com");
-        assertEquals("email found", textFound);
+        assertTrue("email found", textFound);
         textFound = solo.searchText("password");
-        assertEquals("password inputted", textFound);
+        assertTrue("password inputted", textFound);
         textFound = solo.searchText("Seattle");
-        assertEquals("security answer inputted", textFound);
+        assertTrue("security answer inputted", textFound);
     }
 }

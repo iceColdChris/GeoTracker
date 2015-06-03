@@ -34,8 +34,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
         solo = new Solo(getInstrumentation(), getActivity());
         solo.unlockScreen();
         solo.assertCurrentActivity("Expected Log-In activity", "LoginActivity");
-
-
     }
 
     /**
