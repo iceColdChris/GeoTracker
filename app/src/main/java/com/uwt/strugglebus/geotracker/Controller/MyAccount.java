@@ -108,7 +108,6 @@ public class MyAccount extends ActionBarActivity {
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP);
-        //Tracker.setServiceAlarm(getApplicationContext(), true);
 
 
         //int uid = mPrefs.getInt("uid", -1);
@@ -139,16 +138,18 @@ public class MyAccount extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Tracker2 track = MyServices.getTracker();
+                Logger log = MyServices.getLogger();
 
                 if(track != null) {
                     track.toggleTracking();
                     String s = "on";
                     if (track.isTracking()) {
                         toggleTracker.setText(R.string.stop_tracker);
+                        log.setServiceAlarm(getApplicationContext(), true, 3600000);
                     } else {
                         s = "off";
                         toggleTracker.setText(R.string.start_tracker);
-
+                        log.setServiceAlarm(getApplicationContext(), false, 0);
                     }
                     Toast.makeText(getApplicationContext(), "Tracker is now " + s, Toast.LENGTH_LONG).show();
                 }
@@ -188,6 +189,7 @@ public class MyAccount extends ActionBarActivity {
                 editor.putString("userID", null);
                 editor.apply();
                 mTracker.stopLocationUpdates();
+                mLogger.setServiceAlarm(getApplication(), false, 0);
                 Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 finish();
