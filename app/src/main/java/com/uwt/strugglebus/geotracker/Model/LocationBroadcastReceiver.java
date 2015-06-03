@@ -17,6 +17,8 @@ public class LocationBroadcastReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             Log.i("fused", "Broadcast reciever");
             context.startService(new Intent(context, Tracker2.class));
+            context.startService(new Intent(context, Logger.class));
+
         }
     }
 }

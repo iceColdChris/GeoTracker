@@ -90,6 +90,10 @@
             android:name=".Model.Tracker2"
             android:exported="false" >
         </service>
+        <service
+            android:name=".Model.Logger"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

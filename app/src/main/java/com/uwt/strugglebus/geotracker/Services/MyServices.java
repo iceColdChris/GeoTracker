@@ -1,5 +1,6 @@
 package com.uwt.strugglebus.geotracker.Services;
 
+import com.uwt.strugglebus.geotracker.Model.Logger;
 import com.uwt.strugglebus.geotracker.Model.Tracker2;
 
 /**
@@ -7,12 +8,37 @@ import com.uwt.strugglebus.geotracker.Model.Tracker2;
  */
 public class MyServices {
     private static Tracker2 mTracker = null;
+    private static Logger mLogger = null;
 
+    /**
+     *
+     * @param tracker
+     */
     public static void setTracker(Tracker2 tracker) {
         mTracker = tracker;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Tracker2 getTracker() {
         return mTracker;
+    }
+
+    /**
+     *
+     * @param log
+     */
+    public static void setLogger(Logger log) {
+        mLogger = log;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static Logger getLogger() {
+        return mLogger;
     }
 }

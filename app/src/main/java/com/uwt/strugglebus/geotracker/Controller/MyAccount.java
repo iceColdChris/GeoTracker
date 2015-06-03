@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.Model.LocationBroadcastReceiver;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
+import com.uwt.strugglebus.geotracker.Model.Logger;
 import com.uwt.strugglebus.geotracker.Services.MyServices;
 import com.uwt.strugglebus.geotracker.Model.Tracker2;
 import com.uwt.strugglebus.geotracker.R;
@@ -33,6 +34,7 @@ public class MyAccount extends ActionBarActivity {
 
     private LocationLog mLocationLog;
     private Tracker2 mTracker;
+    private Logger mLogger;
     private SharedPreferences mPrefs;
 
     /**
@@ -41,10 +43,26 @@ public class MyAccount extends ActionBarActivity {
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Tracker2.LocalBinder binder = (Tracker2.LocalBinder) service;
-            mTracker = binder.getService();
-            MyServices.setTracker(mTracker);
+                Tracker2.LocalBinder binder = (Tracker2.LocalBinder) service;
+                mTracker = binder.getService();
+                MyServices.setTracker(mTracker);
+        }
 
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
+    /**
+     * TODO: COMMENT
+     */
+    private ServiceConnection mLogConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Logger.LocalBinder binder = (Logger.LocalBinder) service;
+            mLogger = binder.getService();
+            MyServices.setLogger(mLogger);
         }
 
         @Override
@@ -76,6 +94,10 @@ public class MyAccount extends ActionBarActivity {
         Intent i = new Intent(this, Tracker2.class);
         getApplicationContext().startService(i);
         getApplicationContext().bindService(i, mConnection, Context.BIND_AUTO_CREATE);
+        //create and bind logger
+        Intent il = new Intent(this, Logger.class);
+        getApplicationContext().startService(il);
+        getApplicationContext().bindService(il, mLogConnection, Context.BIND_AUTO_CREATE);
 
         TextView email = (TextView) findViewById(R.id.account_email);
 
