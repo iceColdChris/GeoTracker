@@ -14,7 +14,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.uwt.strugglebus.geotracker.R;
-import com.uwt.strugglebus.geotracker.Services.UtilityTests;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -25,8 +24,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
 *  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
@@ -37,7 +34,7 @@ import java.util.List;
 public class Logger extends IntentService {
 
     private static final String DB_NAME = "Trajectories";
-    private static final String TABLE = "Locations";
+    private static final String TABLE = "Trajectories";
 
 //    private static Context mContext;
 
