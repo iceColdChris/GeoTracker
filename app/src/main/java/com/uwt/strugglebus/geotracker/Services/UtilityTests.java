@@ -1,8 +1,12 @@
 package com.uwt.strugglebus.geotracker.Services;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.BatteryManager;
+import android.os.Build;
 
 import java.io.IOException;
 
@@ -13,7 +17,7 @@ import java.io.IOException;
  * the phone is connected via WIFI and has a stable
  * internet connection.
  */
-public class NetworkTest {
+public class UtilityTests {
 
     /**
      * Checks if the phone is connected to WIFI
@@ -47,5 +51,18 @@ public class NetworkTest {
         }
 
         return false; //The phone doesn't have internet access
+    }
+
+
+    public static boolean isCharging(Context context) {
+        boolean isPlugged= false;
+
+        Intent intent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+        isPlugged = plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            isPlugged = isPlugged || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS;
+        }
+        return isPlugged;
     }
 }

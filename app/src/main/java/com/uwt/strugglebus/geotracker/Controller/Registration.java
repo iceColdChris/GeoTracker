@@ -108,12 +108,10 @@ public class Registration extends ActionBarActivity {
                     editor.putString(getString(R.string.security_q), question);
                     editor.putString(getString(R.string.security_a), answer);
 
-                    if(password.equals(confirm_password)) {
-                        Eula eula = new Eula(mActivity);
-                        eula.download();
-                        mEmail = email;
-                        mPassword = password;
-                    }
+                    Eula eula = new Eula(mActivity);
+                    eula.download();
+                    mEmail = email;
+                    mPassword = password;
 
                     editor.commit();
 
