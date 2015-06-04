@@ -193,7 +193,10 @@ public class MyAccount extends ActionBarActivity {
         commitToWeb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLogger.commitToWeb();
+                Logger log = MyServices.getLogger();
+                if(log != null) {
+                    log.commitToWeb();
+                }
             }
         });
     }
