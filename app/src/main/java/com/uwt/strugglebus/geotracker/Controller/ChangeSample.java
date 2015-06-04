@@ -13,7 +13,7 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.uwt.strugglebus.geotracker.Services.MyServices;
+import com.uwt.strugglebus.geotracker.Model.MyServices;
 import com.uwt.strugglebus.geotracker.R;
 
 /**

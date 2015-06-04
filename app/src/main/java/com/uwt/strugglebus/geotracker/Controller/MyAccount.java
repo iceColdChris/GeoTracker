@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.uwt.strugglebus.geotracker.Model.LocationBroadcastReceiver;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.Model.Logger;
-import com.uwt.strugglebus.geotracker.Services.MyServices;
+import com.uwt.strugglebus.geotracker.Model.MyServices;
 import com.uwt.strugglebus.geotracker.Model.Tracker2;
 import com.uwt.strugglebus.geotracker.R;
 
@@ -105,7 +105,6 @@ public class MyAccount extends ActionBarActivity {
 
         ComponentName receiver = new ComponentName(getApplicationContext(), LocationBroadcastReceiver.class);
         PackageManager pm = getApplicationContext().getPackageManager();
-
 
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,

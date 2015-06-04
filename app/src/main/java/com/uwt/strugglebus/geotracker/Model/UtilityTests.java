@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.Services;
+package com.uwt.strugglebus.geotracker.Model;
 
 import android.content.Context;
 import android.content.Intent;

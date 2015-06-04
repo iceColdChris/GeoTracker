@@ -1,4 +1,4 @@
-package com.uwt.strugglebus.geotracker.Services;
+package com.uwt.strugglebus.geotracker.Model;
 
 import com.uwt.strugglebus.geotracker.Model.Logger;
 import com.uwt.strugglebus.geotracker.Model.Tracker2;
