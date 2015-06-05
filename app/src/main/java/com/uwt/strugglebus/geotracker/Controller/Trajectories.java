@@ -27,6 +27,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 
 /**
@@ -195,10 +197,11 @@ public class Trajectories extends ActionBarActivity {
                             row.setLayoutParams(rowParams);
                             row.setPadding(5, 5, 5, 5);
                             String[] values = {
-                                    point.getString("lat"),
-                                    point.getString("lon"),
-                                    point.getString("speed"),
-                                    point.getString("heading"),
+                                    //TODO: round
+                                    round(Double.parseDouble(point.getString("lat")), 4) + "",
+                                    round(Double.parseDouble(point.getString("lon")), 4) + "",
+                                    round(Double.parseDouble(point.getString("speed")), 4) + "",
+                                    round(Double.parseDouble(point.getString("heading")), 4) + "",
                                     point.getString("time")
                             };
 
@@ -221,5 +224,13 @@ public class Trajectories extends ActionBarActivity {
                 }
             }
         }
+    }
+
+    private double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
