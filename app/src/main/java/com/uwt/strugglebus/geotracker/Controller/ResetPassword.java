@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -154,7 +155,6 @@ public class ResetPassword extends ActionBarActivity {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
                     Context context = mActivity.getApplicationContext();
-                    System.out.println(success);
                     if(success != null && success.equals("success")) {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(mActivity)
                                 .setTitle(R.string.title_activity_reset_password)
@@ -175,7 +175,7 @@ public class ResetPassword extends ActionBarActivity {
                         Toast.makeText(context, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    System.out.println("JSON Exception "+ e.getMessage());
+                    Log.i("json exception", e.getMessage());
                 }
             }
         }

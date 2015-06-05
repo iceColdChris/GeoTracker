@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TableLayout;
@@ -184,10 +185,8 @@ public class Trajectories extends ActionBarActivity {
                 try {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
-                    System.out.println(success);
                     if(success != null && success.equals("success")) {
                         JSONArray points = new JSONArray(obj.getString("points"));
-                        System.out.println(points);
                         TableLayout table = (TableLayout) findViewById(R.id.traject_table);
                         TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
                         for(int i = 0; i < points.length(); i++) {
@@ -218,7 +217,7 @@ public class Trajectories extends ActionBarActivity {
                         Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    System.out.println("JSON Exception "+ e.getMessage());
+                    Log.i("json exception", e.getMessage());
                 }
             }
         }

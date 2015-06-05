@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -133,7 +134,6 @@ public class Registration extends ActionBarActivity {
      * to the webservice.
      */
     public void sendData() {
-        System.out.println("yay");
         String email = ((EditText) findViewById(R.id.reg_email)).getText().toString();
         String password = ((EditText) findViewById(R.id.reg_password)).getText().toString();
         String confirm_password = ((EditText) findViewById(R.id.reg_confirm_password)).getText().toString();
@@ -242,7 +242,7 @@ public class Registration extends ActionBarActivity {
                         mActivity.finish();
                     }
                 } catch (JSONException e) {
-                    System.out.println("JSON Exception " + e.getMessage());
+                    Log.i("json exception", e.getMessage());
                 }
             }
         }

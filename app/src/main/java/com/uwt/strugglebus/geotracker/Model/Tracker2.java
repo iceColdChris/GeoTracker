@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -19,15 +18,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.uwt.strugglebus.geotracker.R;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -41,7 +31,7 @@ public class Tracker2 extends IntentService implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final String DB_NAME = "Trajectories";
-    private static final String TABLE = "Locations";
+    private static final String TABLE = "Trajectories";
 
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
 
@@ -76,12 +66,13 @@ public class Tracker2 extends IntentService implements
      */
     protected String mLastUpdateTime;
 
+    private SQLiteDatabase mDB;
     private final IBinder mBinder = new LocalBinder();
     private SharedPreferences mPrefs;
     private boolean mTracking;
 
     /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
+     * Creates an IntentService. Invoked by your subclass's constructor.
      *
      */
     public Tracker2() {
@@ -151,6 +142,7 @@ public class Tracker2 extends IntentService implements
         mPrefs.edit().putBoolean("geoOn", false).apply();
         mTracking = false;
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        mDB.close();
     }
 
     /**
@@ -164,6 +156,8 @@ public class Tracker2 extends IntentService implements
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
         }
+        mDB = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
+        mDB.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + "(lat REAL, lon REAL, speed REAL, heading REAL, time BIGINT, uid VARCHAR(50));");
     }
 
 
@@ -204,22 +198,25 @@ public class Tracker2 extends IntentService implements
         Log.i("fused", "time from last update" +DateFormat.getTimeInstance().format(new Date()) + ", " + mLastUpdateTime);
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
 
-        if (mCurrentLocation != null && mPrevLocation != null &&
-                mCurrentLocation.getLatitude() != mPrevLocation.getLatitude() &&
-                mCurrentLocation.getLongitude() != mPrevLocation.getLongitude()) {
+        if (mPrevLocation == null || (mCurrentLocation != null && !locationEquals(mCurrentLocation, mPrevLocation))) {
             String uid = mPrefs.getString("userID", "");
-            final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + "(lat REAL, lon REAL, speed REAL, heading REAL, time BIGINT, uid VARCHAR(50));");
             String insert = "INSERT INTO " + TABLE + " VALUES (" + mCurrentLocation.getLatitude() +
                     ", " + mCurrentLocation.getLongitude() +
                     ", " + mCurrentLocation.getSpeed() +
                     ", " + mCurrentLocation.getBearing() +
                     ", " + (mCurrentLocation.getTime() / 1000) +
                     ", \"" + uid + "\");";
-            db.execSQL(insert);
+            mDB.execSQL(insert);
             Log.w("sqlTestDelete", insert);
         }
         mPrevLocation = mCurrentLocation;
+    }
+
+    private boolean locationEquals(Location a, Location b) {
+        return a.getLatitude() == b.getLatitude() &&
+                a.getLongitude() == b.getLongitude() &&
+                a.getSpeed() == b.getSpeed() &&
+                a.getBearing() == b.getBearing();
     }
 
     /**

@@ -18,7 +18,7 @@
     <string name="logout">Logout</string>
     <string name="old_password">Old Password</string>
 
-    <string name="change_sample">Change Sampling Rate</string>
+    <string name="change_sample" translatable="false">Change Sampling Rate</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="security_q">Security Questions</string>
     <string name="security_a">Security Answer</string>
@@ -93,7 +93,7 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="set_zones">Set Recording Zones</string>
     <string name="change_pass">Change Password</string>
     <string name="change_sec_a">Change Security Question or Answer</string>
-    <string name="commit_to_web">Commit To Web Service</string>
+    <string name="commit_to_web" translatable="false">Commit To Web Service</string>
     <string name="title_activity_trajectory_chooser" translatable="false">TrajectoryChooser</string>
     <string name="title_activity_change_password" translatable="false">ChangePassword</string>
 
@@ -111,15 +111,15 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="speed" translatable="false">Speed</string>
     <string name="heading" translatable="false">Heading</string>
     <string name="time" translatable="false">Time</string>
-    <string name="title_activity_change_sample">Change Sampling Rate</string>
+    <string name="title_activity_change_sample" translatable="false">Change Sampling Rate</string>
 
-    <string name="accept_save">Accept and Save Changes</string>
-    <string name="back">back</string>
-    <string name="geo_sample_rate">Record location every </string>
-    <string name="server_push">Update to Server Every </string>
-    <string name="push_manual">Update to server manually only</string>
-    <string name="push_power">Only update to server when connected to power</string>
-    <string name="start_tracker">Start Tracker</string>
-    <string name="stop_tracker">Stop Tracker</string>
+    <string name="accept_save" translatable="false">Accept and Save Changes</string>
+    <string name="back" translatable="false">back</string>
+    <string name="geo_sample_rate" translatable="false">Record location every </string>
+    <string name="server_push" translatable="false">Update to Server Every </string>
+    <string name="push_manual" translatable="false">Update to server manually only</string>
+    <string name="push_power" translatable="false">Only update to server when connected to power</string>
+    <string name="start_tracker" translatable="false">Start Tracker</string>
+    <string name="stop_tracker" translatable="false">Stop Tracker</string>
 
 </resources>
