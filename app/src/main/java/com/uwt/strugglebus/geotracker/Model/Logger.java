@@ -38,7 +38,7 @@ public class Logger extends IntentService {
 
 //    private static Context mContext;
 
-    private final LocalBinder mBinder = new LocalBinder();
+    private final IBinder mBinder = new LocalBinder();
 
     /**
      * TODO: Javadoc
@@ -145,7 +145,7 @@ public class Logger extends IntentService {
      */
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
     }
 
     /**

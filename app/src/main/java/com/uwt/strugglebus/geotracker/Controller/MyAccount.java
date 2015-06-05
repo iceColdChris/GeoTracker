@@ -198,7 +198,13 @@ public class MyAccount extends ActionBarActivity {
                 Log.w("sqlTestDelete", "commit to web");
                 Logger log = MyServices.getLogger();
                 if(log != null) {
-                    log.commitToWeb();
+;                    log.commitToWeb();
+
+                } else if (mLogger != null) {
+                    Log.w("push", "mlogger");
+
+                } else {
+                    Log.w("push", "fuck");
 
                 }
             }
