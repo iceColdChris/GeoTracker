@@ -1,0 +1,38 @@
+package com.uwt.strugglebus.geotracker;
+
+import com.uwt.strugglebus.geotracker.Model.Logger;
+import com.uwt.strugglebus.geotracker.Model.MyServices;
+import com.uwt.strugglebus.geotracker.Model.Tracker2;
+
+import junit.framework.TestCase;
+
+/**
+ * This class tests the MyServices tracker and logger methods.
+ * Created by Alex on 6/4/2015.
+ */
+public class MyServicesTest extends TestCase {
+
+    private MyServices my_services;
+    private static Tracker2 mTracker = null;
+    private static Logger mLogger = null;
+
+    public void setUp() {
+        my_services = new MyServices();
+    }
+
+    /**
+     * Set a new tracker and test that it isn't null.
+     */
+    public void setTrackerTest() {
+        my_services.setTracker(new Tracker2());
+        assertNotNull(my_services.getTracker());
+    }
+
+    /**
+     * Set a new logger and test if it's not null.
+     */
+    public void setLoggerTest() {
+        my_services.setLogger(new Logger());
+        assertNotNull(my_services.getLogger());
+    }
+}

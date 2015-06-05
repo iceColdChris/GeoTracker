@@ -48,7 +48,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
 
     /**
      * Test the text fields in the Log-In activity.
-     * @throws Exception
      */
     public void testTextFields() {
         solo.waitForActivity(LoginActivity.class);
@@ -64,7 +63,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
 
     /**
      * Tests the buttons in the Log-In activity.
-     * @throws Exception
      */
     public void testButtons() {
         solo.assertCurrentActivity("Wrong activity", LoginActivity.class);
@@ -108,7 +106,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
 
     /**
      * Tests the landscape orientation in the Log-In activity.
-     * @throws Exception
      */
     public void testOrientation() {
 

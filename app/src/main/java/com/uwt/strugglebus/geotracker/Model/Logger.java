@@ -101,7 +101,7 @@ public class Logger extends IntentService {
                             "&source=" + uid;
                     list[i] = url;
                     i++;
-                }while (cursor.moveToNext());
+                } while (cursor.moveToNext());
             }
 
             DownloadWebPageTask task = new DownloadWebPageTask();

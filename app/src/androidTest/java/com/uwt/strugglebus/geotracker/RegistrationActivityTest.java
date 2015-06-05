@@ -44,7 +44,6 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
 
     /**
      * Test the text fields in the Registration activity.
-     * @throws Exception
      */
     public void testTextFields() {
 
@@ -64,15 +63,16 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
 
     /**
      * Tests the buttons in the Registration activity.
-     * @throws Exception
      */
-    public void testButtons() throws Exception {
+    public void testButtons() {
 
         final Button register_button = (Button) solo.getView(R.id.reg_accept);
         final Button cancel_button = (Button) solo.getView(R.id.reg_cancel);
+
         solo.clickOnView(register_button);
         solo.waitForActivity(Registration.class);
         solo.assertCurrentActivity("Expected Registration Activity", Registration.class);
+
         solo.clickOnView(cancel_button);
         solo.waitForActivity(LoginActivity.class);
         solo.assertCurrentActivity("Expected Login Activity", LoginActivity.class);
@@ -81,9 +81,8 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
 
     /**
      * Tests the landscape orientation in the Registration activity.
-     * @throws Exception
      */
-    public void testOrientation() throws Exception {
+    public void testOrientation() {
 
         solo.enterText(0, "amp1993@gmail.com");
         solo.enterText(1, "password");
