@@ -105,7 +105,7 @@ public class TrajectoryChooser extends ActionBarActivity {
                         Integer.parseInt(endDateS[1]), Integer.parseInt(endTimeS[0]),Integer.parseInt(endTimeS[1]));
 
                 long startTime = (startCal.getTimeInMillis()) / 1000;
-                long endTime = (endCal.getTimeInMillis() + 86400000) / 1000;
+                long endTime = (endCal.getTimeInMillis()) / 1000;
 
                 if(startTime > endTime) {
                     //TODO: put int strings
