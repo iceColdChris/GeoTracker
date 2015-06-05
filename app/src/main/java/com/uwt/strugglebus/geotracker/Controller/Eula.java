@@ -10,6 +10,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.text.Html;
+import android.util.Log;
 
 import com.uwt.strugglebus.geotracker.R;
 
@@ -160,7 +161,7 @@ public class Eula {
                             });
                     mAlertBuilder.create().show();
                 } catch (JSONException e) {
-                    System.out.println("JSON Exception" + e.getMessage());
+                    Log.i("json exception", e.getMessage());
                 }
             }
         }

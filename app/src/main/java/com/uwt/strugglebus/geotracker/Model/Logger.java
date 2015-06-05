@@ -66,8 +66,8 @@ public class Logger extends IntentService {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + "(lat REAL, lon REAL, speed REAL, heading REAL, time BIGINT, uid INT);");
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE + " WHERE uid = \"" + uid + "\";", null);
 
-        if (cursor != null && UtilityTests.isWIFIConnected(getApplicationContext()) && UtilityTests.isCharging(getApplicationContext())) { //TODO: check for power connection
-//          (lat, lon, speed, heading, time, uid)
+        if (cursor != null && UtilityTests.isWIFIConnected(getApplicationContext()) && UtilityTests.isCharging(getApplicationContext())) {
+//          columns: (lat, lon, speed, heading, time, uid)
             String lat, lon, speed, bearing, url;
             long curTime = 0, firstTime = Integer.MAX_VALUE, lastTime = 0;
             String[] list = new String[cursor.getCount()];
@@ -215,19 +215,15 @@ public class Logger extends IntentService {
 //            mProgressDialog.dismiss();
             if (result != null) {
                 try {
-                    System.out.println(result);
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
-                    System.out.println(success);
                     if(success != null && success.equals("success")) {
-                        System.out.println("YAY!");
+                        Log.i("push success", "push successful");
                     } else {
-                        System.out.println("BOO!");
-                        System.out.println(obj.getString("error"));
 //                        Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    System.out.println("JSON Exception "+ e.getMessage());
+                    Log.i("json exception", e.getMessage());
                 }
             }
         }

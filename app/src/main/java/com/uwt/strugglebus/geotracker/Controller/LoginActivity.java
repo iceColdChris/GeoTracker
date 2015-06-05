@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -215,18 +216,16 @@ public class LoginActivity extends ActionBarActivity {
                                 , Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString("userID", obj.getString("userid"));
-                        System.out.println(obj.getString("userid"));
                         editor.putString(getString(R.string.email), mEmail);
                         editor.putString(getString(R.string.password), mPassword);
                         editor.apply();
-                        System.out.println(obj.getString("userid"));
                         Intent account = new Intent(mContext, MyAccount.class);
                         startActivity(account);
                     } else {
                         Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    System.out.println("JSON Exception"+ e.getMessage());
+                    Log.i("json exception", e.getMessage());
                 }
             }
         }

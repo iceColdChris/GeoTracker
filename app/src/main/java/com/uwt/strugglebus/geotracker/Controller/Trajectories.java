@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TableLayout;
@@ -26,6 +27,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 
 /**
@@ -184,10 +187,8 @@ public class Trajectories extends ActionBarActivity {
                 try {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
-                    System.out.println(success);
                     if(success != null && success.equals("success")) {
                         JSONArray points = new JSONArray(obj.getString("points"));
-                        System.out.println(points);
                         TableLayout table = (TableLayout) findViewById(R.id.traject_table);
                         TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
                         for(int i = 0; i < points.length(); i++) {
@@ -196,10 +197,11 @@ public class Trajectories extends ActionBarActivity {
                             row.setLayoutParams(rowParams);
                             row.setPadding(5, 5, 5, 5);
                             String[] values = {
-                                    point.getString("lat"),
-                                    point.getString("lon"),
-                                    point.getString("speed"),
-                                    point.getString("heading"),
+                                    //TODO: round
+                                    round(Double.parseDouble(point.getString("lat")), 4) + "",
+                                    round(Double.parseDouble(point.getString("lon")), 4) + "",
+                                    round(Double.parseDouble(point.getString("speed")), 4) + "",
+                                    round(Double.parseDouble(point.getString("heading")), 4) + "",
                                     point.getString("time")
                             };
 
@@ -218,9 +220,17 @@ public class Trajectories extends ActionBarActivity {
                         Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    System.out.println("JSON Exception "+ e.getMessage());
+                    Log.i("json exception", e.getMessage());
                 }
             }
         }
+    }
+
+    private double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

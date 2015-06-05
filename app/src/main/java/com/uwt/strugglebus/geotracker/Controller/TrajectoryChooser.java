@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -103,8 +104,9 @@ public class TrajectoryChooser extends ActionBarActivity {
                 Calendar endCal = new GregorianCalendar(Integer.parseInt(endDateS[2]), Integer.parseInt(endDateS[0]) - 1,
                         Integer.parseInt(endDateS[1]), Integer.parseInt(endTimeS[0]),Integer.parseInt(endTimeS[1]));
 
-                long startTime = (startCal.getTimeInMillis() + 86400000) / 1000;
-                long endTime = (endCal.getTimeInMillis() + 86400000) / 1000;
+                long startTime = (startCal.getTimeInMillis()) / 1000;
+                long endTime = (endCal.getTimeInMillis()) / 1000;
+
                 if(startTime > endTime) {
                     //TODO: put int strings
                     Toast.makeText(getApplicationContext(),"start time after end time" , Toast.LENGTH_SHORT).show();

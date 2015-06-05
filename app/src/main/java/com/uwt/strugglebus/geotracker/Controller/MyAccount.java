@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,6 +66,8 @@ public class MyAccount extends ActionBarActivity {
             Logger.LocalBinder binder = (Logger.LocalBinder) service;
             mLogger = binder.getService();
             MyServices.setLogger(mLogger);
+            Log.w("service connected test", "connected");
+            Log.w("service connected test", mLogger.toString());
         }
 
         @Override
@@ -192,9 +195,11 @@ public class MyAccount extends ActionBarActivity {
         commitToWeb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.w("sqlTestDelete", "commit to web");
                 Logger log = MyServices.getLogger();
                 if(log != null) {
                     log.commitToWeb();
+
                 }
             }
         });

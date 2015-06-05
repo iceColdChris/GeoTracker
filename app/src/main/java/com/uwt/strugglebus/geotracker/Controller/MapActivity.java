@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -81,8 +82,6 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
 
 
     /**
-     * TODO - Get this working
-     *
      * {@inheritDoc}
      *
      * This method will be
@@ -224,7 +223,7 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
                         Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    System.out.println("JSON Exception "+ e.getMessage());
+                    Log.i("json exception", e.getMessage());
                 }
             }
         }
