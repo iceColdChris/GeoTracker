@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.R;
 
@@ -218,9 +219,9 @@ public class Logger extends IntentService {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
                     if(success != null && success.equals("success")) {
-                        Log.i("push success", "push successful");
+                        Toast.makeText(getApplicationContext(), "commit successfully", Toast.LENGTH_SHORT).show();
                     } else {
-//                        Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     Log.i("json exception", e.getMessage());
