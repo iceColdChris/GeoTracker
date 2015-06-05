@@ -82,7 +82,7 @@ public class Registration extends ActionBarActivity {
 
 
 
-                //check to see if there is valid input TODO: test this if statement
+                //check to see if there is valid input
                 //!email.equals(null) && !password.equals(null) && !confirm_password.equals(null)
                 //&& !answer.equals(null) && confirm_password.equals(password)
                 String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
@@ -176,7 +176,7 @@ public class Registration extends ActionBarActivity {
     /*
      * This is a private helper class that is
      * in charge of connecting to the web
-     * services as an Asyncronous Task.
+     * services as an Asynchronous Task.
      */
     private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
@@ -247,5 +247,4 @@ public class Registration extends ActionBarActivity {
             }
         }
     }
-
 }

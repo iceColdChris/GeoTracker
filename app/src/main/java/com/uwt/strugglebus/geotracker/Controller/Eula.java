@@ -75,7 +75,7 @@ public class Eula {
     /*
      * This is a private helper class that is
      * in charge of connecting to the web
-     * services as an Asyncronous Task.
+     * services as an Asynchronous Task.
      */
     private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 

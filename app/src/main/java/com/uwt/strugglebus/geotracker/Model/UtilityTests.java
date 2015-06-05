@@ -68,7 +68,7 @@ public class UtilityTests {
         //Is the android plugged in?
         isPlugged = (plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB);
 
-        //Checks for wireless charging in for the S6
+        //Checks for wireless charging on supported phones
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
             isPlugged = isPlugged || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS;
         }

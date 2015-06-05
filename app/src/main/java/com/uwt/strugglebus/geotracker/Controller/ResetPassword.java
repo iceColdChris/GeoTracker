@@ -34,7 +34,7 @@ import java.io.InputStreamReader;
  *
  * This class sets up the appropriate logic to allow the user to reset their password.
  * The user must answer their security question correctly to trigger a response
- * from the webserver.
+ * from the web server.
  */
 public class ResetPassword extends ActionBarActivity {
 
@@ -102,7 +102,7 @@ public class ResetPassword extends ActionBarActivity {
     /*
      * This is a private helper class that is
      * in charge of connecting to the web
-     * services as an Asyncronous Task.
+     * services as an Asynchronous Task.
      */
     private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
