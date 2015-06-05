@@ -41,7 +41,7 @@ public class Tracker2 extends IntentService implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final String DB_NAME = "Trajectories";
-    private static final String TABLE = "Locations";
+    private static final String TABLE = "Trajectories";
 
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
 
