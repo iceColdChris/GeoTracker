@@ -205,7 +205,7 @@ public class MyAccount extends ActionBarActivity {
                     Log.w("push", "mlogger");
 
                 } else {
-                    Log.w("push", "fuck");
+                    Log.w("push", "null");
 
                 }
             }

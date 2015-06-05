@@ -33,29 +33,29 @@
             android:progress="50"
             />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/server_push"/>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/server_push"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/pushRate"
-                android:textColor="@color/link_text_material_light"/>
-        </LinearLayout>
-        <SeekBar
-            android:id="@+id/server_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="47"
-            android:progress="0"
-            />
-
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/pushRate"-->
+                <!--android:textColor="@color/link_text_material_light"/>-->
+        <!--</LinearLayout>-->
+        <!--<SeekBar-->
+            <!--android:id="@+id/server_bar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:max="47"-->
+            <!--android:progress="0"-->
+            <!--/>-->
+<!--
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/push_power"
-            android:id="@+id/push_power"/>
+            android:id="@+id/push_power"/> -->
 
         <Button
             android:layout_width="fill_parent"

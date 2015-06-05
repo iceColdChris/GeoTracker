@@ -67,53 +67,53 @@ public class ChangeSample extends ActionBarActivity {
             }
         });
 
-        final SeekBar pushRate = (SeekBar) findViewById(R.id.server_bar);
-        final TextView pushRateText = (TextView) findViewById(R.id.pushRate);
+//        final SeekBar pushRate = (SeekBar) findViewById(R.id.server_bar);
+//        //final TextView pushRateText = (TextView) findViewById(R.id.pushRate);
+//
+//        if(currentPush > -1) {
+//            pushRate.setProgress(currentPush - 1);
+//            pushRateText.setText(" " + (currentPush) + " hours");
+//        } else {
+//
+//            pushRateText.setText(" " + (pushRate.getProgress() + 1) + " hours");
+//        }
+//        pushRate.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                pushRateText.setText(" " + (progress + 1) + " hours");
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
 
-        if(currentPush > -1) {
-            pushRate.setProgress(currentPush - 1);
-            pushRateText.setText(" " + (currentPush) + " hours");
-        } else {
-
-            pushRateText.setText(" " + (pushRate.getProgress() + 1) + " hours");
-        }
-        pushRate.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                pushRateText.setText(" " + (progress + 1) + " hours");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        final CheckBox manual = (CheckBox) findViewById(R.id.push_manual);
-        final CheckBox power = (CheckBox) findViewById(R.id.push_power);
+        //final CheckBox manual = (CheckBox) findViewById(R.id.push_manual);
+       // final CheckBox power = (CheckBox) findViewById(R.id.push_power);
 
         boolean manualChecked = prefs.getBoolean("pushManual", false);
         boolean powerChecked = prefs.getBoolean("pushPower", true);
 
-        manual.setChecked(manualChecked);
-        power.setChecked(powerChecked);
-        if(manualChecked) {
-            pushRate.setEnabled(false);
-            pushRateText.setEnabled(false);
-        }
+        //manual.setChecked(manualChecked);
+        //power.setChecked(powerChecked);
+//        if(manualChecked) {
+//            pushRate.setEnabled(false);
+//            pushRateText.setEnabled(false);
+//        }
 
-        manual.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pushRate.setEnabled(!manual.isChecked());
-                pushRateText.setEnabled(!manual.isChecked());
-            }
-        });
+//        manual.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                pushRate.setEnabled(!manual.isChecked());
+//                pushRateText.setEnabled(!manual.isChecked());
+//            }
+//        });
 
         Button accept = (Button) findViewById(R.id.accept_changes);
         Button back = (Button) findViewById(R.id.back);
@@ -122,10 +122,10 @@ public class ChangeSample extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor edit = prefs.edit();
-                edit.putBoolean("pushManual", manual.isChecked());
-                edit.putBoolean("pushPower", power.isChecked());
+                //edit.putBoolean("pushManual", manual.isChecked());
+               // edit.putBoolean("pushPower", power.isChecked());
                 edit.putInt("geoRate", geoRate.getProgress() + geoMin);
-                edit.putInt("pushRate", pushRate.getProgress() + 1);
+                //edit.putInt("pushRate", pushRate.getProgress() + 1);
                 edit.apply();
                 MyServices.getTracker().setInterval(geoRate.getProgress() + geoMin);
                 Intent account = new Intent(getApplicationContext(), MyAccount.class);
