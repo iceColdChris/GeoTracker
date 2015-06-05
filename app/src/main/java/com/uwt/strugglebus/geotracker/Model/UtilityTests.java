@@ -37,7 +37,7 @@ public class UtilityTests {
 
             Runtime runtime = Runtime.getRuntime();
             try {
-                Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8"); //Try pinging Google :D
+                Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8"); //Try pinging Google
                 int exitValue = ipProcess.waitFor(); //Wait for a timeout
                 return (exitValue == 0); //There is internet access
 

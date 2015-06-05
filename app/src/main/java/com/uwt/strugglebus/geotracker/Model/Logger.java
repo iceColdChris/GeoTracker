@@ -125,7 +125,7 @@ public class Logger extends IntentService {
     }
 
     public static void setServiceAlarm(Context context, boolean isOn, int interval) {
-        Intent i = new Intent(context, Tracker.class);
+        Intent i = new Intent(context, Logger.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 //        mContext = context;

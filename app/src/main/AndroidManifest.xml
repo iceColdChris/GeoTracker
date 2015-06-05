@@ -92,7 +92,7 @@
         </service>
         <service
             android:name=".Model.Logger"
-            android:exported="false" >
+            android:exported="false">
         </service>
     </application>
 

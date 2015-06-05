@@ -64,10 +64,11 @@ public class MyAccount extends ActionBarActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Logger.LocalBinder binder = (Logger.LocalBinder) service;
-            mLogger = binder.getService();
+            MyAccount.this.mLogger = (Logger) binder.getService();
+            //Logger.LocalBinder binder = (Logger.LocalBinder) service;
+            //mLogger = binder.getService();
             MyServices.setLogger(mLogger);
             Log.w("service connected test", "connected");
-            Log.w("service connected test", mLogger.toString());
         }
 
         @Override
