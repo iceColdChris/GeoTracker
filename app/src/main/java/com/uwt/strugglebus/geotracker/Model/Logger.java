@@ -113,6 +113,10 @@ public class Logger extends IntentService {
             db.execSQL(delete);
             Log.w("sqlTestDelete", delete);
             cursor.close();
+        } else if(UtilityTests.isWIFIConnected(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), "push failed: not connected to wifi", Toast.LENGTH_LONG).show();
+        } else if(UtilityTests.isCharging(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), "push failed: not currently charging", Toast.LENGTH_LONG).show();
         }
     }
 
