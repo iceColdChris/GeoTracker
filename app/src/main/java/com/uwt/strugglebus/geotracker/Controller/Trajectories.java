@@ -197,7 +197,8 @@ public class Trajectories extends ActionBarActivity {
                             row.setLayoutParams(rowParams);
                             row.setPadding(5, 5, 5, 5);
                             String[] values = {
-                                    //TODO: round
+
+                                    //round the values to the nearest value
                                     round(Double.parseDouble(point.getString("lat")), 4) + "",
                                     round(Double.parseDouble(point.getString("lon")), 4) + "",
                                     round(Double.parseDouble(point.getString("speed")), 4) + "",

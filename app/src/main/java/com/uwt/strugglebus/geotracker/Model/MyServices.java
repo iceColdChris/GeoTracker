@@ -8,7 +8,7 @@ public class MyServices {
     private static Logger mLogger = null;
 
     /**
-     *
+     * Set the tracker.
      * @param tracker
      */
     public static void setTracker(Tracker tracker) {
@@ -16,7 +16,7 @@ public class MyServices {
     }
 
     /**
-     *
+     * Return the tracker.
      * @return
      */
     public static Tracker getTracker() {
@@ -24,7 +24,7 @@ public class MyServices {
     }
 
     /**
-     *
+     * Set the logger.
      * @param log
      */
     public static void setLogger(Logger log) {
@@ -32,7 +32,7 @@ public class MyServices {
     }
 
     /**
-     *
+     * Pizza.
      * @return
      */
     public static Logger getLogger() {

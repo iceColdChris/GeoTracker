@@ -161,6 +161,7 @@ public class LoginActivity extends ActionBarActivity {
      * services as an Asyncronous Task.
      */
     private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+         
 
 
         /*
@@ -211,6 +212,8 @@ public class LoginActivity extends ActionBarActivity {
                 try {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
+                    Log.i("login", result);
+                    Log.i("login", success);
                     if(success != null && success.equals("success")) {
                         SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
                                 , Context.MODE_PRIVATE);

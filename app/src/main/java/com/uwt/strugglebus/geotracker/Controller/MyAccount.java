@@ -41,7 +41,7 @@ public class MyAccount extends ActionBarActivity {
     private SharedPreferences mPrefs;
 
     /**
-     * TODO: COMMENT
+     * This class handles the connection for the Tracker.
      */
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -58,15 +58,13 @@ public class MyAccount extends ActionBarActivity {
     };
 
     /**
-     * TODO: COMMENT
+     *  This class handles the service connections for the Logger.
      */
     private ServiceConnection mLogConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Logger.LocalBinder binder = (Logger.LocalBinder) service;
             MyAccount.this.mLogger = (Logger) binder.getService();
-            //Logger.LocalBinder binder = (Logger.LocalBinder) service;
-            //mLogger = binder.getService();
             MyServices.setLogger(mLogger);
             Log.w("service connected test", "connected");
         }

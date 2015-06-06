@@ -27,29 +27,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
-*  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
- *       * TODO: Javadoc
- *
+ * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ * This class logs the users data and stores the data in SQLite Database.
  */
 public class Logger extends IntentService {
 
     private static final String DB_NAME = "Trajectories";
     private static final String TABLE = "Trajectories";
 
-//    private static Context mContext;
-
     private final IBinder mBinder = new LocalBinder();
 
-    /**
-     * TODO: Javadoc
-     */
     public Logger() {
         super("Logger");
     }
 
     /**
-     * TODO: Javadoc
+     * Commit what is in the database to the web service upon start.
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -122,7 +115,7 @@ public class Logger extends IntentService {
 
 
     /**
-     * TODO: Javadoc
+     * {@inheritDoc}
      */
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -133,7 +126,6 @@ public class Logger extends IntentService {
         Intent i = new Intent(context, Logger.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//        mContext = context;
 
         if (isOn) {
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
