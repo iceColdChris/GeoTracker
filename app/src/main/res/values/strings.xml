@@ -18,7 +18,7 @@
     <string name="logout">Logout</string>
     <string name="old_password">Old Password</string>
 
-    <string name="change_sample" translatable="false">Change Sampling Rate</string>
+    <string name="change_sample" translatable="false">Change Settings</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="security_q">Security Questions</string>
     <string name="security_a">Security Answer</string>
@@ -117,8 +117,7 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="back" translatable="false">back</string>
     <string name="geo_sample_rate" translatable="false">Record location every </string>
     <string name="server_push" translatable="false">Update to Server Every </string>
-    <string name="push_manual" translatable="false">Update to server manually only</string>
-    <string name="push_power" translatable="false">Only update to server when connected to power</string>
+    <string name="push_wifi" translatable="false">Only push if connected to wifi</string>
     <string name="start_tracker" translatable="false">Start Tracker</string>
     <string name="stop_tracker" translatable="false">Stop Tracker</string>
 

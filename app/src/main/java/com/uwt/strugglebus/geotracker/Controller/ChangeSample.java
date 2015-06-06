@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.uwt.strugglebus.geotracker.Model.Logger;
 import com.uwt.strugglebus.geotracker.Model.MyServices;
 import com.uwt.strugglebus.geotracker.R;
 
@@ -25,6 +26,7 @@ import com.uwt.strugglebus.geotracker.R;
  */
 public class ChangeSample extends ActionBarActivity {
 
+    private boolean mWifiChecked;
     /**
      * {@inheritDoc}
      *
@@ -67,53 +69,48 @@ public class ChangeSample extends ActionBarActivity {
             }
         });
 
-//        final SeekBar pushRate = (SeekBar) findViewById(R.id.server_bar);
-//        //final TextView pushRateText = (TextView) findViewById(R.id.pushRate);
-//
-//        if(currentPush > -1) {
-//            pushRate.setProgress(currentPush - 1);
-//            pushRateText.setText(" " + (currentPush) + " hours");
-//        } else {
-//
-//            pushRateText.setText(" " + (pushRate.getProgress() + 1) + " hours");
-//        }
-//        pushRate.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                pushRateText.setText(" " + (progress + 1) + " hours");
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//        });
+        final SeekBar pushRate = (SeekBar) findViewById(R.id.server_bar);
+        final TextView pushRateText = (TextView) findViewById(R.id.pushRate);
 
-        //final CheckBox manual = (CheckBox) findViewById(R.id.push_manual);
-       // final CheckBox power = (CheckBox) findViewById(R.id.push_power);
+        if(currentPush > -1) {
+            pushRate.setProgress(currentPush - 1);
+            pushRateText.setText(" " + (currentPush) + " hours");
+        } else {
 
-        boolean manualChecked = prefs.getBoolean("pushManual", false);
-        boolean powerChecked = prefs.getBoolean("pushPower", true);
+            pushRateText.setText(" " + (pushRate.getProgress() + 1) + " hours");
+        }
+        pushRate.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                pushRateText.setText(" " + (progress + 1) + " hours");
+            }
 
-        //manual.setChecked(manualChecked);
-        //power.setChecked(powerChecked);
-//        if(manualChecked) {
-//            pushRate.setEnabled(false);
-//            pushRateText.setEnabled(false);
-//        }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
-//        manual.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                pushRate.setEnabled(!manual.isChecked());
-//                pushRateText.setEnabled(!manual.isChecked());
-//            }
-//        });
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        final CheckBox wifi = (CheckBox) findViewById(R.id.wifi);
+
+        mWifiChecked = prefs.getBoolean("wifi", false);
+        wifi.setChecked(mWifiChecked);
+
+        wifi.setOnClickListener(new View.OnClickListener() {
+            /**
+             * changes shared prefs and toggles wifi boolean
+             */
+            @Override
+            public void onClick(View v) {
+                mWifiChecked = !mWifiChecked;
+                wifi.setChecked(mWifiChecked);
+            }
+        });
 
         Button accept = (Button) findViewById(R.id.accept_changes);
         Button back = (Button) findViewById(R.id.back);
@@ -125,9 +122,12 @@ public class ChangeSample extends ActionBarActivity {
                 //edit.putBoolean("pushManual", manual.isChecked());
                // edit.putBoolean("pushPower", power.isChecked());
                 edit.putInt("geoRate", geoRate.getProgress() + geoMin);
-                //edit.putInt("pushRate", pushRate.getProgress() + 1);
+                edit.putInt("pushRate", pushRate.getProgress() + 1);
                 edit.apply();
                 MyServices.getTracker().setInterval(geoRate.getProgress() + geoMin);
+                Logger.setServiceAlarm(getApplicationContext(), false, pushRate.getProgress() + 1);
+                Logger.setServiceAlarm(getApplicationContext(), true, pushRate.getProgress() + 1);
+                MyServices.getLogger().toggleWifi(mWifiChecked);
                 Intent account = new Intent(getApplicationContext(), MyAccount.class);
                 startActivity(account);
                 finish();

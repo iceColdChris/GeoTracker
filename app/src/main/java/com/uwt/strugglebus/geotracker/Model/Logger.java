@@ -36,10 +36,9 @@ public class Logger extends IntentService {
 
     private static final String DB_NAME = "Trajectories";
     private static final String TABLE = "Trajectories";
-
-//    private static Context mContext;
-
     private final IBinder mBinder = new LocalBinder();
+    private boolean mWifiOnly;
+    private SharedPreferences mPrefs;
 
     /**
      * TODO: Javadoc
@@ -54,6 +53,9 @@ public class Logger extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("Logger", "onStart");
+        mPrefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+                Context.MODE_PRIVATE);
+        mWifiOnly = mPrefs.getBoolean("wifi", false);
         commitToWeb();
         return START_STICKY;
     }
@@ -67,7 +69,7 @@ public class Logger extends IntentService {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + "(lat REAL, lon REAL, speed REAL, heading REAL, time BIGINT, uid INT);");
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE + " WHERE uid = \"" + uid + "\";", null);
 
-        if (cursor != null && UtilityTests.isWIFIConnected(getApplicationContext()) && UtilityTests.isCharging(getApplicationContext())) {
+        if (cursor != null && (!mWifiOnly || UtilityTests.isWIFIConnected(getApplicationContext())) && UtilityTests.isCharging(getApplicationContext())) {
 //          columns: (lat, lon, speed, heading, time, uid)
             String lat, lon, speed, bearing, url;
             long curTime = 0, firstTime = Integer.MAX_VALUE, lastTime = 0;
@@ -120,7 +122,6 @@ public class Logger extends IntentService {
         }
     }
 
-
     /**
      * TODO: Javadoc
      */
@@ -142,6 +143,16 @@ public class Logger extends IntentService {
             alarmManager.cancel(pendingIntent);
             pendingIntent.cancel();
         }
+    }
+
+
+    /**
+     * changes the current boolean value for pushing only when wifi is enabled, and stores the
+     * setting in shared prefs
+     */
+    public void toggleWifi(boolean wifi) {
+        mWifiOnly = wifi;
+        mPrefs.edit().putBoolean("wifi", mWifiOnly).apply();
     }
 
 
