@@ -127,7 +127,7 @@ public class Tracker extends IntentService implements
         Log.i("fused", "build google api");
 
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS * 2);
+        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setFastestInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
 
         updateState();
@@ -240,7 +240,7 @@ public class Tracker extends IntentService implements
         edit.apply();
         boolean isOn = mPrefs.getBoolean("geoOn", false);
         stopLocationUpdates();
-        mLocationRequest.setInterval(interval * 2000);
+        mLocationRequest.setInterval(interval * 1000);
         if(isOn && mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             //restart location request
             startLocationUpdates();
