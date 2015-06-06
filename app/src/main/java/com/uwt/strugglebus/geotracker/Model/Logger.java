@@ -88,7 +88,8 @@ public class Logger extends IntentService {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + "(lat REAL, lon REAL, speed REAL, heading REAL, time BIGINT, uid INT);");
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE + " WHERE uid = \"" + uid + "\";", null);
 
-        if (cursor != null && (!mWifiOnly || UtilityTests.isWIFIConnected(getApplicationContext())) && UtilityTests.isCharging(getApplicationContext())) {
+        if (cursor != null && (mWifiOnly && UtilityTests.isWIFIConnected(getApplicationContext()) && UtilityTests.isCharging(getApplicationContext())
+                ||(!mWifiOnly && UtilityTests.isCharging(getApplicationContext())))) {
             String lat, lon, speed, bearing, url;
             long curTime, firstTime = Integer.MAX_VALUE, lastTime = 0;
             String[] list = new String[cursor.getCount()];
@@ -133,7 +134,7 @@ public class Logger extends IntentService {
             db.execSQL(delete);
             Log.w("sqlTestDelete", delete);
             cursor.close();
-        } else if (!UtilityTests.isWIFIConnected(getApplicationContext())) {
+        } else if ((!UtilityTests.isWIFIConnected(getApplicationContext())) && mWifiOnly) {
             Toast.makeText(getApplicationContext(), "Push Failed: not connected to wifi", Toast.LENGTH_LONG).show();
         } else if (!UtilityTests.isCharging(getApplicationContext())) {
             Toast.makeText(getApplicationContext(), "Push Failed: not currently charging", Toast.LENGTH_LONG).show();
