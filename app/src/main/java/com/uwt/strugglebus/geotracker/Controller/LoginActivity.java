@@ -67,7 +67,7 @@ public class LoginActivity extends ActionBarActivity {
 //            Tracker.setServiceAlarm(mContext, true);
 //        }
 
-       // getApplicationContext().startService(new Intent(getApplicationContext(), Tracker2.class));
+       // getApplicationContext().startService(new Intent(getApplicationContext(), Tracker.class));
 
         String uid = prefs.getString("userID", null);
         if(uid != null) { //user exists in shared prefs

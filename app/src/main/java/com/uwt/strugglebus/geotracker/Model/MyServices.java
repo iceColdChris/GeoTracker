@@ -1,20 +1,17 @@
 package com.uwt.strugglebus.geotracker.Model;
 
-import com.uwt.strugglebus.geotracker.Model.Logger;
-import com.uwt.strugglebus.geotracker.Model.Tracker2;
-
 /**
  * Holds a static references to app services that are needed in multiple activities
  */
 public class MyServices {
-    private static Tracker2 mTracker = null;
+    private static Tracker mTracker = null;
     private static Logger mLogger = null;
 
     /**
      *
      * @param tracker
      */
-    public static void setTracker(Tracker2 tracker) {
+    public static void setTracker(Tracker tracker) {
         mTracker = tracker;
     }
 
@@ -22,7 +19,7 @@ public class MyServices {
      *
      * @return
      */
-    public static Tracker2 getTracker() {
+    public static Tracker getTracker() {
         return mTracker;
     }
 

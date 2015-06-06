@@ -2,7 +2,7 @@ package com.uwt.strugglebus.geotracker;
 
 import com.uwt.strugglebus.geotracker.Model.Logger;
 import com.uwt.strugglebus.geotracker.Model.MyServices;
-import com.uwt.strugglebus.geotracker.Model.Tracker2;
+import com.uwt.strugglebus.geotracker.Model.Tracker;
 
 import junit.framework.TestCase;
 
@@ -22,7 +22,7 @@ public class MyServicesTest extends TestCase {
      * Set a new tracker and test that it isn't null.
      */
     public void testSetTracker() {
-        my_services.setTracker(new Tracker2());
+        my_services.setTracker(new Tracker());
         assertNotNull(my_services.getTracker());
     }
 

@@ -21,7 +21,7 @@ import com.uwt.strugglebus.geotracker.Model.LocationBroadcastReceiver;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.Model.Logger;
 import com.uwt.strugglebus.geotracker.Model.MyServices;
-import com.uwt.strugglebus.geotracker.Model.Tracker2;
+import com.uwt.strugglebus.geotracker.Model.Tracker;
 import com.uwt.strugglebus.geotracker.R;
 
 /**
@@ -36,7 +36,7 @@ public class MyAccount extends ActionBarActivity {
     private static final int HOUR = 3600000;
 
     private LocationLog mLocationLog;
-    private Tracker2 mTracker;
+    private Tracker mTracker;
     private Logger mLogger;
     private SharedPreferences mPrefs;
 
@@ -46,7 +46,7 @@ public class MyAccount extends ActionBarActivity {
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Tracker2.LocalBinder binder = (Tracker2.LocalBinder) service;
+            Tracker.LocalBinder binder = (Tracker.LocalBinder) service;
             mTracker = binder.getService();
             MyServices.setTracker(mTracker);
         }
@@ -97,7 +97,7 @@ public class MyAccount extends ActionBarActivity {
         edit.putBoolean("geoOn", true);
         edit.apply();
         //create and bind service
-        Intent i = new Intent(this, Tracker2.class);
+        Intent i = new Intent(this, Tracker.class);
         getApplicationContext().startService(i);
         getApplicationContext().bindService(i, mConnection, Context.BIND_AUTO_CREATE);
         //create and bind logger
@@ -142,7 +142,7 @@ public class MyAccount extends ActionBarActivity {
         toggleTracker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tracker2 track = MyServices.getTracker();
+                Tracker track = MyServices.getTracker();
 
                 if(track != null) {
                     track.toggleTracking();
