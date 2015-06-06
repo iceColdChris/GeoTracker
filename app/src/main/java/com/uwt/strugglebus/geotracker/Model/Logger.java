@@ -236,7 +236,7 @@ public class Logger extends IntentService {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
                     if (success != null && success.equals("success")) {
-                        Toast.makeText(getApplicationContext(), "commit successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Commit Successful", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
