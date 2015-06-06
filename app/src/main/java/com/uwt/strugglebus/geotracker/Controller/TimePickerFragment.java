@@ -56,20 +56,13 @@ public class TimePickerFragment extends DialogFragment
      */
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         TextView time;
-        // Do something with the time chosen by the user
+
         if(getTag().equals("startTimePicker")) {
             time = (TextView)getActivity().findViewById(R.id.start_time_text);
         } else {
             time = (TextView)getActivity().findViewById(R.id.end_time_text);
         }
-//      TODO - Check if this is needed or else remove it.
-//        String ampm = "am";
-//        if(hour == 0) {
-//            hour = 12;
-//        } else if(hour / 12 > 0) {
-//            ampm = "pm";
-//            hour = hour % 12;
-//        }
+
         if(minute > 10) {
             time.setText(hourOfDay + ":" + minute);
         } else {

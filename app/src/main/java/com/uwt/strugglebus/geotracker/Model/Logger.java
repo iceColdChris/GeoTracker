@@ -34,8 +34,10 @@ public class Logger extends IntentService {
 
     private static final String DB_NAME = "Trajectories";
     private static final String TABLE = "Trajectories";
-
     private final IBinder mBinder = new LocalBinder();
+    private boolean mWifiOnly;
+    private SharedPreferences mPrefs;
+
 
     public Logger() {
         super("Logger");
@@ -47,11 +49,14 @@ public class Logger extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("Logger", "onStart");
+        mPrefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+                Context.MODE_PRIVATE);
+        mWifiOnly = mPrefs.getBoolean("wifi", false);
         commitToWeb();
         return START_STICKY;
     }
 
-    public void commitToWeb() {
+    private void commitToWeb() {
         final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
 
         SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
@@ -60,10 +65,9 @@ public class Logger extends IntentService {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE + "(lat REAL, lon REAL, speed REAL, heading REAL, time BIGINT, uid INT);");
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE + " WHERE uid = \"" + uid + "\";", null);
 
-        if (cursor != null && UtilityTests.isWIFIConnected(getApplicationContext()) && UtilityTests.isCharging(getApplicationContext())) {
-//          columns: (lat, lon, speed, heading, time, uid)
+        if (cursor != null && (!mWifiOnly || UtilityTests.isWIFIConnected(getApplicationContext())) && UtilityTests.isCharging(getApplicationContext())) {
             String lat, lon, speed, bearing, url;
-            long curTime = 0, firstTime = Integer.MAX_VALUE, lastTime = 0;
+            long curTime, firstTime = Integer.MAX_VALUE, lastTime = 0;
             String[] list = new String[cursor.getCount()];
 
             if  (cursor.moveToFirst()) {
@@ -113,7 +117,6 @@ public class Logger extends IntentService {
         }
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -122,10 +125,14 @@ public class Logger extends IntentService {
         Log.i("Logger", "handle intent");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static void setServiceAlarm(Context context, boolean isOn, int interval) {
         Intent i = new Intent(context, Logger.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        mContext = context;
 
         if (isOn) {
             alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
@@ -134,6 +141,16 @@ public class Logger extends IntentService {
             alarmManager.cancel(pendingIntent);
             pendingIntent.cancel();
         }
+    }
+
+
+    /**
+     * changes the current boolean value for pushing only when wifi is enabled, and stores the
+     * setting in shared prefs
+     */
+    public void toggleWifi(boolean wifi) {
+        mWifiOnly = wifi;
+        mPrefs.edit().putBoolean("wifi", mWifiOnly).apply();
     }
 
 
@@ -209,7 +226,6 @@ public class Logger extends IntentService {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-//            mProgressDialog.dismiss();
             if (result != null) {
                 try {
                     JSONObject obj = new JSONObject(result);
