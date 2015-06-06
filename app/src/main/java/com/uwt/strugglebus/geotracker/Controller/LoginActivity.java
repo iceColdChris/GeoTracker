@@ -87,9 +87,12 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View v){
                 mEmail = ((EditText) findViewById(R.id.email)).getText().toString();
                 mPassword = ((EditText) findViewById(R.id.password)).getText().toString();
+                //mEmail = mEmail.replace(".", "%2E");
+                //mPassword = mPassword.replace(".", "%2E");
 
                 DownloadWebPageTask task = new DownloadWebPageTask();
                 String url = "http://450.atwebpages.com/login.php?email=" + mEmail + "&password=" + mPassword;
+                Log.w("derp", url);
                 task.execute(url);
             }
 
@@ -188,7 +191,7 @@ public class LoginActivity extends ActionBarActivity {
                     InputStream content = execute.getEntity().getContent();
 
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s;
+                        String s;
                     while ((s = buffer.readLine()) != null) {
                         response += s;
                     }
@@ -228,6 +231,7 @@ public class LoginActivity extends ActionBarActivity {
                         Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "Error connecting to service!", Toast.LENGTH_LONG).show();
                     Log.i("json exception", e.getMessage());
                 }
             }

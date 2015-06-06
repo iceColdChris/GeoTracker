@@ -147,7 +147,7 @@ public class MyAccount extends ActionBarActivity {
                     String s = "on";
                     if (track.isTracking()) {
                         toggleTracker.setText(R.string.stop_tracker);
-                        Logger.setServiceAlarm(getApplicationContext(), true, HOUR);
+                        Logger.setServiceAlarm(getApplicationContext(), true, mPrefs.getInt("pushRate", HOUR));
                     } else {
                         s = "off";
                         toggleTracker.setText(R.string.start_tracker);
@@ -184,8 +184,11 @@ public class MyAccount extends ActionBarActivity {
                 SharedPreferences.Editor editor = mPrefs.edit();
                 editor.putString("userID", null);
                 editor.apply();
-                mTracker.stopLocationUpdates();
+                if(mTracker != null ) {
+                    mTracker.stopLocationUpdates();
+                }
                 Logger.setServiceAlarm(getApplication(), false, 0);
+
                 Intent login = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(login);
                 finish();
@@ -199,10 +202,7 @@ public class MyAccount extends ActionBarActivity {
                 if(log != null) {
 ;                    log.commitToWeb();
 
-                } else if (mLogger != null) {
-                    Log.w("push", "mlogger");
-
-                } else {
+                }  else {
                     Log.w("push", "null");
 
                 }
