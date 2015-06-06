@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -61,7 +62,7 @@ public class UtilityTests {
      */
     public static boolean isCharging(Context context) {
         boolean isPlugged= false;
-
+        Log.w("Plugged", "" + isPlugged);
         Intent intent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
 
