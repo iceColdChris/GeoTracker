@@ -22,58 +22,49 @@ import java.text.DateFormat;
 import java.util.Date;
 
 /**
- *  Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
- *  Service that uses Google Play Fused Locations services to get user's geo-location every interval
- *  And saves the location points in a sqli database
+ * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
+ * <p/>
+ * Service that uses Google Play Fused Locations services to get user's geo-location every interval
+ * And saves the location points in a sqli database
  */
 public class Tracker extends IntentService implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     private static final String DB_NAME = "Trajectories";
     private static final String TABLE = "Trajectories";
-
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
-
+    private final IBinder mBinder = new LocalBinder();
     /**
      * Provides the entry point to Google Play services.
      */
     protected GoogleApiClient mGoogleApiClient;
-
     /**
      * Stores parameters for requests to the FusedLocationProviderApi.
      */
     protected LocationRequest mLocationRequest;
-
     /**
      * Represents a geographical location.
      */
     protected Location mCurrentLocation;
-
     /**
      * Represents the previous geographical location.
      */
     protected Location mPrevLocation;
-
     /**
      * Tracks the status of the location updates request. Value changes when the user presses the
      * Start Updates and Stop Updates buttons.
      */
     protected Boolean mRequestingLocationUpdates;
-
     /**
      * Time when the location was updated represented as a String.
      */
     protected String mLastUpdateTime;
-
     private SQLiteDatabase mDB;
-    private final IBinder mBinder = new LocalBinder();
     private SharedPreferences mPrefs;
     private boolean mTracking;
 
     /**
      * Creates an IntentService. Invoked by your subclass's constructor.
-     *
      */
     public Tracker() {
         super("Tracker");
@@ -89,7 +80,7 @@ public class Tracker extends IntentService implements
         mPrefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 Context.MODE_PRIVATE);
         Log.i("fused", "handle intent");
-        if(mGoogleApiClient == null) {
+        if (mGoogleApiClient == null) {
             buildGoogleApiClient();
             mGoogleApiClient.connect();
         }
@@ -107,7 +98,7 @@ public class Tracker extends IntentService implements
         mPrefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 Context.MODE_PRIVATE);
         Log.i("fused", "handle intent");
-        if(mGoogleApiClient == null) {
+        if (mGoogleApiClient == null) {
             buildGoogleApiClient();
             mGoogleApiClient.connect();
         }
@@ -152,7 +143,7 @@ public class Tracker extends IntentService implements
         Log.i("fused", "starting location updates");
         mPrefs.edit().putBoolean("geoOn", true).apply();
         mTracking = true;
-        if(mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
         }
@@ -195,7 +186,7 @@ public class Tracker extends IntentService implements
     public void onLocationChanged(Location location) {
         Log.i("fused", "location changed" + location.toString());
         mCurrentLocation = location;
-        Log.i("fused", "time from last update" +DateFormat.getTimeInstance().format(new Date()) + ", " + mLastUpdateTime);
+        Log.i("fused", "time from last update" + DateFormat.getTimeInstance().format(new Date()) + ", " + mLastUpdateTime);
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
 
         if (mPrevLocation == null || (mCurrentLocation != null && !locationEquals(mCurrentLocation, mPrevLocation))) {
@@ -212,6 +203,14 @@ public class Tracker extends IntentService implements
         mPrevLocation = mCurrentLocation;
     }
 
+    /**
+     * Checks if the locations are the
+     * at the same point
+     *
+     * @param a The first location
+     * @param b The second location
+     * @return If the locations are the same
+     */
     private boolean locationEquals(Location a, Location b) {
         return a.getLatitude() == b.getLatitude() &&
                 a.getLongitude() == b.getLongitude() &&
@@ -232,6 +231,7 @@ public class Tracker extends IntentService implements
 
     /**
      * Change the location update time
+     *
      * @param interval time until next update in seconds
      */
     public void setInterval(int interval) {
@@ -241,7 +241,7 @@ public class Tracker extends IntentService implements
         boolean isOn = mPrefs.getBoolean("geoOn", false);
         stopLocationUpdates();
         mLocationRequest.setInterval(interval * 1000);
-        if(isOn && mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+        if (isOn && mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             //restart location request
             startLocationUpdates();
         }
@@ -253,26 +253,33 @@ public class Tracker extends IntentService implements
     public void updateState() {
         boolean isOn = mPrefs.getBoolean("geoOn", false);
         int geoRate = mPrefs.getInt("geoRate", -1);
-        Log.i("fused", "interval" + geoRate );
-        if(geoRate >= 0) {
-            if(mGoogleApiClient != null  && mGoogleApiClient.isConnected()) {
+        Log.i("fused", "interval" + geoRate);
+        if (geoRate >= 0) {
+            if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
                 stopLocationUpdates();
             }
             mLocationRequest.setInterval(geoRate * 1000);
-            if(isOn && mGoogleApiClient != null) {
+            if (isOn && mGoogleApiClient != null) {
                 //restart location request
                 startLocationUpdates();
             }
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
 
+    /**
+     * Toggles whether the phone tracks
+     * the user or not.
+     */
     public void toggleTracking() {
-        if(mTracking) {
+        if (mTracking) {
             mTracking = false;
             stopLocationUpdates();
         } else {
@@ -284,8 +291,17 @@ public class Tracker extends IntentService implements
     /**
      * @return is the service currently getting locations
      */
-    public boolean isTracking(){
+    public boolean isTracking() {
         return mTracking;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onDestroy() {
+        Log.i("fused", "Service go by by");
+        super.onDestroy();
     }
 
     /**
@@ -296,14 +312,8 @@ public class Tracker extends IntentService implements
         /**
          * @return the Traccker2 service attached to this Binder
          */
-        public Tracker getService(){
+        public Tracker getService() {
             return Tracker.this;
         }
-    }
-
-    @Override
-    public void onDestroy(){
-        Log.i("fused", "Service go by by");
-        super.onDestroy();
     }
 }
