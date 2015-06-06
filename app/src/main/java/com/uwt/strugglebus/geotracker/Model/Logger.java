@@ -44,6 +44,23 @@ public class Logger extends IntentService {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public static void setServiceAlarm(Context context, boolean isOn, int interval) {
+        Intent i = new Intent(context, Logger.class);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        if (isOn) {
+            alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
+                    , interval, pendingIntent);
+        } else {
+            alarmManager.cancel(pendingIntent);
+            pendingIntent.cancel();
+        }
+    }
+
+    /**
      * Commit what is in the database to the web service upon start.
      */
     @Override
@@ -56,7 +73,13 @@ public class Logger extends IntentService {
         return START_STICKY;
     }
 
-    private void commitToWeb() {
+    /**
+     * This method is in charge of committing
+     * to the web service, while checking if
+     * the phone is charging and if its connected
+     * to the internet if the user wishes.
+     */
+    public void commitToWeb() {
         final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
 
         SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
@@ -70,7 +93,7 @@ public class Logger extends IntentService {
             long curTime, firstTime = Integer.MAX_VALUE, lastTime = 0;
             String[] list = new String[cursor.getCount()];
 
-            if  (cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 int i = 0;
                 do {
                     double tempLat = cursor.getDouble(cursor.getColumnIndex("lat"));
@@ -84,10 +107,10 @@ public class Logger extends IntentService {
                     bearing = Float.toString(tempBearing).replace(".", "%2E");
 
                     curTime = cursor.getLong(cursor.getColumnIndex("time"));
-                    if(curTime < firstTime) {
+                    if (curTime < firstTime) {
                         firstTime = curTime;
                     }
-                    if(curTime > lastTime) {
+                    if (curTime > lastTime) {
                         lastTime = curTime;
                     }
 
@@ -110,9 +133,9 @@ public class Logger extends IntentService {
             db.execSQL(delete);
             Log.w("sqlTestDelete", delete);
             cursor.close();
-        } else if(!UtilityTests.isWIFIConnected(getApplicationContext())) {
+        } else if (!UtilityTests.isWIFIConnected(getApplicationContext())) {
             Toast.makeText(getApplicationContext(), "Push Failed: not connected to wifi", Toast.LENGTH_LONG).show();
-        } else if(!UtilityTests.isCharging(getApplicationContext())) {
+        } else if (!UtilityTests.isCharging(getApplicationContext())) {
             Toast.makeText(getApplicationContext(), "Push Failed: not currently charging", Toast.LENGTH_LONG).show();
         }
     }
@@ -124,25 +147,6 @@ public class Logger extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Log.i("Logger", "handle intent");
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public static void setServiceAlarm(Context context, boolean isOn, int interval) {
-        Intent i = new Intent(context, Logger.class);
-        PendingIntent pendingIntent = PendingIntent.getService(context, 0, i, 0);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//        mContext = context;
-
-        if (isOn) {
-            alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                    , interval, pendingIntent);
-        } else {
-            alarmManager.cancel(pendingIntent);
-            pendingIntent.cancel();
-        }
-    }
-
 
     /**
      * changes the current boolean value for pushing only when wifi is enabled, and stores the
@@ -168,9 +172,9 @@ public class Logger extends IntentService {
     public class LocalBinder extends Binder {
 
         /**
-         * @return the Traccker2 service attached to this Binder
+         * @return the Tracker2 service attached to this Binder
          */
-        public Logger getService(){
+        public Logger getService() {
             return Logger.this;
         }
     }
@@ -178,7 +182,7 @@ public class Logger extends IntentService {
     /*
     * This is a private helper class that is
     * in charge of connecting to the web
-    * services as an Asyncronous Task.
+    * services as an Asynchronous Task.
     */
     private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
@@ -230,7 +234,7 @@ public class Logger extends IntentService {
                 try {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
-                    if(success != null && success.equals("success")) {
+                    if (success != null && success.equals("success")) {
                         Toast.makeText(getApplicationContext(), "commit successfully", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), obj.getString("error"), Toast.LENGTH_LONG).show();

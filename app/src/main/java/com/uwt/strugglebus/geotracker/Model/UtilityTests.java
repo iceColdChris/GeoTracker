@@ -13,7 +13,7 @@ import java.io.IOException;
 
 /**
  * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
+ * <p/>
  * This class is a helper class that determines if
  * the phone is connected via WIFI and has a stable
  * internet connection.
@@ -23,6 +23,7 @@ public class UtilityTests {
     /**
      * Checks if the phone is connected to WIFI
      * and has a stable internet connection.
+     *
      * @param mContext the context that will use this
      * @return True if the phone is connected / False if the phone is not connected
      */
@@ -48,7 +49,7 @@ public class UtilityTests {
                 e.printStackTrace();
             }
 
-            return false; //The phone doesnt have internet access
+            return false; //The phone doesn't have internet access
         }
 
         return false; //The phone doesn't have internet access
@@ -57,11 +58,12 @@ public class UtilityTests {
 
     /**
      * Checks the current charging state of the android device.
+     *
      * @param context the context
      * @return the charging state of the device
      */
     public static boolean isCharging(Context context) {
-        boolean isPlugged= false;
+        boolean isPlugged = false;
         Log.w("Plugged", "" + isPlugged);
         Intent intent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
