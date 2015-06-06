@@ -23,7 +23,7 @@ public class DatePickerFragment extends DialogFragment
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * On top of the above functionality
      * this method sets up a calendar
      * object as well as a date picker
@@ -39,28 +39,28 @@ public class DatePickerFragment extends DialogFragment
 
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
-}
+    }
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * This method sets the user
      * defined date into the
      * system.
      *
-     * @param view A DatePicker object.
-     * @param year A numerical value representing the year
+     * @param view  A DatePicker object.
+     * @param year  A numerical value representing the year
      * @param month A numerical value representing the Month
-     * @param day A numerical value representing the Day
+     * @param day   A numerical value representing the Day
      */
     public void onDateSet(DatePicker view, int year, int month, int day) {
         TextView date;
-        if(getTag().equals("startDatePicker")) {
-            date = (TextView)getActivity().findViewById(R.id.start_date_text);
+        if (getTag().equals("startDatePicker")) {
+            date = (TextView) getActivity().findViewById(R.id.start_date_text);
 
         } else {
-            date = (TextView)getActivity().findViewById(R.id.end_date_text);
+            date = (TextView) getActivity().findViewById(R.id.end_date_text);
         }
-        date.setText(""+ (1 + month) + "/" + day + "/" + year);
+        date.setText("" + (1 + month) + "/" + day + "/" + year);
     }
 }

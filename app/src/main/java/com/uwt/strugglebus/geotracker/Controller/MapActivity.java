@@ -37,16 +37,16 @@ import java.util.List;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
+ * <p/>
  * This class is in charge of
  * setting up the google maps
  * api as well as the view.
- *
+ * <p/>
  * This map will show the location
  * of each poll as an arrow on the
  * map.
  */
-public class MapActivity extends  ActionBarActivity implements OnMapReadyCallback {
+public class MapActivity extends ActionBarActivity implements OnMapReadyCallback {
 
     private LocationLog mLocationLog;
     private GoogleMap mGoogleMap;
@@ -54,7 +54,7 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * On top of the above
      * functionality this method
      * sets up an instance of
@@ -83,7 +83,7 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * This method will be
      * in charge of adding the
      * location markers to the
@@ -97,11 +97,11 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
         if (mLocationLog != null) {
 
             List<Location> locations = mLocationLog.getLocationList();
-            if(locations.size() > 0) {
+            if (locations.size() > 0) {
                 Location location = locations.get(0);
                 LatLng firstLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                 for (int i = 0; i < locations.size(); i++) {
-                    Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                    mGoogleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(locations.get(i).getLatitude()
                                     , locations.get(i).getLongitude()))
                             .title("My Locations"));
@@ -199,15 +199,14 @@ public class MapActivity extends  ActionBarActivity implements OnMapReadyCallbac
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-//            mProgressDialog.dismiss();
             if (result != null) {
                 try {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
-                    if(success != null && success.equals("success")) {
+                    if (success != null && success.equals("success")) {
                         JSONArray points = new JSONArray(obj.getString("points"));
                         PolylineOptions line = new PolylineOptions();
-                        for(int i = 0; i < points.length(); i++) {
+                        for (int i = 0; i < points.length(); i++) {
                             JSONObject point = points.getJSONObject(i);
                             LatLng marker = new LatLng(point.getDouble("lat"), point.getDouble("lon"));
                             line.add(marker);

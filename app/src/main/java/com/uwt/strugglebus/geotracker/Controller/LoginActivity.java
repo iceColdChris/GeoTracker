@@ -1,6 +1,5 @@
 package com.uwt.strugglebus.geotracker.Controller;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,7 +28,7 @@ import java.io.InputStreamReader;
 
 /**
  * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
+ * <p/>
  * This class contains the logic needed for the login page.
  * The necessary buttons are initialized and the appropriate logic to let the user log-in.
  */
@@ -38,11 +37,10 @@ public class LoginActivity extends ActionBarActivity {
     private String mEmail;
     private String mPassword;
     private Context mContext;
-    private Activity mActivity;
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * On top of the above
      * functionality this
      * method connects to
@@ -58,19 +56,11 @@ public class LoginActivity extends ActionBarActivity {
         Button register = (Button) findViewById(R.id.register);
         Button forgot = (Button) findViewById(R.id.forgot_password);
         mContext = getApplicationContext();
-        mActivity = this;
 
-        final  SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
-                getApplicationContext().MODE_PRIVATE);
-
-//        if(prefs.getBoolean("eula_accept", false)) {
-//            Tracker.setServiceAlarm(mContext, true);
-//        }
-
-       // getApplicationContext().startService(new Intent(getApplicationContext(), Tracker.class));
-
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+                Context.MODE_PRIVATE);
         String uid = prefs.getString("userID", null);
-        if(uid != null) { //user exists in shared prefs
+        if (uid != null) { //user exists in shared prefs
             final EditText email = ((EditText) findViewById(R.id.email));
             email.setText(prefs.getString(getString(R.string.email), "email"));
 
@@ -83,58 +73,40 @@ public class LoginActivity extends ActionBarActivity {
 
         }
 
-        login.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        login.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Check Async. email/pass are in the server
+             * if correct goes to account
+             * if not shows error
+             */
+            public void onClick(View v) {
                 mEmail = ((EditText) findViewById(R.id.email)).getText().toString();
                 mPassword = ((EditText) findViewById(R.id.password)).getText().toString();
-                //mEmail = mEmail.replace(".", "%2E");
-                //mPassword = mPassword.replace(".", "%2E");
-
                 DownloadWebPageTask task = new DownloadWebPageTask();
                 String url = "http://450.atwebpages.com/login.php?email=" + mEmail + "&password=" + mPassword;
-                Log.w("derp", url);
                 task.execute(url);
             }
-
-                /*
-                String mEmail = prefs.getString(getString(R.string.email), "email");
-                String mPass = prefs.getString(getString(R.string.password), "password");
-
-                String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-                Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-                Matcher matcher = pattern.matcher(email);
-                if(!matcher.matches()) {
-                    Toast.makeText(getApplicationContext(), R.string.invalid_email_format, Toast.LENGTH_LONG).show();
-                } else if (!email.equals(mEmail) ) {
-                    Toast.makeText(getApplicationContext(), R.string.invalid_email, Toast.LENGTH_LONG).show();
-                } else if (password.length() < 6) {
-                    Toast.makeText(getApplicationContext(), R.string.invalid_password_format, Toast.LENGTH_LONG).show();
-                } else if (!password.equals(mPass)) {
-                    Toast.makeText(getApplicationContext(), R.string.invalid_password, Toast.LENGTH_LONG).show();
-                } else {
-                    Intent login = new Intent(getApplicationContext(), MyAccount.class);
-                    startActivity(login);
-                    finish();
-                }*/
         });
 
-        register.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        register.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Go to register activity
+             */
+            public void onClick(View v) {
                 Intent register = new Intent(getApplicationContext(), Registration.class);
                 startActivity(register);
             }
         });
 
         forgot.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Got to Forgot password page
+             */
             public void onClick(View v) {
                 Intent forgot = new Intent(getApplicationContext(), ResetPassword.class);
                 startActivity(forgot);
             }
         });
-//        TODO - Finish implementing or remove if not needed
-//        if(prefs.getBoolean("eula_accept", false)) {
-//            Tracker.setServiceAlarm(getApplicationContext(), true);
-//        }
     }
 
 
@@ -164,7 +136,6 @@ public class LoginActivity extends ActionBarActivity {
      * services as an Asyncronous Task.
      */
     private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
-         
 
 
         /*
@@ -191,7 +162,7 @@ public class LoginActivity extends ActionBarActivity {
                     InputStream content = execute.getEntity().getContent();
 
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                        String s;
+                    String s;
                     while ((s = buffer.readLine()) != null) {
                         response += s;
                     }
@@ -217,7 +188,7 @@ public class LoginActivity extends ActionBarActivity {
                     String success = obj.getString("result");
                     Log.i("login", result);
                     Log.i("login", success);
-                    if(success != null && success.equals("success")) {
+                    if (success != null && success.equals("success")) {
                         SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
                                 , Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();

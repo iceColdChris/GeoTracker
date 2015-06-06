@@ -26,7 +26,7 @@ import com.uwt.strugglebus.geotracker.R;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
+ * <p/>
  * This class is in charge of keeping track of all
  * the user's data. It is also the main screen after
  * login.
@@ -44,6 +44,9 @@ public class MyAccount extends ActionBarActivity {
      * This class handles the connection for the Tracker.
      */
     private ServiceConnection mConnection = new ServiceConnection() {
+        /**
+         * On connection of the service get the service from the binder and put it in MyServices
+         */
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Tracker.LocalBinder binder = (Tracker.LocalBinder) service;
@@ -53,18 +56,21 @@ public class MyAccount extends ActionBarActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
         }
     };
 
     /**
-     *  This class handles the service connections for the Logger.
+     * This class handles the service connections for the Logger.
      */
     private ServiceConnection mLogConnection = new ServiceConnection() {
+
+        /**
+         * On connection of the service get the service from the binder and put it in MyServices
+         */
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Logger.LocalBinder binder = (Logger.LocalBinder) service;
-            MyAccount.this.mLogger = (Logger) binder.getService();
+            MyAccount.this.mLogger = binder.getService();
             MyServices.setLogger(mLogger);
             Log.w("service connected test", "connected");
         }
@@ -78,7 +84,7 @@ public class MyAccount extends ActionBarActivity {
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * On top of the above functionality
      * this method sets up the account
      * page that the user sees upon logging in.
@@ -112,13 +118,7 @@ public class MyAccount extends ActionBarActivity {
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP);
 
-
-        //int uid = mPrefs.getInt("uid", -1);
         String mEmail = mPrefs.getString(getString(R.string.email), "email");
-        //String mPass = mPrefs.getString(getString(R.string.password), "password");
-        //String mQuestion = mPrefs.getString(getString(R.string.security_q), "question");
-        //String mAnswer = mPrefs.getString(getString(R.string.security_a), "answer");
-
         email.setText(mEmail);
 
         Button map = (Button) findViewById(R.id.view_map);
@@ -130,6 +130,9 @@ public class MyAccount extends ActionBarActivity {
         Button commitToWeb = (Button) findViewById(R.id.commit_to_web);
 
         map.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Go to map activity
+             */
             @Override
             public void onClick(View v) {
                 Intent map = new Intent(getApplicationContext(), MapActivity.class);
@@ -138,11 +141,14 @@ public class MyAccount extends ActionBarActivity {
             }
         });
         toggleTracker.setOnClickListener(new View.OnClickListener() {
+            /**
+             * turns on or off the tracker
+             */
             @Override
             public void onClick(View v) {
                 Tracker track = MyServices.getTracker();
 
-                if(track != null) {
+                if (track != null) {
                     track.toggleTracking();
                     String s = "on";
                     if (track.isTracking()) {
@@ -158,6 +164,9 @@ public class MyAccount extends ActionBarActivity {
             }
         });
         traject.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Go to Trajectory Chooser
+             */
             @Override
             public void onClick(View v) {
                 Intent traject = new Intent(getApplicationContext(), TrajectoryChooser.class);
@@ -165,6 +174,9 @@ public class MyAccount extends ActionBarActivity {
             }
         });
         changePass.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Go th Reset Password activity
+             */
             @Override
             public void onClick(View v) {
                 Intent change = new Intent(getApplicationContext(), ResetPassword.class);
@@ -172,6 +184,9 @@ public class MyAccount extends ActionBarActivity {
             }
         });
         sample.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Go to Change Sample settings activity
+             */
             @Override
             public void onClick(View v) {
                 Intent changeRate = new Intent(getApplicationContext(), ChangeSample.class);
@@ -179,12 +194,15 @@ public class MyAccount extends ActionBarActivity {
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Logs out, stops services and removes uid from shared prefs
+             */
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor = mPrefs.edit();
                 editor.putString("userID", null);
                 editor.apply();
-                if(mTracker != null ) {
+                if (mTracker != null) {
                     mTracker.stopLocationUpdates();
                 }
                 Logger.setServiceAlarm(getApplication(), false, 0);
@@ -195,16 +213,17 @@ public class MyAccount extends ActionBarActivity {
             }
         });
         commitToWeb.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Pushes trajectory data to the web service
+             */
             @Override
             public void onClick(View v) {
                 Log.w("sqlTestDelete", "commit to web");
                 Logger log = MyServices.getLogger();
-                if(log != null) {
-;                    log.commitToWeb();
-
-                }  else {
+                if (log != null) {
+                    log.commitToWeb();
+                } else {
                     Log.w("push", "null");
-
                 }
             }
         });
@@ -221,7 +240,7 @@ public class MyAccount extends ActionBarActivity {
     }
 
     /**
-     *{@inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -243,9 +262,6 @@ public class MyAccount extends ActionBarActivity {
             default:
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
-
 }

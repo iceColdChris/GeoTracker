@@ -120,5 +120,6 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="push_wifi" translatable="false">Only push if connected to wifi</string>
     <string name="start_tracker" translatable="false">Start Tracker</string>
     <string name="stop_tracker" translatable="false">Stop Tracker</string>
+    <string name="eula_toast" translatable="false">Check email to confirm account</string>
 
 </resources>

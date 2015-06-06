@@ -56,7 +56,7 @@ public class Logger extends IntentService {
         return START_STICKY;
     }
 
-    private void commitToWeb() {
+    public void commitToWeb() {
         final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
 
         SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)

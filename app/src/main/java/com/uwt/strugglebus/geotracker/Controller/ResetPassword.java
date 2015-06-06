@@ -31,7 +31,7 @@ import java.io.InputStreamReader;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
+ * <p/>
  * This class sets up the appropriate logic to allow the user to reset their password.
  * The user must answer their security question correctly to trigger a response
  * from the web server.
@@ -59,23 +59,29 @@ public class ResetPassword extends ActionBarActivity {
         Button cancel = (Button) findViewById(R.id.reset_cancel);
 
         accept.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final String email = ((EditText) findViewById(R.id.reset_email)).getText().toString();
-                    DownloadWebPageTask task = new DownloadWebPageTask();
-                    String url = "http://450.atwebpages.com/reset.php?email=" + email;
-                    task.execute(url);
-                }
+            /**
+             * send reset request to web service
+             */
+            @Override
+            public void onClick(View v) {
+                final String email = ((EditText) findViewById(R.id.reset_email)).getText().toString();
+                DownloadWebPageTask task = new DownloadWebPageTask();
+                String url = "http://450.atwebpages.com/reset.php?email=" + email;
+                task.execute(url);
+            }
         });
 
         cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(login);
-                    finish();
-                }
-            }
+              /**
+               * goes back to login
+               */
+              @Override
+              public void onClick(View v) {
+                  Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                  startActivity(login);
+                  finish();
+              }
+          }
         );
 
     }
@@ -155,7 +161,7 @@ public class ResetPassword extends ActionBarActivity {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
                     Context context = mActivity.getApplicationContext();
-                    if(success != null && success.equals("success")) {
+                    if (success != null && success.equals("success")) {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(mActivity)
                                 .setTitle(R.string.title_activity_reset_password)
                                 .setMessage(obj.getString("message"))

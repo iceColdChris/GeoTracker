@@ -33,27 +33,20 @@ import java.math.RoundingMode;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
+ * <p/>
  * This class is in charge of keeping
  * track of keeping track of the users
  * location.
  */
 public class Trajectories extends ActionBarActivity {
 
-    private static final String DB_NAME = "Trajectories";
-    private static final String TABLE = "Locations";
-    private static final int ROWS = 5;
-
     private Context mContext;
-
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Ontop of the above functionality
      * this method sets up the trajectory
      * database.
-     *
-     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +54,7 @@ public class Trajectories extends ActionBarActivity {
         mContext = getApplicationContext();
         setContentView(R.layout.activity_trajectories);
 
-        final  SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 Context.MODE_PRIVATE);
         String uid = prefs.getString("userID", "");
         Intent it = getIntent();
@@ -71,37 +64,6 @@ public class Trajectories extends ActionBarActivity {
         DownloadWebPageTask task = new DownloadWebPageTask();
         String url = "http://450.atwebpages.com/view.php?uid=" + uid + "&start=" + startTime + "&end=" + endTime;
         task.execute(url);
-
-//        TableLayout table = (TableLayout) findViewById(R.id.traject_table);
-//        TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-//
-//        final SQLiteDatabase db = openOrCreateDatabase(DB_NAME, MODE_PRIVATE, null);
-//
-//        String query = "SELECT * FROM " + TABLE + ";";
-//        Cursor c = db.rawQuery(query, null);
-//        while(c.moveToNext()) {
-//            TableRow row = new TableRow(getApplicationContext());
-//            row.setLayoutParams(rowParams);
-//            row.setPadding(5, 5, 5, 5);
-//            String[] values = new String[ROWS];
-//            values[0] = c.getFloat(0) + "";
-//            values[1] = c.getFloat(1) + "";
-//            values[2] = c.getFloat(2) + "";
-//            values[3] = c.getFloat(3) + "";
-//            values[4] = c.getInt(4) + "";
-//
-//            for(int i = 0; i < ROWS; i++) {
-//                TextView temp = new TextView(getApplicationContext());
-//                temp.setBackgroundColor(Color.parseColor("#BBBBBB"));
-//                temp.setPadding(5,5,5,5);
-//                temp.setText(values[i], TextView.BufferType.NORMAL);
-//                temp.setTextColor(Color.BLACK);
-//                row.addView(temp);
-//            }
-//
-//
-//   table.addView(row);
-//        }
     }
 
     /**
@@ -115,7 +77,7 @@ public class Trajectories extends ActionBarActivity {
     }
 
     /**
-     *{@inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -131,6 +93,7 @@ public class Trajectories extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     /*
  * This is a private helper class that is
  * in charge of connecting to the web
@@ -182,16 +145,15 @@ public class Trajectories extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-//            mProgressDialog.dismiss();
             if (result != null) {
                 try {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
-                    if(success != null && success.equals("success")) {
+                    if (success != null && success.equals("success")) {
                         JSONArray points = new JSONArray(obj.getString("points"));
                         TableLayout table = (TableLayout) findViewById(R.id.traject_table);
                         TableRow.LayoutParams rowParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-                        for(int i = 0; i < points.length(); i++) {
+                        for (int i = 0; i < points.length(); i++) {
                             JSONObject point = points.getJSONObject(i);
                             TableRow row = new TableRow(mContext);
                             row.setLayoutParams(rowParams);
@@ -206,10 +168,10 @@ public class Trajectories extends ActionBarActivity {
                                     point.getString("time")
                             };
 
-                            for(int j = 0; j < values.length; j++) {
+                            for (int j = 0; j < values.length; j++) {
                                 TextView temp = new TextView(mContext);
                                 temp.setBackgroundColor(Color.parseColor("#BBBBBB"));
-                                temp.setPadding(5,5,5,5);
+                                temp.setPadding(5, 5, 5, 5);
                                 temp.setText(values[j], TextView.BufferType.NORMAL);
                                 temp.setTextColor(Color.BLACK);
                                 row.addView(temp);

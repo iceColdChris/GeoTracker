@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.R;
 
@@ -26,13 +27,12 @@ import java.io.InputStreamReader;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
+ * <p/>
  * This class contains the logic for presenting the end user license agreement with the user.
  * They must read and accept the terms to use our app.
  */
 public class Eula {
 
-    private String EULA_PREFIX = "eula_";
     private Activity mActivity;
     private PackageInfo mVersionInfo;
     private AlertDialog.Builder mAlertBuilder;
@@ -47,7 +47,7 @@ public class Eula {
     }
 
     /**
-     * TODO - Dunno What this does lol
+     * Retrieves and returns the activity package info
      */
     private PackageInfo getPackageInfo() {
         PackageInfo pi = null;
@@ -134,7 +134,9 @@ public class Eula {
                             .setTitle(title)
                             .setMessage(Html.fromHtml(agreement))
                             .setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
-
+                                /**
+                                 * registers account and adds shared prefs values
+                                 */
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     // Mark this version as read.
@@ -143,19 +145,18 @@ public class Eula {
                                     editor.putBoolean(mActivity.getString(R.string.eula_accept), true);
                                     editor.apply();
                                     ((Registration) mActivity).sendData();
+                                    Toast.makeText(mActivity, R.string.eula_toast, Toast.LENGTH_LONG).show();
                                     dialogInterface.dismiss();
-//                                    Intent account = new Intent(mActivity, MyAccount.class);
-//                                    mActivity.startActivity(account);
-//                                    mActivity.finish();
                                 }
                             })
                             .setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {
-
+                                /**
+                                 * closes dialog
+                                 */
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // Close the activity as they have declined the EULA
                                     dialog.dismiss();
-//                                    mActivity.finish();
                                 }
 
                             });

@@ -19,7 +19,7 @@ import com.uwt.strugglebus.geotracker.R;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
+ * <p/>
  * Uses a seekbar to let the user change how often their location is logged
  * and how often their data is pushed to the server
  * uses shared preferences to store the settings
@@ -27,9 +27,10 @@ import com.uwt.strugglebus.geotracker.R;
 public class ChangeSample extends ActionBarActivity {
 
     private boolean mWifiChecked;
+
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Sets sliders and check boxes to default value, or shared prefs value if it exists
      * If the uses clicks accept and save then the new values are saved in shared prefs
      */
@@ -46,7 +47,7 @@ public class ChangeSample extends ActionBarActivity {
 
         final SeekBar geoRate = (SeekBar) findViewById(R.id.geo_bar);
         final TextView geoRateText = (TextView) findViewById(R.id.rate);
-        if(current > -1) {
+        if (current > -1) {
             geoRate.setProgress(current - geoMin);
             geoRateText.setText(" " + (current) + " seconds");
         } else {
@@ -72,7 +73,7 @@ public class ChangeSample extends ActionBarActivity {
         final SeekBar pushRate = (SeekBar) findViewById(R.id.server_bar);
         final TextView pushRateText = (TextView) findViewById(R.id.pushRate);
 
-        if(currentPush > -1) {
+        if (currentPush > -1) {
             pushRate.setProgress(currentPush - 1);
             pushRateText.setText(" " + (currentPush) + " hours");
         } else {
@@ -80,6 +81,9 @@ public class ChangeSample extends ActionBarActivity {
             pushRateText.setText(" " + (pushRate.getProgress() + 1) + " hours");
         }
         pushRate.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            /**
+             * When progress changes, change the text view to reflect it
+             */
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 pushRateText.setText(" " + (progress + 1) + " hours");
@@ -87,12 +91,10 @@ public class ChangeSample extends ActionBarActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -116,11 +118,13 @@ public class ChangeSample extends ActionBarActivity {
         Button back = (Button) findViewById(R.id.back);
 
         accept.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * on accept save changes to shared prefs and change settings in logger and tracker
+             */
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor edit = prefs.edit();
-                //edit.putBoolean("pushManual", manual.isChecked());
-               // edit.putBoolean("pushPower", power.isChecked());
                 edit.putInt("geoRate", geoRate.getProgress() + geoMin);
                 edit.putInt("pushRate", pushRate.getProgress() + 1);
                 edit.apply();
@@ -134,6 +138,9 @@ public class ChangeSample extends ActionBarActivity {
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Go to the my account screen
+             */
             @Override
             public void onClick(View v) {
                 Intent account = new Intent(getApplicationContext(), MyAccount.class);

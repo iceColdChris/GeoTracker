@@ -5,7 +5,6 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,7 @@ import java.util.GregorianCalendar;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
+ * <p/>
  * This class is in charge of letting
  * the user determine what trajectory
  * they want to see.
@@ -30,11 +29,10 @@ public class TrajectoryChooser extends ActionBarActivity {
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * Ontop of the above functionality
      * this method sets up the trajectory
      * chooser view.
-     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +50,19 @@ public class TrajectoryChooser extends ActionBarActivity {
         c.setTime(d);
         final TextView startDateText = (TextView) findViewById(R.id.start_date_text);
         startDateText.setText(c.get(Calendar.MONTH) + 1 + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
-        final TextView startTimeText = (TextView)findViewById(R.id.start_time_text);
+        final TextView startTimeText = (TextView) findViewById(R.id.start_time_text);
         startTimeText.setText(0 + "" + 0 + ":" + 0 + "" + 0);
 
         final TextView endDateText = (TextView) findViewById(R.id.end_date_text);
         endDateText.setText(c.get(Calendar.MONTH) + 1 + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
-        final TextView endTimeText = (TextView)findViewById(R.id.end_time_text);
+        final TextView endTimeText = (TextView) findViewById(R.id.end_time_text);
         endTimeText.setText(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
 
         final Activity that = this;
         startDate.setOnClickListener(new View.OnClickListener() {
+            /**
+             * create and show date picker
+             */
             @Override
             public void onClick(View v) {
                 DialogFragment frag = new DatePickerFragment();
@@ -69,6 +70,9 @@ public class TrajectoryChooser extends ActionBarActivity {
             }
         });
         endDate.setOnClickListener(new View.OnClickListener() {
+            /**
+             * create and show date picker
+             */
             @Override
             public void onClick(View v) {
                 DialogFragment frag = new DatePickerFragment();
@@ -77,6 +81,9 @@ public class TrajectoryChooser extends ActionBarActivity {
         });
 
         startTime.setOnClickListener(new View.OnClickListener() {
+            /**
+             * create and show time picker
+             */
             @Override
             public void onClick(View v) {
                 DialogFragment frag = new TimePickerFragment();
@@ -84,6 +91,9 @@ public class TrajectoryChooser extends ActionBarActivity {
             }
         });
         endTime.setOnClickListener(new View.OnClickListener() {
+            /**
+             * create and show time picker
+             */
             @Override
             public void onClick(View v) {
                 DialogFragment frag = new TimePickerFragment();
@@ -91,25 +101,27 @@ public class TrajectoryChooser extends ActionBarActivity {
             }
         });
         accept.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Parses dates form text views and sends it to Trajectories
+             */
             @Override
             public void onClick(View v) {
                 String[] startDateS = startDateText.getText().toString().split("/");
                 String[] startTimeS = startTimeText.getText().toString().split(":");
 
                 Calendar startCal = new GregorianCalendar(Integer.parseInt(startDateS[2]), Integer.parseInt(startDateS[0]) - 1,
-                        Integer.parseInt(startDateS[1]), Integer.parseInt(startTimeS[0]),Integer.parseInt(startTimeS[1]));
+                        Integer.parseInt(startDateS[1]), Integer.parseInt(startTimeS[0]), Integer.parseInt(startTimeS[1]));
 
                 String[] endDateS = endDateText.getText().toString().split("/");
                 String[] endTimeS = endTimeText.getText().toString().split(":");
                 Calendar endCal = new GregorianCalendar(Integer.parseInt(endDateS[2]), Integer.parseInt(endDateS[0]) - 1,
-                        Integer.parseInt(endDateS[1]), Integer.parseInt(endTimeS[0]),Integer.parseInt(endTimeS[1]));
+                        Integer.parseInt(endDateS[1]), Integer.parseInt(endTimeS[0]), Integer.parseInt(endTimeS[1]));
 
                 long startTime = (startCal.getTimeInMillis()) / 1000;
                 long endTime = (endCal.getTimeInMillis()) / 1000;
 
-                if(startTime > endTime) {
-                    //TODO: put int strings
-                    Toast.makeText(getApplicationContext(),"start time after end time" , Toast.LENGTH_SHORT).show();
+                if (startTime > endTime) {
+                    Toast.makeText(getApplicationContext(), "start time after end time", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent traject = new Intent(getApplicationContext(), Trajectories.class);
                     traject.putExtra("startTime", startTime);
@@ -121,6 +133,9 @@ public class TrajectoryChooser extends ActionBarActivity {
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Back to account
+             */
             @Override
             public void onClick(View v) {
                 Intent account = new Intent(getApplicationContext(), MyAccount.class);
@@ -134,6 +149,7 @@ public class TrajectoryChooser extends ActionBarActivity {
 
     /**
      * {@inheritDoc}
+     *
      * @param menu
      * @return True/False
      */
@@ -146,6 +162,7 @@ public class TrajectoryChooser extends ActionBarActivity {
 
     /**
      * {@inheritDoc}
+     *
      * @param item
      * @return
      */

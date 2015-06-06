@@ -33,13 +33,15 @@ import java.util.regex.Pattern;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
- *
+ * <p/>
  * This class sets up the information needed for the registration process.
  * The appropriate logic is in place to check that the user has passed requirements to register.
  */
 public class Registration extends ActionBarActivity {
 
-    /**Variables for Registration.*/
+    /**
+     * Variables for Registration.
+     */
     private String mEmail;
     private String mPassword;
     private Activity mActivity;
@@ -72,6 +74,9 @@ public class Registration extends ActionBarActivity {
 
         //set the user's information
         accept.setOnClickListener(new View.OnClickListener() {
+            /**
+             * If input is valid send registration request to server and got back to login
+             */
             @Override
             public void onClick(View v) {
                 String email = ((EditText) findViewById(R.id.reg_email)).getText().toString();
@@ -80,30 +85,25 @@ public class Registration extends ActionBarActivity {
                 String question = ((Spinner) findViewById(R.id.question_spinner)).getSelectedItem().toString();
                 String answer = ((EditText) findViewById(R.id.security_answer)).getText().toString();
 
-
-
-                //check to see if there is valid input
-                //!email.equals(null) && !password.equals(null) && !confirm_password.equals(null)
-                //&& !answer.equals(null) && confirm_password.equals(password)
                 String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
                 Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(email);
-                if(!matcher.matches()) {
+                if (!matcher.matches()) {
                     Toast.makeText(getApplicationContext(), R.string.invalid_email_format, Toast.LENGTH_LONG).show();
-                } else if(password.length() < 6) {
+                } else if (password.length() < 6) {
                     Toast.makeText(getApplicationContext(), R.string.invalid_password_format, Toast.LENGTH_LONG).show();
-                } else if(!password.equals(confirm_password)) {
+                } else if (!password.equals(confirm_password)) {
                     Toast.makeText(getApplicationContext(), R.string.invalid_confirm, Toast.LENGTH_LONG).show();
-                } else if(answer.length() < 1) {
+                } else if (answer.length() < 1) {
                     Toast.makeText(getApplicationContext(), R.string.invalid_security_a, Toast.LENGTH_LONG).show();
-                }else {
+                } else {
                     //get unique id, and put into db
                     //save user data in shared preferences
                     SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
                             , Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
                     //change to unique id once db webservice is up
-                    editor.putInt("uid",0);
+                    editor.putInt("uid", 0);
                     editor.putString(getString(R.string.email), email);
                     editor.putString(getString(R.string.password), password);
                     editor.putString(getString(R.string.security_q), question);
@@ -116,10 +116,13 @@ public class Registration extends ActionBarActivity {
 
                     editor.commit();
 
-            }
+                }
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
+            /**
+             * go back to login
+             */
             @Override
             public void onClick(View v) {
                 Intent login = new Intent(getApplicationContext(), LoginActivity.class);
@@ -136,13 +139,12 @@ public class Registration extends ActionBarActivity {
     public void sendData() {
         String email = ((EditText) findViewById(R.id.reg_email)).getText().toString();
         String password = ((EditText) findViewById(R.id.reg_password)).getText().toString();
-        String confirm_password = ((EditText) findViewById(R.id.reg_confirm_password)).getText().toString();
         String question = ((Spinner) findViewById(R.id.question_spinner)).getSelectedItem().toString();
         String answer = ((EditText) findViewById(R.id.security_answer)).getText().toString();
         SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
                 , Context.MODE_PRIVATE);
 
-        if(prefs.getBoolean(getString(R.string.eula_accept), false)) {
+        if (prefs.getBoolean(getString(R.string.eula_accept), false)) {
             DownloadWebPageTask task = new DownloadWebPageTask();
             question = question.replaceAll(" ", "%20");
             question = question.replace("?", "%3F");
@@ -199,7 +201,7 @@ public class Registration extends ActionBarActivity {
             for (String url : urls) {
                 DefaultHttpClient client = new DefaultHttpClient();
                 HttpGet httpGet = new HttpGet(url);
-                    try {
+                try {
                     HttpResponse execute = client.execute(httpGet);
                     InputStream content = execute.getEntity().getContent();
 
@@ -223,14 +225,13 @@ public class Registration extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-//            mProgressDialog.dismiss();
             if (result != null) {
                 try {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
                     SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
                             , Context.MODE_PRIVATE);
-                    if(success != null && success.equals("fail")) {
+                    if (success != null && success.equals("fail")) {
                         Toast.makeText(getApplicationContext(), obj.getString("error"), Toast.LENGTH_LONG).show();
                     } else {
                         SharedPreferences.Editor editor = prefs.edit();
