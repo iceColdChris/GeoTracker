@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +25,7 @@ import java.util.GregorianCalendar;
  * the user determine what trajectory
  * they want to see.
  */
-public class TrajectoryChooser extends ActionBarActivity {
+public class TrajectoryChooser extends AppCompatActivity {
 
     /**
      * {@inheritDoc}

@@ -18,7 +18,7 @@ import java.io.IOException;
  * the phone is connected via WIFI and has a stable
  * internet connection.
  */
-public class UtilityTests {
+class UtilityTests {
 
     /**
      * Checks if the phone is connected to WIFI

@@ -16,15 +16,14 @@ import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.R;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
@@ -52,10 +51,14 @@ public class Logger extends IntentService {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (isOn) {
-            alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
-                    , interval, pendingIntent);
+            if (alarmManager != null) {
+                alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis()
+                        , interval, pendingIntent);
+            }
         } else {
-            alarmManager.cancel(pendingIntent);
+            if (alarmManager != null) {
+                alarmManager.cancel(pendingIntent);
+            }
             pendingIntent.cancel();
         }
     }
@@ -126,8 +129,7 @@ public class Logger extends IntentService {
                 } while (cursor.moveToNext());
             }
 
-            DownloadWebPageTask task = new DownloadWebPageTask();
-            task.execute(list);
+            new DownloadWebPageTask(this).execute(list);
 
             String delete = "DELETE FROM " + TABLE + " WHERE time BETWEEN " + firstTime +
                     " AND " + lastTime + ";";
@@ -185,7 +187,7 @@ public class Logger extends IntentService {
     * in charge of connecting to the web
     * services as an Asynchronous Task.
     */
-    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+    private static class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
 
         /*
@@ -197,31 +199,48 @@ public class Logger extends IntentService {
             super.onPreExecute();
         }
 
+        private final WeakReference<Logger> loggerReference;
+
+        DownloadWebPageTask(Logger context) {
+            loggerReference = new WeakReference<>(context);
+        }
+
         /*
          * Gets the response string
          * from the webservice.
          */
         @Override
         protected String doInBackground(String... urls) {
-            String response = "";
+            StringBuilder response = new StringBuilder();
+            HttpURLConnection urlConnection;
             for (String url : urls) {
-                DefaultHttpClient client = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(url);
                 try {
-                    HttpResponse execute = client.execute(httpGet);
-                    InputStream content = execute.getEntity().getContent();
+                    urlConnection = (HttpURLConnection) new URL(url).openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setRequestProperty("Content-length", "0");
+                    urlConnection.setUseCaches(false);
+                    urlConnection.setAllowUserInteraction(false);
+                    urlConnection.setConnectTimeout(100000);
+                    urlConnection.setReadTimeout(100000);
 
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s;
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
+                    urlConnection.connect();
+
+                    int responseCode = urlConnection.getResponseCode();
+
+                    if(responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader buffer = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        String s;
+                        while ((s = buffer.readLine()) != null) {
+                            response.append(s);
+                        }
+
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            return response;
+            return response.toString();
         }
 
         /*
@@ -231,14 +250,18 @@ public class Logger extends IntentService {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
+            Logger logger = loggerReference.get();
+            if(logger == null) return;
+
             if (result != null) {
                 try {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
                     if (success != null && success.equals("success")) {
-                        Toast.makeText(getApplicationContext(), "Commit Successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(logger.getApplicationContext(), "Commit Successful", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getApplicationContext(), obj.getString("error"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(logger.getApplicationContext(), obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     Log.i("json exception", e.getMessage());

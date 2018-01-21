@@ -4,7 +4,9 @@
     android:paddingRight="5dp"
     android:paddingTop="5dp"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.uwt.strugglebus.geotracker.Controller.Trajectories">
+    tools:context="com.uwt.strugglebus.geotracker.Controller.Trajectories"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingEnd="5dp">
 
     <TableLayout
         android:layout_width="fill_parent"

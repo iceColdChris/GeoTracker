@@ -69,7 +69,7 @@ ADDED from AndroidManifest.xml:30:9
 		ADDED from AndroidManifest.xml:32:13
 	android:name
 		ADDED from AndroidManifest.xml:31:13
-activity#com.uwt.strugglebus.geotracker.Controller.Registration
+activity#com.uwt.strugglebus.geotracker.Controller.RegistrationActivity
 ADDED from AndroidManifest.xml:34:9
 	android:label
 		ADDED from AndroidManifest.xml:36:13
@@ -81,7 +81,7 @@ ADDED from AndroidManifest.xml:38:9
 		ADDED from AndroidManifest.xml:40:13
 	android:name
 		ADDED from AndroidManifest.xml:39:13
-activity#com.uwt.strugglebus.geotracker.Controller.ResetPassword
+activity#com.uwt.strugglebus.geotracker.Controller.ResetPasswordActivity
 ADDED from AndroidManifest.xml:42:9
 	android:label
 		ADDED from AndroidManifest.xml:44:13

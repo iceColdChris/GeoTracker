@@ -9,6 +9,7 @@ import android.location.Location;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -30,35 +31,35 @@ import java.util.Date;
 public class Tracker extends IntentService implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     private static final String DB_NAME = "Trajectories";
     private static final String TABLE = "Trajectories";
     private final IBinder mBinder = new LocalBinder();
     /**
      * Provides the entry point to Google Play services.
      */
-    protected GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient;
     /**
      * Stores parameters for requests to the FusedLocationProviderApi.
      */
-    protected LocationRequest mLocationRequest;
+    private LocationRequest mLocationRequest;
     /**
      * Represents a geographical location.
      */
-    protected Location mCurrentLocation;
+    private Location mCurrentLocation;
     /**
      * Represents the previous geographical location.
      */
-    protected Location mPrevLocation;
+    private Location mPrevLocation;
     /**
      * Tracks the status of the location updates request. Value changes when the user presses the
      * Start Updates and Stop Updates buttons.
      */
-    protected Boolean mRequestingLocationUpdates;
+    private Boolean mRequestingLocationUpdates;
     /**
      * Time when the location was updated represented as a String.
      */
-    protected String mLastUpdateTime;
+    private String mLastUpdateTime;
     private SQLiteDatabase mDB;
     private SharedPreferences mPrefs;
     private boolean mTracking;
@@ -109,7 +110,7 @@ public class Tracker extends IntentService implements
      * Builds a GoogleApiClient. Uses the {@code #addApi} method to request the
      * LocationServices API.
      */
-    protected synchronized void buildGoogleApiClient() {
+    private synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -139,7 +140,7 @@ public class Tracker extends IntentService implements
     /**
      * Requests location updates from the FusedLocationApi.
      */
-    public void startLocationUpdates() {
+    private void startLocationUpdates() {
         Log.i("fused", "starting location updates");
         mPrefs.edit().putBoolean("geoOn", true).apply();
         mTracking = true;
@@ -223,7 +224,7 @@ public class Tracker extends IntentService implements
      * print out error if connection failed
      */
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.i("fused", "connection failed");
         Log.i("error", "Connection failed: ConnectionResult.getErrorCode() = " + connectionResult.getErrorCode());
 
@@ -250,7 +251,7 @@ public class Tracker extends IntentService implements
     /**
      * based on settings in shared preferences starts / stops the service and adjusts the interval
      */
-    public void updateState() {
+    private void updateState() {
         boolean isOn = mPrefs.getBoolean("geoOn", false);
         int geoRate = mPrefs.getInt("geoRate", -1);
         Log.i("fused", "interval" + geoRate);

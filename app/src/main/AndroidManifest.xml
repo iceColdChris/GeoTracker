@@ -14,10 +14,11 @@
         android:required="true"/>
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="@xml/backup_descriptor">
 
         <receiver
             android:name=".Model.LocationBroadcastReceiver"
@@ -54,11 +55,11 @@
             android:label="@string/title_activity_my_account" >
         </activity>
         <activity
-            android:name=".Controller.Registration"
+            android:name=".Controller.RegistrationActivity"
             android:label="@string/title_activity_registration" >
         </activity>
         <activity
-            android:name=".Controller.ResetPassword"
+            android:name=".Controller.ResetPasswordActivity"
             android:label="@string/title_activity_reset_password" >
         </activity>
         <activity

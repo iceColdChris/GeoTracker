@@ -12,25 +12,28 @@ import junit.framework.TestCase;
  */
 public class MyServicesTest extends TestCase {
 
-    private MyServices my_services;
-
     public void setUp() {
-        my_services = new MyServices();
+        try {
+            super.setUp();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        new MyServices();
     }
 
     /**
      * Set a new tracker and test that it isn't null.
      */
     public void testSetTracker() {
-        my_services.setTracker(new Tracker());
-        assertNotNull(my_services.getTracker());
+        MyServices.setTracker(new Tracker());
+        assertNotNull(MyServices.getTracker());
     }
 
     /**
      * Set a new logger and test if it's not null.
      */
     public void testSetLogger() {
-        my_services.setLogger(new Logger());
-        assertNotNull(my_services.getLogger());
+        MyServices.setLogger(new Logger());
+        assertNotNull(MyServices.getLogger());
     }
 }

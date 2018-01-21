@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +31,7 @@ import com.uwt.strugglebus.geotracker.R;
  * the user's data. It is also the main screen after
  * login.
  */
-public class MyAccount extends ActionBarActivity {
+public class MyAccount extends AppCompatActivity {
 
     private static final int HOUR = 3600000;
 
@@ -43,7 +43,7 @@ public class MyAccount extends ActionBarActivity {
     /**
      * This class handles the connection for the Tracker.
      */
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private final ServiceConnection mConnection = new ServiceConnection() {
         /**
          * On connection of the service get the service from the binder and put it in MyServices
          */
@@ -62,7 +62,7 @@ public class MyAccount extends ActionBarActivity {
     /**
      * This class handles the service connections for the Logger.
      */
-    private ServiceConnection mLogConnection = new ServiceConnection() {
+    private final ServiceConnection mLogConnection = new ServiceConnection() {
 
         /**
          * On connection of the service get the service from the binder and put it in MyServices
@@ -109,7 +109,7 @@ public class MyAccount extends ActionBarActivity {
         getApplicationContext().startService(il);
         getApplicationContext().bindService(il, mLogConnection, Context.BIND_AUTO_CREATE);
 
-        TextView email = (TextView) findViewById(R.id.account_email);
+        TextView email = findViewById(R.id.account_email);
 
         ComponentName receiver = new ComponentName(getApplicationContext(), LocationBroadcastReceiver.class);
         PackageManager pm = getApplicationContext().getPackageManager();
@@ -121,13 +121,13 @@ public class MyAccount extends ActionBarActivity {
         String mEmail = mPrefs.getString(getString(R.string.email), "email");
         email.setText(mEmail);
 
-        Button map = (Button) findViewById(R.id.view_map);
-        Button traject = (Button) findViewById(R.id.view_traject);
-        Button changePass = (Button) findViewById(R.id.change_pass);
-        Button logout = (Button) findViewById(R.id.logout);
-        Button sample = (Button) findViewById(R.id.sample_rate);
-        final Button toggleTracker = (Button) findViewById(R.id.toggle_tracker);
-        Button commitToWeb = (Button) findViewById(R.id.commit_to_web);
+        Button map = findViewById(R.id.view_map);
+        Button traject = findViewById(R.id.view_traject);
+        Button changePass = findViewById(R.id.change_pass);
+        Button logout = findViewById(R.id.logout);
+        Button sample = findViewById(R.id.sample_rate);
+        final Button toggleTracker = findViewById(R.id.toggle_tracker);
+        Button commitToWeb = findViewById(R.id.commit_to_web);
 
         map.setOnClickListener(new View.OnClickListener() {
             /**
@@ -179,7 +179,7 @@ public class MyAccount extends ActionBarActivity {
              */
             @Override
             public void onClick(View v) {
-                Intent change = new Intent(getApplicationContext(), ResetPassword.class);
+                Intent change = new Intent(getApplicationContext(), ResetPasswordActivity.class);
                 startActivity(change);
             }
         });

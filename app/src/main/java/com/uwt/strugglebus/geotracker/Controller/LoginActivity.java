@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,15 +16,14 @@ import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.R;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
@@ -32,7 +31,7 @@ import java.io.InputStreamReader;
  * This class contains the logic needed for the login page.
  * The necessary buttons are initialized and the appropriate logic to let the user log-in.
  */
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private String mEmail;
     private String mPassword;
@@ -52,19 +51,19 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Button login = (Button) findViewById(R.id.login);
-        Button register = (Button) findViewById(R.id.register);
-        Button forgot = (Button) findViewById(R.id.forgot_password);
+        Button login = findViewById(R.id.login);
+        Button register = findViewById(R.id.register);
+        Button forgot = findViewById(R.id.forgot_password);
         mContext = getApplicationContext();
 
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 Context.MODE_PRIVATE);
         String uid = prefs.getString("userID", null);
         if (uid != null) { //user exists in shared prefs
-            final EditText email = ((EditText) findViewById(R.id.email));
+            final EditText email = findViewById(R.id.email);
             email.setText(prefs.getString(getString(R.string.email), "email"));
 
-            final EditText pw = ((EditText) findViewById(R.id.password));
+            final EditText pw = findViewById(R.id.password);
             pw.setText(prefs.getString(getString(R.string.password), "password"));
 
             Intent account = new Intent(getApplicationContext(), MyAccount.class);
@@ -82,9 +81,8 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View v) {
                 mEmail = ((EditText) findViewById(R.id.email)).getText().toString();
                 mPassword = ((EditText) findViewById(R.id.password)).getText().toString();
-                DownloadWebPageTask task = new DownloadWebPageTask();
                 String url = "http://450.atwebpages.com/login.php?email=" + mEmail + "&password=" + mPassword;
-                task.execute(url);
+                new DownloadWebPageTask(LoginActivity.this).execute(url);
             }
         });
 
@@ -93,7 +91,7 @@ public class LoginActivity extends ActionBarActivity {
              * Go to register activity
              */
             public void onClick(View v) {
-                Intent register = new Intent(getApplicationContext(), Registration.class);
+                Intent register = new Intent(getApplicationContext(), RegistrationActivity.class);
                 startActivity(register);
             }
         });
@@ -103,7 +101,7 @@ public class LoginActivity extends ActionBarActivity {
              * Got to Forgot password page
              */
             public void onClick(View v) {
-                Intent forgot = new Intent(getApplicationContext(), ResetPassword.class);
+                Intent forgot = new Intent(getApplicationContext(), ResetPasswordActivity.class);
                 startActivity(forgot);
             }
         });
@@ -135,8 +133,13 @@ public class LoginActivity extends ActionBarActivity {
      * in charge of connecting to the web
      * services as an Asyncronous Task.
      */
-    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+    private static class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
+        private final WeakReference<LoginActivity> loginActivityWeakReference;
+
+        DownloadWebPageTask(LoginActivity context) {
+            loginActivityWeakReference = new WeakReference<>(context);
+        }
 
         /*
          * Inherited from
@@ -153,26 +156,38 @@ public class LoginActivity extends ActionBarActivity {
          */
         @Override
         protected String doInBackground(String... urls) {
-            String response = "";
+            StringBuilder response = new StringBuilder();
+            HttpURLConnection urlConnection;
             for (String url : urls) {
-                DefaultHttpClient client = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(url);
                 try {
-                    HttpResponse execute = client.execute(httpGet);
-                    InputStream content = execute.getEntity().getContent();
+                    urlConnection = (HttpURLConnection) new URL(url).openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setRequestProperty("Content-length", "0");
+                    urlConnection.setUseCaches(false);
+                    urlConnection.setAllowUserInteraction(false);
+                    urlConnection.setConnectTimeout(100000);
+                    urlConnection.setReadTimeout(100000);
 
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s;
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
+                    urlConnection.connect();
+
+                    int responseCode = urlConnection.getResponseCode();
+
+                    if(responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader buffer = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        String s;
+                        while ((s = buffer.readLine()) != null) {
+                            response.append(s);
+                        }
+
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            return response;
+            return response.toString();
         }
+
 
         /*
          * Checks if the user has
@@ -181,7 +196,10 @@ public class LoginActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-//            mProgressDialog.dismiss();
+
+            LoginActivity activity = loginActivityWeakReference.get();
+            if(activity == null) return;
+
             if (result != null) {
                 try {
                     JSONObject obj = new JSONObject(result);
@@ -189,20 +207,20 @@ public class LoginActivity extends ActionBarActivity {
                     Log.i("login", result);
                     Log.i("login", success);
                     if (success != null && success.equals("success")) {
-                        SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
+                        SharedPreferences prefs = activity.getSharedPreferences(activity.getString(R.string.SHARED_PREFERENCES)
                                 , Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString("userID", obj.getString("userid"));
-                        editor.putString(getString(R.string.email), mEmail);
-                        editor.putString(getString(R.string.password), mPassword);
+                        editor.putString(activity.getString(R.string.email), activity.mEmail);
+                        editor.putString(activity.getString(R.string.password), activity.mPassword);
                         editor.apply();
-                        Intent account = new Intent(mContext, MyAccount.class);
-                        startActivity(account);
+                        Intent account = new Intent(activity.mContext, MyAccount.class);
+                        activity.startActivity(account);
                     } else {
-                        Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity.mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(), "Error connecting to service!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity.getApplicationContext(), "Error connecting to service!", Toast.LENGTH_LONG).show();
                     Log.i("json exception", e.getMessage());
                 }
             }

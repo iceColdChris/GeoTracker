@@ -1,5 +1,5 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.uwt.strugglebus.geotracker.Controller.Registration">
+    tools:context="com.uwt.strugglebus.geotracker.Controller.RegistrationActivity">
     <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"-->
         <!--android:orderInCategory="100" app:showAsAction="never" />-->
 </menu>

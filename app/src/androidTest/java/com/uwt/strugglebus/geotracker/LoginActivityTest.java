@@ -1,16 +1,13 @@
 package com.uwt.strugglebus.geotracker;
 
-import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.robotium.solo.Solo;
 import com.uwt.strugglebus.geotracker.Controller.LoginActivity;
 import com.uwt.strugglebus.geotracker.Controller.MyAccount;
-import com.uwt.strugglebus.geotracker.Controller.Registration;
-import com.uwt.strugglebus.geotracker.Controller.ResetPassword;
+import com.uwt.strugglebus.geotracker.Controller.RegistrationActivity;
+import com.uwt.strugglebus.geotracker.Controller.ResetPasswordActivity;
 
 /**
  * A test class using Robotium for the Log-in Activity.
@@ -75,15 +72,15 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
         //go to registration
         final Button register_button = (Button) solo.getView(R.id.register);
         solo.clickOnView(register_button);
-        solo.waitForActivity(Registration.class);
-        solo.assertCurrentActivity("wrong activity", Registration.class);
+        solo.waitForActivity(RegistrationActivity.class);
+        solo.assertCurrentActivity("wrong activity", RegistrationActivity.class);
         solo.goBack();
 
         //go to the reset password activity, then go back to log-in
         final Button forgot_button = (Button) solo.getView(R.id.forgot_password);
         solo.clickOnView(forgot_button);
-        solo.waitForActivity(ResetPassword.class);
-        solo.assertCurrentActivity("wrong activity", ResetPassword.class);
+        solo.waitForActivity(ResetPasswordActivity.class);
+        solo.assertCurrentActivity("wrong activity", ResetPasswordActivity.class);
         solo.goBack();
         solo.waitForActivity(LoginActivity.class);
         solo.assertCurrentActivity("wrong activity", LoginActivity.class);

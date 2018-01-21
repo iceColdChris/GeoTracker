@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +24,7 @@ import com.uwt.strugglebus.geotracker.R;
  * and how often their data is pushed to the server
  * uses shared preferences to store the settings
  */
-public class ChangeSample extends ActionBarActivity {
+public class ChangeSample extends AppCompatActivity {
 
     private boolean mWifiChecked;
 

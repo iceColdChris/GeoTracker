@@ -7,7 +7,7 @@
     tools:context="com.uwt.strugglebus.geotracker.Controller.ChangeSample">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
@@ -22,8 +22,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rate"
-                android:textColor="@color/link_text_material_light"/>
+                android:id="@+id/rate" />
             </LinearLayout>
         <SeekBar
             android:id="@+id/geo_bar"
@@ -45,8 +44,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/pushRate"
-                android:textColor="@color/link_text_material_light"/>
+                android:id="@+id/pushRate" />
         </LinearLayout>
         <SeekBar
             android:id="@+id/server_bar"
@@ -66,12 +64,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/accept_save"
-            android:id="@+id/accept_changes"/>
+            android:id="@+id/accept_changes"
+            android:filterTouchesWhenObscured="true" />
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/back"
-            android:id="@+id/back"/>
+            android:id="@+id/back"
+            android:filterTouchesWhenObscured="true" />
 
     </LinearLayout>
 

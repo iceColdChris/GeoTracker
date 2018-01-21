@@ -15,15 +15,14 @@ import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.R;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * * Alex Peterson, Chris Fahlin, Josh Moore, Kyle Martens
@@ -31,9 +30,9 @@ import java.io.InputStreamReader;
  * This class contains the logic for presenting the end user license agreement with the user.
  * They must read and accept the terms to use our app.
  */
-public class Eula {
+class Eula {
 
-    private Activity mActivity;
+    private final Activity mActivity;
     private PackageInfo mVersionInfo;
     private AlertDialog.Builder mAlertBuilder;
 
@@ -42,7 +41,7 @@ public class Eula {
      *
      * @param context The activity that calls this
      */
-    public Eula(Activity context) {
+    Eula(Activity context) {
         mActivity = context;
     }
 
@@ -63,11 +62,11 @@ public class Eula {
      * Downloads the EULA
      * from the webservice.
      */
-    public void download() {
+    void download() {
         mVersionInfo = getPackageInfo();
 
         //Includes the updates as well so users know what changed.
-        DownloadWebPageTask task = new DownloadWebPageTask();
+        DownloadWebPageTask task = new DownloadWebPageTask(this);
         String url = "http://450.atwebpages.com/agreement.php";
         task.execute(url);
     }
@@ -77,7 +76,13 @@ public class Eula {
      * in charge of connecting to the web
      * services as an Asynchronous Task.
      */
-    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+    private static class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+
+        private final WeakReference<Eula> eulaWeakReference;
+
+        DownloadWebPageTask(Eula context) {
+            eulaWeakReference = new WeakReference<>(context);
+        }
 
         /*
          * Inherited from
@@ -95,25 +100,36 @@ public class Eula {
          */
         @Override
         protected String doInBackground(String... urls) {
-            String response = "";
+            StringBuilder response = new StringBuilder();
+            HttpURLConnection urlConnection;
             for (String url : urls) {
-                DefaultHttpClient client = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(url);
                 try {
-                    HttpResponse execute = client.execute(httpGet);
-                    InputStream content = execute.getEntity().getContent();
+                    urlConnection = (HttpURLConnection) new URL(url).openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setRequestProperty("Content-length", "0");
+                    urlConnection.setUseCaches(false);
+                    urlConnection.setAllowUserInteraction(false);
+                    urlConnection.setConnectTimeout(100000);
+                    urlConnection.setReadTimeout(100000);
 
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s;
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
+                    urlConnection.connect();
+
+                    int responseCode = urlConnection.getResponseCode();
+
+                    if(responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader buffer = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        String s;
+                        while ((s = buffer.readLine()) != null) {
+                            response.append(s);
+                        }
+
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            return response;
+            return response.toString();
         }
 
         /*
@@ -123,14 +139,17 @@ public class Eula {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-//            mProgressDialog.dismiss();
+
+            Eula eula = eulaWeakReference.get();
+            if(eula == null) return;
+
             if (result != null) {
                 try {
                     JSONObject obj = new JSONObject(result);
 
                     String agreement = obj.getString("agreement");
-                    String title = mActivity.getString(R.string.app_name) + " v" + mVersionInfo.versionName;
-                    mAlertBuilder = new AlertDialog.Builder(mActivity)
+                    String title = eula.mActivity.getString(R.string.app_name) + " v" + eula.mVersionInfo.versionName;
+                    eula.mAlertBuilder = new AlertDialog.Builder(eula.mActivity)
                             .setTitle(title)
                             .setMessage(Html.fromHtml(agreement))
                             .setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
@@ -140,12 +159,12 @@ public class Eula {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     // Mark this version as read.
-                                    final SharedPreferences prefs = mActivity.getSharedPreferences(mActivity.getString(R.string.SHARED_PREFERENCES), Context.MODE_PRIVATE);
+                                    final SharedPreferences prefs = eula.mActivity.getSharedPreferences(eula.mActivity.getString(R.string.SHARED_PREFERENCES), Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = prefs.edit();
-                                    editor.putBoolean(mActivity.getString(R.string.eula_accept), true);
+                                    editor.putBoolean(eula.mActivity.getString(R.string.eula_accept), true);
                                     editor.apply();
-                                    ((Registration) mActivity).sendData();
-                                    Toast.makeText(mActivity, R.string.eula_toast, Toast.LENGTH_LONG).show();
+                                    ((RegistrationActivity) eula.mActivity).sendData();
+                                    Toast.makeText(eula.mActivity, R.string.eula_toast, Toast.LENGTH_LONG).show();
                                     dialogInterface.dismiss();
                                 }
                             })
@@ -160,7 +179,7 @@ public class Eula {
                                 }
 
                             });
-                    mAlertBuilder.create().show();
+                    eula.mAlertBuilder.create().show();
                 } catch (JSONException e) {
                     Log.i("json exception", e.getMessage());
                 }

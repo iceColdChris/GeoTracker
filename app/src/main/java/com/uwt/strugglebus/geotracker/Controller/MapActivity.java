@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,22 +17,20 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.uwt.strugglebus.geotracker.Model.LocationLog;
 import com.uwt.strugglebus.geotracker.R;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -46,11 +44,11 @@ import java.util.List;
  * of each poll as an arrow on the
  * map.
  */
-public class MapActivity extends ActionBarActivity implements OnMapReadyCallback {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private LocationLog mLocationLog;
-    private GoogleMap mGoogleMap;
     private Context mContext;
+    private GoogleMap mGoogleMap;
 
     /**
      * {@inheritDoc}
@@ -68,16 +66,14 @@ public class MapActivity extends ActionBarActivity implements OnMapReadyCallback
         mContext = getApplicationContext();
         mLocationLog = getIntent().getParcelableExtra("locations");
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mGoogleMap = mapFragment.getMap();
         mapFragment.getMapAsync(this);
 
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES),
                 Context.MODE_PRIVATE);
         String uid = prefs.getString("userID", "");
 
-        DownloadWebPageTask task = new DownloadWebPageTask();
         String url = "http://450.atwebpages.com/view.php?uid=" + uid + "&start=" + 0 + "&end=" + System.currentTimeMillis();
-        task.execute(url);
+        new DownloadWebPageTask(this).execute(url);
     }
 
 
@@ -94,6 +90,8 @@ public class MapActivity extends ActionBarActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap map) {
 
+        mGoogleMap = map;
+
         if (mLocationLog != null) {
 
             List<Location> locations = mLocationLog.getLocationList();
@@ -101,12 +99,12 @@ public class MapActivity extends ActionBarActivity implements OnMapReadyCallback
                 Location location = locations.get(0);
                 LatLng firstLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                 for (int i = 0; i < locations.size(); i++) {
-                    mGoogleMap.addMarker(new MarkerOptions()
+                    map.addMarker(new MarkerOptions()
                             .position(new LatLng(locations.get(i).getLatitude()
                                     , locations.get(i).getLongitude()))
                             .title("My Locations"));
                 }
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
             }
         }
 
@@ -153,8 +151,13 @@ public class MapActivity extends ActionBarActivity implements OnMapReadyCallback
  * in charge of connecting to the web
  * services as an Asyncronous Task.
  */
-    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+    private static class DownloadWebPageTask extends AsyncTask<String, Void, String> {
 
+        private final WeakReference<MapActivity> mapActivityReference;
+
+        DownloadWebPageTask(MapActivity context) {
+            mapActivityReference = new WeakReference<>(context);
+        }
 
         /*
          * Inherited from
@@ -171,25 +174,36 @@ public class MapActivity extends ActionBarActivity implements OnMapReadyCallback
          */
         @Override
         protected String doInBackground(String... urls) {
-            String response = "";
+            StringBuilder response = new StringBuilder();
+            HttpURLConnection urlConnection;
             for (String url : urls) {
-                DefaultHttpClient client = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(url);
                 try {
-                    HttpResponse execute = client.execute(httpGet);
-                    InputStream content = execute.getEntity().getContent();
+                    urlConnection = (HttpURLConnection) new URL(url).openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setRequestProperty("Content-length", "0");
+                    urlConnection.setUseCaches(false);
+                    urlConnection.setAllowUserInteraction(false);
+                    urlConnection.setConnectTimeout(100000);
+                    urlConnection.setReadTimeout(100000);
 
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s;
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
+                    urlConnection.connect();
+
+                    int responseCode = urlConnection.getResponseCode();
+
+                    if(responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader buffer = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        String s;
+                        while ((s = buffer.readLine()) != null) {
+                            response.append(s);
+                        }
+
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            return response;
+            return response.toString();
         }
 
         /*
@@ -199,6 +213,10 @@ public class MapActivity extends ActionBarActivity implements OnMapReadyCallback
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
+            MapActivity activity = mapActivityReference.get();
+            if(activity == null) return;
+
             if (result != null) {
                 try {
                     JSONObject obj = new JSONObject(result);
@@ -210,16 +228,16 @@ public class MapActivity extends ActionBarActivity implements OnMapReadyCallback
                             JSONObject point = points.getJSONObject(i);
                             LatLng marker = new LatLng(point.getDouble("lat"), point.getDouble("lon"));
                             line.add(marker);
-                            mGoogleMap.addMarker(new MarkerOptions()
+                            activity.mGoogleMap.addMarker(new MarkerOptions()
                                     .position(marker)
                                     .title("My Locations"));
                         }
                         LatLng lastLatLng = new LatLng(points.getJSONObject(points.length() - 1).getDouble("lat"),
                                 points.getJSONObject(points.length() - 1).getDouble("lon"));
-                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 15));
-                        mGoogleMap.addPolyline(line);
+                        activity.mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 15));
+                        activity.mGoogleMap.addPolyline(line);
                     } else {
-                        Toast.makeText(mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity.mContext, obj.getString("error"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     Log.i("json exception", e.getMessage());

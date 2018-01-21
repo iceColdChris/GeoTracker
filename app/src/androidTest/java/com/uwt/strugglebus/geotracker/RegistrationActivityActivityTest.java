@@ -5,19 +5,18 @@ import android.widget.Button;
 
 import com.robotium.solo.Solo;
 import com.uwt.strugglebus.geotracker.Controller.LoginActivity;
-import com.uwt.strugglebus.geotracker.Controller.MyAccount;
-import com.uwt.strugglebus.geotracker.Controller.Registration;
+import com.uwt.strugglebus.geotracker.Controller.RegistrationActivity;
 
 /**
- * A test class using Robotium for the Registration Activity.
+ * A test class using Robotium for the RegistrationActivity Activity.
  * Created by Alex on 5/23/2015.
  */
-public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
+public class RegistrationActivityActivityTest extends ActivityInstrumentationTestCase2 {
 
     private Solo solo;
 
-    public RegistrationActivityTest() {
-        super(Registration.class);
+    public RegistrationActivityActivityTest() {
+        super(RegistrationActivity.class);
     }
 
     /**
@@ -29,7 +28,7 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
         solo.unlockScreen();
-        solo.assertCurrentActivity("Expected Registration activity", Registration.class);
+        solo.assertCurrentActivity("Expected RegistrationActivity activity", RegistrationActivity.class);
     }
 
     /**
@@ -43,7 +42,7 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
     }
 
     /**
-     * Test the text fields in the Registration activity.
+     * Test the text fields in the RegistrationActivity activity.
      */
     public void testTextFields() {
 
@@ -62,7 +61,7 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
     }
 
     /**
-     * Tests the buttons in the Registration activity.
+     * Tests the buttons in the RegistrationActivity activity.
      */
     public void testButtons() {
 
@@ -70,8 +69,8 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
         final Button cancel_button = (Button) solo.getView(R.id.reg_cancel);
 
         solo.clickOnView(register_button);
-        solo.waitForActivity(Registration.class);
-        solo.assertCurrentActivity("Expected Registration Activity", Registration.class);
+        solo.waitForActivity(RegistrationActivity.class);
+        solo.assertCurrentActivity("Expected RegistrationActivity Activity", RegistrationActivity.class);
 
         solo.clickOnView(cancel_button);
         solo.waitForActivity(LoginActivity.class);
@@ -80,7 +79,7 @@ public class RegistrationActivityTest extends ActivityInstrumentationTestCase2 {
     }
 
     /**
-     * Tests the landscape orientation in the Registration activity.
+     * Tests the landscape orientation in the RegistrationActivity activity.
      */
     public void testOrientation() {
 

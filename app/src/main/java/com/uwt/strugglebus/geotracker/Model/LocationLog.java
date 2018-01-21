@@ -36,7 +36,7 @@ public class LocationLog implements Parcelable {
     private List<Location> mLocationList;
 
     public LocationLog() {
-        mLocationList = new ArrayList<Location>();
+        mLocationList = new ArrayList<>();
     }
 
     /**
@@ -44,8 +44,8 @@ public class LocationLog implements Parcelable {
      *
      * @param in a parcel item
      */
-    public LocationLog(Parcel in) {
-        mLocationList = new ArrayList<Location>();
+    private LocationLog(Parcel in) {
+        mLocationList = new ArrayList<>();
         mLocationList = in.readArrayList(Location.class.getClassLoader());
     }
 

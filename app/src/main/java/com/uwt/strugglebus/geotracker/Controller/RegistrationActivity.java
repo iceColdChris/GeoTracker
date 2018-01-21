@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,15 +19,14 @@ import android.widget.Toast;
 
 import com.uwt.strugglebus.geotracker.R;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,10 +36,10 @@ import java.util.regex.Pattern;
  * This class sets up the information needed for the registration process.
  * The appropriate logic is in place to check that the user has passed requirements to register.
  */
-public class Registration extends ActionBarActivity {
+public class RegistrationActivity extends AppCompatActivity {
 
     /**
-     * Variables for Registration.
+     * Variables for RegistrationActivity.
      */
     private String mEmail;
     private String mPassword;
@@ -62,14 +61,14 @@ public class Registration extends ActionBarActivity {
         mActivity = this;
 
         //a spinner holding 4 different security questions
-        Spinner spinner = (Spinner) findViewById(R.id.question_spinner);
+        Spinner spinner = findViewById(R.id.question_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.security_questions,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        Button accept = (Button) findViewById(R.id.reg_accept);
-        Button cancel = (Button) findViewById(R.id.reg_cancel);
+        Button accept = findViewById(R.id.reg_accept);
+        Button cancel = findViewById(R.id.reg_cancel);
         final Activity mActivity = this;
 
         //set the user's information
@@ -85,7 +84,7 @@ public class Registration extends ActionBarActivity {
                 String question = ((Spinner) findViewById(R.id.question_spinner)).getSelectedItem().toString();
                 String answer = ((EditText) findViewById(R.id.security_answer)).getText().toString();
 
-                String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+                String expression = "^[\\w.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
                 Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(email);
                 if (!matcher.matches()) {
@@ -114,7 +113,7 @@ public class Registration extends ActionBarActivity {
                     mEmail = email;
                     mPassword = password;
 
-                    editor.commit();
+                    editor.apply();
 
                 }
             }
@@ -145,12 +144,11 @@ public class Registration extends ActionBarActivity {
                 , Context.MODE_PRIVATE);
 
         if (prefs.getBoolean(getString(R.string.eula_accept), false)) {
-            DownloadWebPageTask task = new DownloadWebPageTask();
             question = question.replaceAll(" ", "%20");
             question = question.replace("?", "%3F");
             String url = "http://450.atwebpages.com/adduser.php?email=" + email + "&password=" + password +
                     "&question=" + question + "&answer=" + answer;
-            task.execute(url);
+            new DownloadWebPageTask(this).execute(url);
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.invalid_confirm), Toast.LENGTH_LONG).show();
         }
@@ -180,7 +178,13 @@ public class Registration extends ActionBarActivity {
      * in charge of connecting to the web
      * services as an Asynchronous Task.
      */
-    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+    private static class DownloadWebPageTask extends AsyncTask<String, Void, String> {
+
+        private final WeakReference<RegistrationActivity> registrationReference;
+
+        DownloadWebPageTask(RegistrationActivity context) {
+            registrationReference = new WeakReference<>(context);
+        }
 
         /*
          * Inherited from
@@ -197,25 +201,36 @@ public class Registration extends ActionBarActivity {
          */
         @Override
         protected String doInBackground(String... urls) {
-            String response = "";
+            StringBuilder response = new StringBuilder();
+            HttpURLConnection urlConnection;
             for (String url : urls) {
-                DefaultHttpClient client = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(url);
                 try {
-                    HttpResponse execute = client.execute(httpGet);
-                    InputStream content = execute.getEntity().getContent();
+                    urlConnection = (HttpURLConnection) new URL(url).openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setRequestProperty("Content-length", "0");
+                    urlConnection.setUseCaches(false);
+                    urlConnection.setAllowUserInteraction(false);
+                    urlConnection.setConnectTimeout(100000);
+                    urlConnection.setReadTimeout(100000);
 
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s;
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
+                    urlConnection.connect();
+
+                    int responseCode = urlConnection.getResponseCode();
+
+                    if(responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader buffer = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        String s;
+                        while ((s = buffer.readLine()) != null) {
+                            response.append(s);
+                        }
+
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            return response;
+            return response.toString();
         }
 
         /*
@@ -225,22 +240,26 @@ public class Registration extends ActionBarActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
+            RegistrationActivity activity = registrationReference.get();
+            if(activity == null) return;
+
             if (result != null) {
                 try {
                     JSONObject obj = new JSONObject(result);
                     String success = obj.getString("result");
-                    SharedPreferences prefs = getSharedPreferences(getString(R.string.SHARED_PREFERENCES)
+                    SharedPreferences prefs = activity.getSharedPreferences(activity.getString(R.string.SHARED_PREFERENCES)
                             , Context.MODE_PRIVATE);
                     if (success != null && success.equals("fail")) {
-                        Toast.makeText(getApplicationContext(), obj.getString("error"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity.getApplicationContext(), obj.getString("error"), Toast.LENGTH_LONG).show();
                     } else {
                         SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString(getString(R.string.email), mEmail);
-                        editor.putString(getString(R.string.password), mPassword);
+                        editor.putString(activity.getString(R.string.email), activity.mEmail);
+                        editor.putString(activity.getString(R.string.password), activity.mPassword);
                         editor.apply();
-                        Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(login);
-                        mActivity.finish();
+                        Intent login = new Intent(activity.getApplicationContext(), LoginActivity.class);
+                        activity.startActivity(login);
+                        activity.mActivity.finish();
                     }
                 } catch (JSONException e) {
                     Log.i("json exception", e.getMessage());
